@@ -1,0 +1,34 @@
+{
+    "name": "gonebusy/gonebusy-php-client",
+    "type": "library",
+    "description": "This is a PHP client for communicating with the full GoneBusy API",
+    "keywords": ["GoneBusy API","API","SDK"],
+    "homepage": "http://www.gonebusy.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alex Agranov",
+            "email": "alex@gonebusy.com",
+            "homepage": "https://github.com/gonebusy",
+            "role": "Developer"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/apimatic/unirest-php"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "apimatic/unirest-php": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "GoneBusy\\": "src/"
+        }
+    }
+}
