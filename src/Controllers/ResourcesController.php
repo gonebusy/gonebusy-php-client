@@ -1,15 +1,15 @@
 <?php
 /*
- * GoneBusy
+ * Gonebusy
  *
- * This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 01/05/2016
+ * This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 03/04/2016
  */
 
-namespace GoneBusyLib\Controllers;
+namespace GonebusyLib\Controllers;
 
-use GoneBusyLib\APIException;
-use GoneBusyLib\APIHelper;
-use GoneBusyLib\Configuration;
+use GonebusyLib\APIException;
+use GonebusyLib\APIHelper;
+use GonebusyLib\Configuration;
 use Unirest\Unirest;
 class ResourcesController {
     /**
@@ -67,23 +67,23 @@ class ResourcesController {
 
         //Error handling using HTTP status codes
         if ($response->code == 401) {
-            throw new APIException('Unauthorized/Missing Token', 401);
+            throw new APIException('Unauthorized/Missing Token', 401, $response->body);
         }
 
         else if ($response->code == 403) {
-            throw new APIException('Forbidden', 403);
+            throw new APIException('Forbidden', 403, $response->body);
         }
 
         else if ($response->code == 404) {
-            throw new APIException('Not Found', 404);
+            throw new APIException('Not Found', 404, $response->body);
         }
 
         else if ($response->code == 500) {
-            throw new APIException('Unexpected error', 500);
+            throw new APIException('Unexpected error', 500, $response->body);
         }
 
         else if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -120,27 +120,89 @@ class ResourcesController {
 
         //Error handling using HTTP status codes
         if ($response->code == 400) {
-            throw new APIException('Bad Request', 400);
+            throw new APIException('Bad Request', 400, $response->body);
         }
 
         else if ($response->code == 401) {
-            throw new APIException('Unauthorized/Missing Token', 401);
+            throw new APIException('Unauthorized/Missing Token', 401, $response->body);
         }
 
         else if ($response->code == 403) {
-            throw new APIException('Forbidden', 403);
+            throw new APIException('Forbidden', 403, $response->body);
         }
 
         else if ($response->code == 422) {
-            throw new APIException('Unprocessable Entity', 422);
+            throw new APIException('Unprocessable Entity', 422, $response->body);
         }
 
         else if ($response->code == 500) {
-            throw new APIException('Unexpected error', 500);
+            throw new APIException('Unexpected error', 500, $response->body);
         }
 
         else if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
+        }
+
+        return $response->body;
+    }
+        
+    /**
+     * Return all Resource Things.
+     * @param  array  $options    Array with all options for search
+     * @param  string       $options['apiKey']       Required parameter: Valid API Key for your GoneBusy account
+     * @param  int|null     $options['page']         Optional parameter: Page offset to fetch.
+     * @param  int|null     $options['perPage']      Optional parameter: Number of results to return per page.
+     * @return mixed response from the API call*/
+    public function getResourceThings (
+                $options) 
+    {
+        //the base uri for api requests
+        $queryBuilder = Configuration::$BASEURI;
+        
+        //prepare query string for API call
+        $queryBuilder = $queryBuilder.'/resources/things';
+
+        //process optional query parameters
+        APIHelper::appendUrlWithQueryParameters($queryBuilder, array (
+            'api_key'  => $this->val($options, 'apiKey'),
+            'page'     => $this->val($options, 'page', 1),
+            'per_page' => $this->val($options, 'perPage', 10),
+        ));
+
+        //validate and preprocess url
+        $queryUrl = APIHelper::cleanUrl($queryBuilder);
+
+        //prepare headers
+        $headers = array (
+            'user-agent'    => 'APIMATIC 2.0',
+            'Accept'        => 'application/json'
+        );
+
+        //prepare API request
+        $request = Unirest::get($queryUrl, $headers);
+
+        //and invoke the API call request to fetch the response
+        $response = Unirest::getResponse($request);
+
+        //Error handling using HTTP status codes
+        if ($response->code == 400) {
+            throw new APIException('Bad Request', 400, $response->body);
+        }
+
+        else if ($response->code == 401) {
+            throw new APIException('Unauthorized/Missing Token', 401, $response->body);
+        }
+
+        else if ($response->code == 403) {
+            throw new APIException('Forbidden', 403, $response->body);
+        }
+
+        else if ($response->code == 500) {
+            throw new APIException('Unexpected error', 500, $response->body);
+        }
+
+        else if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -188,27 +250,27 @@ class ResourcesController {
 
         //Error handling using HTTP status codes
         if ($response->code == 400) {
-            throw new APIException('Bad Request', 400);
+            throw new APIException('Bad Request', 400, $response->body);
         }
 
         else if ($response->code == 401) {
-            throw new APIException('Unauthorized/Missing Token', 401);
+            throw new APIException('Unauthorized/Missing Token', 401, $response->body);
         }
 
         else if ($response->code == 403) {
-            throw new APIException('Forbidden', 403);
+            throw new APIException('Forbidden', 403, $response->body);
         }
 
         else if ($response->code == 404) {
-            throw new APIException('Not Found', 404);
+            throw new APIException('Not Found', 404, $response->body);
         }
 
         else if ($response->code == 500) {
-            throw new APIException('Unexpected error', 500);
+            throw new APIException('Unexpected error', 500, $response->body);
         }
 
         else if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -252,31 +314,31 @@ class ResourcesController {
 
         //Error handling using HTTP status codes
         if ($response->code == 400) {
-            throw new APIException('Bad Request', 400);
+            throw new APIException('Bad Request', 400, $response->body);
         }
 
         else if ($response->code == 401) {
-            throw new APIException('Unauthorized/Missing Token', 401);
+            throw new APIException('Unauthorized/Missing Token', 401, $response->body);
         }
 
         else if ($response->code == 403) {
-            throw new APIException('Forbidden', 403);
+            throw new APIException('Forbidden', 403, $response->body);
         }
 
         else if ($response->code == 404) {
-            throw new APIException('Not Found', 404);
+            throw new APIException('Not Found', 404, $response->body);
         }
 
         else if ($response->code == 422) {
-            throw new APIException('Unprocessable Entity', 422);
+            throw new APIException('Unprocessable Entity', 422, $response->body);
         }
 
         else if ($response->code == 500) {
-            throw new APIException('Unexpected error', 500);
+            throw new APIException('Unexpected error', 500, $response->body);
         }
 
         else if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -324,27 +386,27 @@ class ResourcesController {
 
         //Error handling using HTTP status codes
         if ($response->code == 400) {
-            throw new APIException('Bad Request', 400);
+            throw new APIException('Bad Request', 400, $response->body);
         }
 
         else if ($response->code == 401) {
-            throw new APIException('Unauthorized/Missing Token', 401);
+            throw new APIException('Unauthorized/Missing Token', 401, $response->body);
         }
 
         else if ($response->code == 403) {
-            throw new APIException('Forbidden', 403);
+            throw new APIException('Forbidden', 403, $response->body);
         }
 
         else if ($response->code == 404) {
-            throw new APIException('Not Found', 404);
+            throw new APIException('Not Found', 404, $response->body);
         }
 
         else if ($response->code == 500) {
-            throw new APIException('Unexpected error', 500);
+            throw new APIException('Unexpected error', 500, $response->body);
         }
 
         else if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;

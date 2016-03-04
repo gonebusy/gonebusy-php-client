@@ -1,11 +1,11 @@
 <?php 
 /*
- * GoneBusy
+ * Gonebusy
  *
- * This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 01/05/2016
+ * This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 03/04/2016
  */
 
-namespace GoneBusyLib\Models;
+namespace GonebusyLib\Models;
 
 use JsonSerializable;
 
@@ -42,22 +42,30 @@ class UpdateResourceByIdBody implements JsonSerializable {
     protected $gender;
 
     /**
+     * When Resource is a Thing, the type Id
+     * @param int|null $thingTypeId public property
+     */
+    protected $thingTypeId;
+
+    /**
      * Constructor to set initial or default values of member properties
-	 * @param   string|null       $name          Initialization value for the property $this->name       
-	 * @param   string            $apiKey        Initialization value for the property $this->apiKey     
-	 * @param   string|null       $description   Initialization value for the property $this->description
-	 * @param   int|null          $capacity      Initialization value for the property $this->capacity   
-	 * @param   string|null       $gender        Initialization value for the property $this->gender     
+	 * @param   string|null       $name            Initialization value for the property $this->name         
+	 * @param   string            $apiKey          Initialization value for the property $this->apiKey       
+	 * @param   string|null       $description     Initialization value for the property $this->description  
+	 * @param   int|null          $capacity        Initialization value for the property $this->capacity     
+	 * @param   string|null       $gender          Initialization value for the property $this->gender       
+	 * @param   int|null          $thingTypeId     Initialization value for the property $this->thingTypeId  
      */
     public function __construct()
     {
-        if(5 == func_num_args())
+        if(6 == func_num_args())
         {
-            $this->name        = func_get_arg(0);
-            $this->apiKey      = func_get_arg(1);
-            $this->description = func_get_arg(2);
-            $this->capacity    = func_get_arg(3);
-            $this->gender      = func_get_arg(4);
+            $this->name          = func_get_arg(0);
+            $this->apiKey        = func_get_arg(1);
+            $this->description   = func_get_arg(2);
+            $this->capacity      = func_get_arg(3);
+            $this->gender        = func_get_arg(4);
+            $this->thingTypeId   = func_get_arg(5);
         }
     }
 
@@ -106,11 +114,12 @@ class UpdateResourceByIdBody implements JsonSerializable {
     public function jsonSerialize()
     {
         $json = array();
-        $json['name']        = $this->name;
-        $json['api_key']     = $this->apiKey;
-        $json['description'] = $this->description;
-        $json['capacity']    = $this->capacity;
-        $json['gender']      = $this->gender;
+        $json['name']          = $this->name;
+        $json['api_key']       = $this->apiKey;
+        $json['description']   = $this->description;
+        $json['capacity']      = $this->capacity;
+        $json['gender']        = $this->gender;
+        $json['thing_type_id'] = $this->thingTypeId;
         return $json;
     }
 }
