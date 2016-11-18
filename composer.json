@@ -13,22 +13,17 @@
             "role": "Developer"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/apimatic/unirest-php"
-        }
-    ],
     "require": {
         "php": ">=5.4.0",
         "ext-curl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "apimatic/unirest-php": "dev-master"
+        "mashape/unirest-php": "~3.0.1",
+        "apimatic/jsonmapper": "~1.0.0"
     },
     "autoload": {
         "psr-4": {
-            "GoneBusy\\": "src/"
+            "GonebusyLib\\": "src/"
         }
     }
 }

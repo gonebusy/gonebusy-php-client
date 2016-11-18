@@ -2,49 +2,76 @@
 /*
  * Gonebusy
  *
- * This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 03/04/2016
+ * This file was automatically generated for GoneBusy Inc. by APIMATIC v2.0 ( https://apimatic.io ) on 11/18/2016
  */
 
 namespace GonebusyLib;
 
 use Exception;
 
+/**
+ * Class for exceptions when there is a network error, status code error, etc.
+ */
 class APIException extends Exception {
-    //private value store
-    private $responseCode;
-    private $responseBody;
+    /**
+     * Error message
+     * @var string
+     */
+    private $errorMessage;
+
+    /**
+     * HTTP context
+     * @var Http\HttpContext
+     */
+    private $context;
     
-    /*
+    /**
      * The HTTP response code from the API request
      * @param string $reason the reason for raising an exception
      * @param int $responseCode the HTTP response code from the API request
+     * @param string $responseBody the HTTP response body from the API request
      */
-    public function __construct($reason, $responseCode, $responseBody)
+    public function __construct($reason, $context)
     {
-        parent::__construct($reason, $responseCode, NULL);
-        $this->responseCode = $responseCode;
-        $this->responseBody = $responseBody;
+        parent::__construct($reason, $context->getResponse()->getStatusCode(), NULL);
+        $this->context = $context;
+        $this->errorMessage = $reason;
+        if(!(get_class()=='APIException'))
+            $this->unbox();
     }
 
-    /*
+    public function unbox()
+    {
+    }
+
+    /**
+     * The HTTP context from the API request
+     * @return Http\HttpContext
+     */
+    public function getContext()
+    {
+        return $this->context;
+    }
+
+    /**
      * The HTTP response code from the API request
      * @return int
      */
     public function getResponseCode()
     {
-        return $this->responseCode;
+        return $this->context->getResponse()->getStatusCode();
     }
 
-    /*
+    /**
      * The HTTP response body from the API request
      * @return mixed
      */
     public function getResponseBody()
     {
-        return $this->responseBody;
+        return $this->context->getResponse()->getRawBody();
     }
 
-    /*
+    /**
      * The reason for raising an exception
      * @return string
      */

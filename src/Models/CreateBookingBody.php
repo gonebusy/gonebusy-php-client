@@ -2,119 +2,81 @@
 /*
  * Gonebusy
  *
- * This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 03/04/2016
+ * This file was automatically generated for GoneBusy Inc. by APIMATIC v2.0 ( https://apimatic.io ) on 11/18/2016
  */
 
 namespace GonebusyLib\Models;
 
 use JsonSerializable;
 
+/**
+ * @todo Write general description for this model
+ */
 class CreateBookingBody implements JsonSerializable {
     /**
-     * ID of Service being booked
-     * @param int $serviceId public property
+     * Desired date of booking.  Several formats are supported: "2014-10-31", "October 31, 2014"
+     * @required
+     * @var string $date public property
      */
-    protected $serviceId;
+    public $date;
 
     /**
-     * Desired date of booking.  Several formats are supported: "2014-10-31", "October 31, 2014"
-     * @param string $date public property
+     * ID of Service being booked
+     * @required
+     * @maps service_id
+     * @var integer $serviceId public property
      */
-    protected $date;
+    public $serviceId;
 
     /**
      * Desired time of booking.  Several formats are supported: '9am', '09:00', '9:00', '0900'
-     * @param string $time public property
+     * @required
+     * @var string $time public property
      */
-    protected $time;
-
-    /**
-     * ID of a Resource to be booked.  If not provided, the first available Resource will be booked.
-     * @param int|null $resourceId public property
-     */
-    protected $resourceId;
+    public $time;
 
     /**
      * Length of time, in minutes, for the desired booking - if Service allows requesting a variable amount of time
-     * @param int|null $duration public property
+     * @var integer $duration public property
      */
-    protected $duration;
+    public $duration;
+
+    /**
+     * ID of a Resource to be booked.  If not provided, the first available Resource will be booked.
+     * @maps resource_id
+     * @var integer $resourceId public property
+     */
+    public $resourceId;
 
     /**
      * Create a booking for this User Id.  You must be authorized to manage this User Id.
-     * @param int|null $userId public property
+     * @maps user_id
+     * @var integer $userId public property
      */
-    protected $userId;
-
-    /**
-     * Valid API Key for your GoneBusy account
-     * (edit in top nav)
-     * @param string $apiKey public property
-     */
-    protected $apiKey;
+    public $userId;
 
     /**
      * Constructor to set initial or default values of member properties
-	 * @param   int               $serviceId     Initialization value for the property $this->serviceId  
-	 * @param   string            $date          Initialization value for the property $this->date       
-	 * @param   string            $time          Initialization value for the property $this->time       
-	 * @param   int|null          $resourceId    Initialization value for the property $this->resourceId 
-	 * @param   int|null          $duration      Initialization value for the property $this->duration   
-	 * @param   int|null          $userId        Initialization value for the property $this->userId     
-	 * @param   string            $apiKey        Initialization value for the property $this->apiKey     
+     * @param   string            $date          Initialization value for the property $this->date       
+     * @param   integer           $serviceId     Initialization value for the property $this->serviceId  
+     * @param   string            $time          Initialization value for the property $this->time       
+     * @param   integer           $duration      Initialization value for the property $this->duration   
+     * @param   integer           $resourceId    Initialization value for the property $this->resourceId 
+     * @param   integer           $userId        Initialization value for the property $this->userId     
      */
     public function __construct()
     {
-        if(7 == func_num_args())
+        if(6 == func_num_args())
         {
-            $this->serviceId   = func_get_arg(0);
-            $this->date        = func_get_arg(1);
+            $this->date        = func_get_arg(0);
+            $this->serviceId   = func_get_arg(1);
             $this->time        = func_get_arg(2);
-            $this->resourceId  = func_get_arg(3);
-            $this->duration    = func_get_arg(4);
+            $this->duration    = func_get_arg(3);
+            $this->resourceId  = func_get_arg(4);
             $this->userId      = func_get_arg(5);
-            $this->apiKey      = func_get_arg(6);
         }
     }
 
-    /**
-     * Return a property of the response if it exists.
-     * Possibilities include: code, raw_body, headers, body (if the response is json-decodable)
-     * @return mixed
-     */
-    public function __get($property)
-    {
-        if (property_exists($this, $property)) {
-            //UTF-8 is recommended for correct JSON serialization
-            $value = $this->$property;
-            if (is_string($value) && mb_detect_encoding($value, "UTF-8", TRUE) != "UTF-8") {
-                return utf8_encode($value);
-            }
-            else {
-                return $value;
-            }
-        }
-    }
-    
-    /**
-     * Set the properties of this object
-     * @param string $property the property name
-     * @param mixed $value the property value
-     */
-    public function __set($property, $value)
-    {
-        if (property_exists($this, $property)) {
-            //UTF-8 is recommended for correct JSON serialization
-            if (is_string($value) && mb_detect_encoding($value, "UTF-8", TRUE) != "UTF-8") {
-                $this->$property = utf8_encode($value);
-            }
-            else {
-                $this->$property = $value;
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * Encode this object to JSON
@@ -122,13 +84,13 @@ class CreateBookingBody implements JsonSerializable {
     public function jsonSerialize()
     {
         $json = array();
-        $json['service_id']  = $this->serviceId;
         $json['date']        = $this->date;
+        $json['service_id']  = $this->serviceId;
         $json['time']        = $this->time;
-        $json['resource_id'] = $this->resourceId;
         $json['duration']    = $this->duration;
+        $json['resource_id'] = $this->resourceId;
         $json['user_id']     = $this->userId;
-        $json['api_key']     = $this->apiKey;
+
         return $json;
     }
 }
