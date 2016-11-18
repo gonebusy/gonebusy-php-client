@@ -119,7 +119,7 @@ In order to setup authentication and initialization of the API client, you need 
 
 | Parameter | Description |
 |-----------|-------------|
-| authorization | Set Authorization to "Token <your API key>" |
+| authorization | Set Authorization to "Token _your API key_" |
 
 
 
