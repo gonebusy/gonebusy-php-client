@@ -2,13 +2,28 @@
 /*
  * Gonebusy
  *
- * This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 03/04/2016
  */
 
 namespace GonebusyLib;
 
+/**
+ * All configuration including auth info and base URI for the API access
+ * are configured in this class. 
+ */
 class Configuration {
-    //The base Uri for API calls
+    /**
+     * The base Uri for API calls
+     * @var string
+     */
     public static $BASEURI = 'http://beta.gonebusy.com/api/v1';
+
+    /**
+     * Set Authorization to "Token <your API key>"
+     * @var string
+     */
+    /**
+     * @todo Replace the $authorization with an appropriate value
+     */
+    public static $authorization = 'Token <your API key>';
 
 }

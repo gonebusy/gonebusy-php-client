@@ -2,103 +2,59 @@
 /*
  * Gonebusy
  *
- * This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 03/04/2016
+ * This file was automatically generated for GoneBusy Inc. by APIMATIC v2.0 ( https://apimatic.io ) on 11/18/2016
  */
 
 namespace GonebusyLib\Models;
 
 use JsonSerializable;
 
+/**
+ * @todo Write general description for this model
+ */
 class UpdatePricingModelByIdBody implements JsonSerializable {
     /**
-     * PricingModel Name
-     * @param string|null $name public property
+     * 3 Letter ISO Currency Code
+     * @var string $currency public property
      */
-    protected $name;
+    public $currency;
 
     /**
-     * Valid API Key for your GoneBusy account
-     * (edit in top nav)
-     * @param string $apiKey public property
+     * PricingModel Name
+     * @var string $name public property
      */
-    protected $apiKey;
+    public $name;
 
     /**
      * Optional Notes Field
-     * @param string|null $notes public property
+     * @var string $notes public property
      */
-    protected $notes;
+    public $notes;
 
     /**
      * Price
-     * @param double|null $price public property
+     * @var double $price public property
      */
-    protected $price;
-
-    /**
-     * 3 Letter ISO Currency Code
-     * @param string|null $currency public property
-     */
-    protected $currency;
+    public $price;
 
     /**
      * Constructor to set initial or default values of member properties
-	 * @param   string|null       $name       Initialization value for the property $this->name    
-	 * @param   string            $apiKey     Initialization value for the property $this->apiKey  
-	 * @param   string|null       $notes      Initialization value for the property $this->notes   
-	 * @param   double|null       $price      Initialization value for the property $this->price   
-	 * @param   string|null       $currency   Initialization value for the property $this->currency
+     * @param   string            $currency   Initialization value for the property $this->currency
+     * @param   string            $name       Initialization value for the property $this->name    
+     * @param   string            $notes      Initialization value for the property $this->notes   
+     * @param   double            $price      Initialization value for the property $this->price   
      */
     public function __construct()
     {
-        if(5 == func_num_args())
+        if(4 == func_num_args())
         {
-            $this->name     = func_get_arg(0);
-            $this->apiKey   = func_get_arg(1);
+            $this->currency = func_get_arg(0);
+            $this->name     = func_get_arg(1);
             $this->notes    = func_get_arg(2);
             $this->price    = func_get_arg(3);
-            $this->currency = func_get_arg(4);
         }
     }
 
-    /**
-     * Return a property of the response if it exists.
-     * Possibilities include: code, raw_body, headers, body (if the response is json-decodable)
-     * @return mixed
-     */
-    public function __get($property)
-    {
-        if (property_exists($this, $property)) {
-            //UTF-8 is recommended for correct JSON serialization
-            $value = $this->$property;
-            if (is_string($value) && mb_detect_encoding($value, "UTF-8", TRUE) != "UTF-8") {
-                return utf8_encode($value);
-            }
-            else {
-                return $value;
-            }
-        }
-    }
-    
-    /**
-     * Set the properties of this object
-     * @param string $property the property name
-     * @param mixed $value the property value
-     */
-    public function __set($property, $value)
-    {
-        if (property_exists($this, $property)) {
-            //UTF-8 is recommended for correct JSON serialization
-            if (is_string($value) && mb_detect_encoding($value, "UTF-8", TRUE) != "UTF-8") {
-                $this->$property = utf8_encode($value);
-            }
-            else {
-                $this->$property = $value;
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * Encode this object to JSON
@@ -106,11 +62,11 @@ class UpdatePricingModelByIdBody implements JsonSerializable {
     public function jsonSerialize()
     {
         $json = array();
+        $json['currency'] = $this->currency;
         $json['name']     = $this->name;
-        $json['api_key']  = $this->apiKey;
         $json['notes']    = $this->notes;
         $json['price']    = $this->price;
-        $json['currency'] = $this->currency;
+
         return $json;
     }
 }
