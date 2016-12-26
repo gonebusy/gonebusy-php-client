@@ -4,57 +4,90 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2061b8b55831e94fe2ff3719e04e3a91",
-    "content-hash": "645963ec2e2bfe4d1f4d24315e88deab",
+    "content-hash": "ea535981d3a8cae2b629d84dabfb8c4c",
     "packages": [
         {
-            "name": "apimatic/unirest-php",
-            "version": "dev-master",
+            "name": "apimatic/jsonmapper",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/apimatic/unirest-php.git",
-                "reference": "9109094b91290b19943b7f6bcfdcbd2ed0cd58eb"
+                "url": "https://github.com/apimatic/jsonmapper.git",
+                "reference": "bbf47c6c3f448ea1bbb59a84fa4030a91d746ddd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/apimatic/unirest-php/zipball/9109094b91290b19943b7f6bcfdcbd2ed0cd58eb",
-                "reference": "9109094b91290b19943b7f6bcfdcbd2ed0cd58eb",
+                "url": "https://api.github.com/repos/apimatic/jsonmapper/zipball/bbf47c6c3f448ea1bbb59a84fa4030a91d746ddd",
+                "reference": "bbf47c6c3f448ea1bbb59a84fa4030a91d746ddd",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.2.*",
+                "squizlabs/php_codesniffer": "~1.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "apimatic\\jsonmapper\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "OSL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Weiske",
+                    "email": "christian.weiske@netresearch.de",
+                    "homepage": "http://www.netresearch.de/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Mehdi Jaffery",
+                    "email": "mehdi.jaffery@apimatic.io",
+                    "homepage": "http://apimatic.io/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Map nested JSON structures onto PHP classes",
+            "time": "2016-06-20T12:22:18+00:00"
+        },
+        {
+            "name": "mashape/unirest-php",
+            "version": "v3.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Mashape/unirest-php.git",
+                "reference": "842c0f242dfaaf85f16b72e217bf7f7c19ab12cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Mashape/unirest-php/zipball/842c0f242dfaaf85f16b72e217bf7f7c19ab12cb",
+                "reference": "842c0f242dfaaf85f16b72e217bf7f7c19ab12cb",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
-                "ext-json": "*",
                 "php": ">=5.4.0"
             },
             "require-dev": {
                 "codeclimate/php-test-reporter": "0.1.*",
                 "phpunit/phpunit": "~4.4"
             },
+            "suggest": {
+                "ext-json": "Allows using JSON Bodies for sending and parsing requests"
+            },
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "Unirest": "src"
+                    "Unirest\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Mashape",
-                    "email": "opensource@mashape.com",
-                    "homepage": "https://www.mashape.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "APIMATIC",
-                    "email": "opensource@apimatic.io",
-                    "homepage": "https://apimatic.io",
-                    "role": "Developer"
-                }
-            ],
             "description": "Unirest PHP",
-            "homepage": "https://github.com/apimatic/unirest-php",
+            "homepage": "https://github.com/Mashape/unirest-php",
             "keywords": [
                 "client",
                 "curl",
@@ -62,19 +95,13 @@
                 "https",
                 "rest"
             ],
-            "support": {
-                "email": "opensource@apimatic.io",
-                "source": "https://github.com/apimatic/unirest-php/tree/master"
-            },
-            "time": "2016-03-24 04:24:59"
+            "time": "2016-08-11T17:49:21+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "apimatic/unirest-php": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

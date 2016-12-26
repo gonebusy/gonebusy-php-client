@@ -2,175 +2,142 @@
 /*
  * Gonebusy
  *
- * This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 03/04/2016
+ * This file was automatically generated for GoneBusy Inc. by APIMATIC v2.0 ( https://apimatic.io ) on 11/18/2016
  */
 
 namespace GonebusyLib\Models;
 
 use JsonSerializable;
 
+/**
+ * @todo Write general description for this model
+ */
 class CreateScheduleBody implements JsonSerializable {
     /**
      * ID of Service being scheduled.
-     * @param int $serviceId public property
+     * @required
+     * @maps service_id
+     * @var integer $serviceId public property
      */
-    protected $serviceId;
-
-    /**
-     * ID of User to create Schedule for.  You must be authorized to manage this User Id and User must own desired Service and Resource.
-     * @param int|null $userId public property
-     */
-    protected $userId;
-
-    /**
-     * ID of Resource being scheduled.  If not provided and :user_id is not present, the default Resource of the API user is assumed to be the Resource being scheduled.  If not provided and :user_id is present, the default Resource of the User is assumed to be the Resource being Scheduled.
-     * @param int|null $resourceId public property
-     */
-    protected $resourceId;
-
-    /**
-     * Start Date of first TimeWindow.  Several formats are supported: '2014-10-31', 'October 31, 2014'.
-     * @param DateTime|null $startDate public property
-     */
-    protected $startDate;
-
-    /**
-     * Optional End Date of first TimeWindow, leave blank for infinitely available.  Several formats are supported: '2014-10-31', 'October 31, 2014'.
-     * @param DateTime|null $endDate public property
-     */
-    protected $endDate;
-
-    /**
-     * Start Time of first TimeWindow.  Several formats are supported: '9am', '09:00', '9:00', '0900'
-     * @param string|null $startTime public property
-     */
-    protected $startTime;
-
-    /**
-     * End Time of first TimeWindow.  Several formats are supported: '5pm', '17:00', '1700'
-     * @param string|null $endTime public property
-     */
-    protected $endTime;
-
-    /**
-     * Optional total number of minutes in TimeWindow.  Useful when duration of window is greater than 24 hours.
-     * @param int|null $totalMinutes public property
-     */
-    protected $totalMinutes;
-
-    /**
-     * List of comma-separated days of the week this window of time falls on.  If provided, at least one must be specified.
-     * @param string|null $days public property
-     */
-    protected $days;
-
-    /**
-     * One of the possible recurrence values
-     * @param string|null $recursBy public property
-     */
-    protected $recursBy;
-
-    /**
-     * Optional frequency of recurrence as specified by :recurs_by.  E.g, :single, :every, :every_other, etc. If not provided, assumed to be :every
-     * @param string|null $frequency public property
-     */
-    protected $frequency;
-
-    /**
-     * Optional occurrence of frequency. E.g, :first, :2nd, :last, :2nd_to_last, etc.  If not provided, assumed to be :every
-     * @param string|null $occurrence public property
-     */
-    protected $occurrence;
+    public $serviceId;
 
     /**
      * Required only when :recurs_by is 'monthly' or 'yearly' to differentiate between exact date or 'day in month/year'.  See Schedule examples.
-     * @param string|null $dateRecursBy public property
+     * @maps date_recurs_by
+     * @var string $dateRecursBy public property
      */
-    protected $dateRecursBy;
+    public $dateRecursBy;
 
     /**
-     * Valid API Key for your GoneBusy account
-     * (edit in top nav)
-     * @param string $apiKey public property
+     * List of comma-separated days of the week this window of time falls on.  If provided, at least one must be specified.
+     * @var string $days public property
      */
-    protected $apiKey;
+    public $days;
+
+    /**
+     * Optional End Date of first TimeWindow, leave blank for infinitely available.  Several formats are supported: '2014-10-31', 'October 31, 2014'.
+     * @maps end_date
+     * @var string $endDate public property
+     */
+    public $endDate;
+
+    /**
+     * End Time of first TimeWindow.  Several formats are supported: '5pm', '17:00', '1700'
+     * @maps end_time
+     * @var string $endTime public property
+     */
+    public $endTime;
+
+    /**
+     * Optional frequency of recurrence as specified by :recurs_by.  E.g, :single, :every, :every_other, etc. If not provided, assumed to be :every
+     * @var string $frequency public property
+     */
+    public $frequency;
+
+    /**
+     * Optional occurrence of frequency. E.g, :first, :2nd, :last, :2nd_to_last, etc.  If not provided, assumed to be :every
+     * @var string $occurrence public property
+     */
+    public $occurrence;
+
+    /**
+     * One of the possible recurrence values
+     * @maps recurs_by
+     * @var string $recursBy public property
+     */
+    public $recursBy;
+
+    /**
+     * ID of Resource being scheduled.  If not provided and :user_id is not present, the default Resource of the API user is assumed to be the Resource being scheduled.  If not provided and :user_id is present, the default Resource of the User is assumed to be the Resource being Scheduled.
+     * @maps resource_id
+     * @var integer $resourceId public property
+     */
+    public $resourceId;
+
+    /**
+     * Start Date of first TimeWindow.  Several formats are supported: '2014-10-31', 'October 31, 2014'.
+     * @maps start_date
+     * @var string $startDate public property
+     */
+    public $startDate;
+
+    /**
+     * Start Time of first TimeWindow.  Several formats are supported: '9am', '09:00', '9:00', '0900'
+     * @maps start_time
+     * @var string $startTime public property
+     */
+    public $startTime;
+
+    /**
+     * Optional total number of minutes in TimeWindow.  Useful when duration of window is greater than 24 hours.
+     * @maps total_minutes
+     * @var integer $totalMinutes public property
+     */
+    public $totalMinutes;
+
+    /**
+     * ID of User to create Schedule for.  You must be authorized to manage this User Id and User must own desired Service and Resource.
+     * @maps user_id
+     * @var integer $userId public property
+     */
+    public $userId;
 
     /**
      * Constructor to set initial or default values of member properties
-	 * @param   int               $serviceId        Initialization value for the property $this->serviceId     
-	 * @param   int|null          $userId           Initialization value for the property $this->userId        
-	 * @param   int|null          $resourceId       Initialization value for the property $this->resourceId    
-	 * @param   DateTime|null     $startDate        Initialization value for the property $this->startDate     
-	 * @param   DateTime|null     $endDate          Initialization value for the property $this->endDate       
-	 * @param   string|null       $startTime        Initialization value for the property $this->startTime     
-	 * @param   string|null       $endTime          Initialization value for the property $this->endTime       
-	 * @param   int|null          $totalMinutes     Initialization value for the property $this->totalMinutes  
-	 * @param   string|null       $days             Initialization value for the property $this->days          
-	 * @param   string|null       $recursBy         Initialization value for the property $this->recursBy      
-	 * @param   string|null       $frequency        Initialization value for the property $this->frequency     
-	 * @param   string|null       $occurrence       Initialization value for the property $this->occurrence    
-	 * @param   string|null       $dateRecursBy     Initialization value for the property $this->dateRecursBy  
-	 * @param   string            $apiKey           Initialization value for the property $this->apiKey        
+     * @param   integer           $serviceId        Initialization value for the property $this->serviceId     
+     * @param   string            $dateRecursBy     Initialization value for the property $this->dateRecursBy  
+     * @param   string            $days             Initialization value for the property $this->days          
+     * @param   string            $endDate          Initialization value for the property $this->endDate       
+     * @param   string            $endTime          Initialization value for the property $this->endTime       
+     * @param   string            $frequency        Initialization value for the property $this->frequency     
+     * @param   string            $occurrence       Initialization value for the property $this->occurrence    
+     * @param   string            $recursBy         Initialization value for the property $this->recursBy      
+     * @param   integer           $resourceId       Initialization value for the property $this->resourceId    
+     * @param   string            $startDate        Initialization value for the property $this->startDate     
+     * @param   string            $startTime        Initialization value for the property $this->startTime     
+     * @param   integer           $totalMinutes     Initialization value for the property $this->totalMinutes  
+     * @param   integer           $userId           Initialization value for the property $this->userId        
      */
     public function __construct()
     {
-        if(14 == func_num_args())
+        if(13 == func_num_args())
         {
             $this->serviceId      = func_get_arg(0);
-            $this->userId         = func_get_arg(1);
-            $this->resourceId     = func_get_arg(2);
-            $this->startDate      = func_get_arg(3);
-            $this->endDate        = func_get_arg(4);
-            $this->startTime      = func_get_arg(5);
-            $this->endTime        = func_get_arg(6);
-            $this->totalMinutes   = func_get_arg(7);
-            $this->days           = func_get_arg(8);
-            $this->recursBy       = func_get_arg(9);
-            $this->frequency      = func_get_arg(10);
-            $this->occurrence     = func_get_arg(11);
-            $this->dateRecursBy   = func_get_arg(12);
-            $this->apiKey         = func_get_arg(13);
+            $this->dateRecursBy   = func_get_arg(1);
+            $this->days           = func_get_arg(2);
+            $this->endDate        = func_get_arg(3);
+            $this->endTime        = func_get_arg(4);
+            $this->frequency      = func_get_arg(5);
+            $this->occurrence     = func_get_arg(6);
+            $this->recursBy       = func_get_arg(7);
+            $this->resourceId     = func_get_arg(8);
+            $this->startDate      = func_get_arg(9);
+            $this->startTime      = func_get_arg(10);
+            $this->totalMinutes   = func_get_arg(11);
+            $this->userId         = func_get_arg(12);
         }
     }
 
-    /**
-     * Return a property of the response if it exists.
-     * Possibilities include: code, raw_body, headers, body (if the response is json-decodable)
-     * @return mixed
-     */
-    public function __get($property)
-    {
-        if (property_exists($this, $property)) {
-            //UTF-8 is recommended for correct JSON serialization
-            $value = $this->$property;
-            if (is_string($value) && mb_detect_encoding($value, "UTF-8", TRUE) != "UTF-8") {
-                return utf8_encode($value);
-            }
-            else {
-                return $value;
-            }
-        }
-    }
-    
-    /**
-     * Set the properties of this object
-     * @param string $property the property name
-     * @param mixed $value the property value
-     */
-    public function __set($property, $value)
-    {
-        if (property_exists($this, $property)) {
-            //UTF-8 is recommended for correct JSON serialization
-            if (is_string($value) && mb_detect_encoding($value, "UTF-8", TRUE) != "UTF-8") {
-                $this->$property = utf8_encode($value);
-            }
-            else {
-                $this->$property = $value;
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * Encode this object to JSON
@@ -179,19 +146,19 @@ class CreateScheduleBody implements JsonSerializable {
     {
         $json = array();
         $json['service_id']     = $this->serviceId;
-        $json['user_id']        = $this->userId;
-        $json['resource_id']    = $this->resourceId;
-        $json['start_date']     = $this->startDate;
-        $json['end_date']       = $this->endDate;
-        $json['start_time']     = $this->startTime;
-        $json['end_time']       = $this->endTime;
-        $json['total_minutes']  = $this->totalMinutes;
+        $json['date_recurs_by'] = $this->dateRecursBy;
         $json['days']           = $this->days;
-        $json['recurs_by']      = $this->recursBy;
+        $json['end_date']       = $this->endDate;
+        $json['end_time']       = $this->endTime;
         $json['frequency']      = $this->frequency;
         $json['occurrence']     = $this->occurrence;
-        $json['date_recurs_by'] = $this->dateRecursBy;
-        $json['api_key']        = $this->apiKey;
+        $json['recurs_by']      = $this->recursBy;
+        $json['resource_id']    = $this->resourceId;
+        $json['start_date']     = $this->startDate;
+        $json['start_time']     = $this->startTime;
+        $json['total_minutes']  = $this->totalMinutes;
+        $json['user_id']        = $this->userId;
+
         return $json;
     }
 }
