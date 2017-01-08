@@ -107,14 +107,14 @@ To run your project, right click on your PHP file inside your Test project and c
 Unit tests in this SDK can be run using PHPUnit.
 
 1. First install the dependencies using composer including the `require-dev` dependencies.
-2. Run `vendor\bin\phpunit --verbose` from commandline to execute tests. If you have
+2. Run `vendor\bin\phpunit --verbose` from command line to execute tests. If you have
    installed PHPUnit globally, run tests using `phpunit --verbose` instead.
 
-You can change the PHPUnit test configuration in the `phpunit.xml` file.
+> TODO: You can change the PHPUnit test configuration in the `phpunit.xml` file.
 
 ## Initialization
 
-### Authentication and
+### Authentication
 In order to setup authentication and initialization of the API client, you need the following information.
 
 | Parameter | Description |
@@ -129,7 +129,7 @@ API client can be initialized as following.
 // Configuration parameters and credentials
 $authorization = "Token <your API key>"; // Set Authorization to "Token <your API key>"
 
-$client = new GonebusyClient($authorization);
+$client = new GonebusyLib\GonebusyClient($authorization);
 ```
 
 ## Class Reference
