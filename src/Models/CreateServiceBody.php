@@ -21,11 +21,18 @@ class CreateServiceBody implements JsonSerializable {
     public $description;
 
     /**
-     * Duration in minutes of the Service
+     * Duration of the Service in minutes
      * @required
      * @var integer $duration public property
      */
     public $duration;
+
+    /**
+     * Max duration of the Service in minutes
+     * @required
+     * @var integer $maxDuration public property
+     */
+    public $maxDuration;
 
     /**
      * Service Name
@@ -71,6 +78,7 @@ class CreateServiceBody implements JsonSerializable {
      * Constructor to set initial or default values of member properties
      * @param   string            $description      Initialization value for the property $this->description   
      * @param   integer           $duration         Initialization value for the property $this->duration      
+     * @param   integer           $maxDuration      Initialization value for the property $this->maxDuration      
      * @param   string            $name             Initialization value for the property $this->name          
      * @param   string            $categories       Initialization value for the property $this->categories    
      * @param   integer           $priceModelId     Initialization value for the property $this->priceModelId  
@@ -80,16 +88,17 @@ class CreateServiceBody implements JsonSerializable {
      */
     public function __construct()
     {
-        if(8 == func_num_args())
+        if(9 == func_num_args())
         {
             $this->description    = func_get_arg(0);
             $this->duration       = func_get_arg(1);
-            $this->name           = func_get_arg(2);
-            $this->categories     = func_get_arg(3);
-            $this->priceModelId   = func_get_arg(4);
-            $this->resources      = func_get_arg(5);
-            $this->shortName      = func_get_arg(6);
-            $this->userId         = func_get_arg(7);
+            $this->maxDuration    = func_get_arg(2);
+            $this->name           = func_get_arg(3);
+            $this->categories     = func_get_arg(4);
+            $this->priceModelId   = func_get_arg(5);
+            $this->resources      = func_get_arg(6);
+            $this->shortName      = func_get_arg(7);
+            $this->userId         = func_get_arg(8);
         }
     }
 
@@ -102,6 +111,7 @@ class CreateServiceBody implements JsonSerializable {
         $json = array();
         $json['description']    = $this->description;
         $json['duration']       = $this->duration;
+        $json['max_duration']   = $this->maxDuration;
         $json['name']           = $this->name;
         $json['categories']     = $this->categories;
         $json['price_model_id'] = $this->priceModelId;

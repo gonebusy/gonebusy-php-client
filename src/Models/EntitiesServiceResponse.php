@@ -26,10 +26,16 @@ class EntitiesServiceResponse implements JsonSerializable {
     public $description;
 
     /**
-     * length in minutes of Service
+     * length of Service in minutes
      * @var integer $duration public property
      */
     public $duration;
+
+    /**
+     * max length of Service in minutes
+     * @var integer $maxDuration public property
+     */
+    public $maxDuration;
 
     /**
      * id of Service
@@ -82,6 +88,7 @@ class EntitiesServiceResponse implements JsonSerializable {
      * @param   array             $categories       Initialization value for the property $this->categories    
      * @param   string            $description      Initialization value for the property $this->description   
      * @param   integer           $duration         Initialization value for the property $this->duration      
+     * @param   integer           $maxDuration      Initialization value for the property $this->maxDuration      
      * @param   integer           $id               Initialization value for the property $this->id            
      * @param   bool              $isActive         Initialization value for the property $this->isActive      
      * @param   string            $name             Initialization value for the property $this->name          
@@ -92,18 +99,19 @@ class EntitiesServiceResponse implements JsonSerializable {
      */
     public function __construct()
     {
-        if(10 == func_num_args())
+        if(11 == func_num_args())
         {
             $this->categories     = func_get_arg(0);
             $this->description    = func_get_arg(1);
             $this->duration       = func_get_arg(2);
             $this->id             = func_get_arg(3);
             $this->isActive       = func_get_arg(4);
-            $this->name           = func_get_arg(5);
-            $this->ownerId        = func_get_arg(6);
-            $this->priceModelId   = func_get_arg(7);
-            $this->resources      = func_get_arg(8);
-            $this->shortName      = func_get_arg(9);
+            $this->maxDuration    = func_get_arg(5);
+            $this->name           = func_get_arg(6);
+            $this->ownerId        = func_get_arg(7);
+            $this->priceModelId   = func_get_arg(8);
+            $this->resources      = func_get_arg(9);
+            $this->shortName      = func_get_arg(10);
         }
     }
 
@@ -117,6 +125,7 @@ class EntitiesServiceResponse implements JsonSerializable {
         $json['categories']     = $this->categories;
         $json['description']    = $this->description;
         $json['duration']       = $this->duration;
+        $json['max_duration']   = $this->maxDuration;
         $json['id']             = $this->id;
         $json['is_active']      = $this->isActive;
         $json['name']           = $this->name;
