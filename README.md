@@ -492,43 +492,6 @@ $result = $users->getUserById($collect);
 
 
 
-#### <a name="get_users_pros"></a>![Method: ](http://apidocs.io/img/method.png ".UsersController.getUsersPros") getUsersPros
-
-> Return list of active Pro Users.
-
-
-```php
-function getUsersPros($authorization)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-
-$result = $users->getUsersPros($authorization);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 500 | Unexpected error |
-
-
-
 #### <a name="create_user"></a>![Method: ](http://apidocs.io/img/method.png ".UsersController.createUser") createUser
 
 > Create a User
