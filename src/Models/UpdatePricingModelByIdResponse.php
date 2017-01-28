@@ -15,20 +15,20 @@ use JsonSerializable;
 class UpdatePricingModelByIdResponse implements JsonSerializable {
     /**
      * @todo Write general description for this property
-     * @maps pricing_models
-     * @var EntitiesPricingModelResponse $pricingModels public property
+     * @maps pricing_model
+     * @var EntitiesPricingModelResponse $pricingModel public property
      */
-    public $pricingModels;
+    public $pricingModel;
 
     /**
      * Constructor to set initial or default values of member properties
-     * @param   EntitiesPricingModelResponse   $pricingModels    Initialization value for the property $this->pricingModels 
+     * @param   EntitiesPricingModelResponse   $pricingModel    Initialization value for the property $this->pricingModel 
      */
     public function __construct()
     {
         if(1 == func_num_args())
         {
-            $this->pricingModels  = func_get_arg(0);
+            $this->pricingModel  = func_get_arg(0);
         }
     }
 
@@ -39,7 +39,7 @@ class UpdatePricingModelByIdResponse implements JsonSerializable {
     public function jsonSerialize()
     {
         $json = array();
-        $json['pricing_models'] = $this->pricingModels;
+        $json['pricing_model'] = $this->pricingModel;
 
         return $json;
     }

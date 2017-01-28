@@ -26,10 +26,16 @@ class UpdateServiceByIdBody implements JsonSerializable {
     public $description;
 
     /**
-     * Duration in minutes of the Service
+     * Duration of the Service in minutes
      * @var integer $duration public property
      */
     public $duration;
+
+    /**
+     * Max duration of the Service in minutes
+     * @var integer $maxDuration public property
+     */
+    public $maxDuration;
 
     /**
      * Service Name
@@ -62,6 +68,7 @@ class UpdateServiceByIdBody implements JsonSerializable {
      * @param   string            $categories       Initialization value for the property $this->categories    
      * @param   string            $description      Initialization value for the property $this->description   
      * @param   integer           $duration         Initialization value for the property $this->duration      
+     * @param   integer           $maxDuration      Initialization value for the property $this->maxDuration      
      * @param   string            $name             Initialization value for the property $this->name          
      * @param   integer           $priceModelId     Initialization value for the property $this->priceModelId  
      * @param   string            $resources        Initialization value for the property $this->resources     
@@ -69,15 +76,16 @@ class UpdateServiceByIdBody implements JsonSerializable {
      */
     public function __construct()
     {
-        if(7 == func_num_args())
+        if(8 == func_num_args())
         {
             $this->categories     = func_get_arg(0);
             $this->description    = func_get_arg(1);
             $this->duration       = func_get_arg(2);
-            $this->name           = func_get_arg(3);
-            $this->priceModelId   = func_get_arg(4);
-            $this->resources      = func_get_arg(5);
-            $this->shortName      = func_get_arg(6);
+            $this->maxDuration    = func_get_arg(3);
+            $this->name           = func_get_arg(4);
+            $this->priceModelId   = func_get_arg(5);
+            $this->resources      = func_get_arg(6);
+            $this->shortName      = func_get_arg(7);
         }
     }
 
@@ -91,6 +99,7 @@ class UpdateServiceByIdBody implements JsonSerializable {
         $json['categories']     = $this->categories;
         $json['description']    = $this->description;
         $json['duration']       = $this->duration;
+        $json['max_duration']   = $this->maxDuration;
         $json['name']           = $this->name;
         $json['price_model_id'] = $this->priceModelId;
         $json['resources']      = $this->resources;
