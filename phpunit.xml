@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit colors="true">
-    <testapimatic>
-        <testapimatic name="Application Test Suite">
-            <directory>./test/</directory>
-        </testapimatic>
-    </testapimatic>
+<phpunit bootstrap="bootstrap.php" colors="true">
+    <phpsdk>
+        <phpsdk name="PHP SDK Tests">
+            <directory>./tests/</directory>
+        </phpsdk>
+    </phpsdk>
+    <testsuites>
+  	<testsuite name="PHPSDK">
+    		<file>src/Controllers/BaseController.php</file>
+    		<directory>tests/</directory>
+  	</testsuite>
+    </testsuites>
 </phpunit>
