@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "apimatic/jsonmapper",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/apimatic/jsonmapper.git",
-                "reference": "bbf47c6c3f448ea1bbb59a84fa4030a91d746ddd"
+                "reference": "6925ede91d6a85a886d8e00819fe53e439d6e4c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/apimatic/jsonmapper/zipball/bbf47c6c3f448ea1bbb59a84fa4030a91d746ddd",
-                "reference": "bbf47c6c3f448ea1bbb59a84fa4030a91d746ddd",
+                "url": "https://api.github.com/repos/apimatic/jsonmapper/zipball/6925ede91d6a85a886d8e00819fe53e439d6e4c2",
+                "reference": "6925ede91d6a85a886d8e00819fe53e439d6e4c2",
                 "shasum": ""
             },
             "require-dev": {
@@ -49,7 +49,7 @@
                 }
             ],
             "description": "Map nested JSON structures onto PHP classes",
-            "time": "2016-06-20T12:22:18+00:00"
+            "time": "2017-01-24T12:48:47+00:00"
         },
         {
             "name": "mashape/unirest-php",
@@ -466,16 +466,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.8.15",
+            "version": "v2.8.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "befb26a3713c97af90d25dd12e75621ef14d91ff"
+                "reference": "dbe61fed9cd4a44c5b1d14e5e7b1a8640cfb2bf2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/befb26a3713c97af90d25dd12e75621ef14d91ff",
-                "reference": "befb26a3713c97af90d25dd12e75621ef14d91ff",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/dbe61fed9cd4a44c5b1d14e5e7b1a8640cfb2bf2",
+                "reference": "dbe61fed9cd4a44c5b1d14e5e7b1a8640cfb2bf2",
                 "shasum": ""
             },
             "require": {
@@ -511,7 +511,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2016-11-14T16:15:57+00:00"
+            "time": "2017-01-03T13:49:52+00:00"
         }
     ],
     "aliases": [],
