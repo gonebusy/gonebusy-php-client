@@ -1,4 +1,4 @@
-#Getting started
+# PHP SDK for the GoneBusy REST API
 
 ## Sandbox
 
@@ -15,8 +15,7 @@ To resolve these dependencies, we use the Composer package manager which require
 Visit [https://getcomposer.org/download/](https://getcomposer.org/download/) to download the installer file for Composer and run it in your system.
 Open command prompt and type ```composer --version```. This should display the current version of the Composer installed if the installation was successful.
 
-* Using command line, navigate to the directory containing the generated files (including ```composer.json```) for the SDK.
-* Run the command ```composer install```. This should install all the required dependencies and create the ```vendor``` directory in your project directory.
+* From this folder, run the command ```composer install```. This should install all of the required dependencies and create the ```vendor``` directory in your project directory.
 
 ![Building SDK - Step 1](http://apidocs.io/illustration/php?step=installDependencies&workspaceFolder=Gonebusy-PHP)
 
@@ -40,88 +39,48 @@ The following section explains how to use the Gonebusy library in a new project.
 
 ### 1. Open Project in an IDE
 
-Open an IDE for PHP like PhpStorm. The basic workflow presented here is also applicable if you prefer using a different editor or IDE.
+Open an IDE for PHP.
 
-![Open project in PHPStorm - Step 1](http://apidocs.io/illustration/php?step=openIDE&workspaceFolder=Gonebusy-PHP)
-
-Click on ```Open``` in PhpStorm to browse to your generated SDK directory and then click ```OK```.
-
-![Open project in PHPStorm - Step 2](http://apidocs.io/illustration/php?step=openProject0&workspaceFolder=Gonebusy-PHP)
+Open this folder as a PHP project.
 
 ### 2. Add a new Test Project
 
-Create a new directory by right clicking on the solution name as shown below:
+Create a new directory. Name the directory as "test".
 
-![Add a new project in PHPStorm - Step 1](http://apidocs.io/illustration/php?step=createDirectory&workspaceFolder=Gonebusy-PHP)
+Add a PHP file to this project. Name it "testSDK.php".
 
-Name the directory as "test"
+Depending on your project setup, you might need to include composer's autoloader in your PHP code to enable auto loading of classes"
 
-![Add a new project in PHPStorm - Step 2](http://apidocs.io/illustration/php?step=nameDirectory&workspaceFolder=Gonebusy-PHP)
-
-Add a PHP file to this project
-
-![Add a new project in PHPStorm - Step 3](http://apidocs.io/illustration/php?step=createFile&workspaceFolder=Gonebusy-PHP)
-
-Name it "testSDK"
-
-![Add a new project in PHPStorm - Step 4](http://apidocs.io/illustration/php?step=nameFile&workspaceFolder=Gonebusy-PHP)
-
-Depending on your project setup, you might need to include composer's autoloader in your PHP code to enable auto loading of classes.
-
-```PHP
+```php
 require_once "../vendor/autoload.php";
 ```
 
-It is important that the path inside require_once correctly points to the file ```autoload.php``` inside the vendor directory created during dependency installations.
-
-![Add a new project in PHPStorm - Step 4](http://apidocs.io/illustration/php?step=projectFiles&workspaceFolder=Gonebusy-PHP)
+> Note: the `../` path assumes you'll run testSDK.php directly from test/ .
 
 After this you can add code to initialize the client library and acquire the instance of a Controller class. Sample code to initialize the client library and using controller methods is given in the subsequent sections.
 
 ### 3. Run the Test Project
 
-To run your project you must set the Interpreter for your project. Interpreter is the PHP engine installed on your computer.
-
-Open ```Settings``` from ```File``` menu.
-
-![Run Test Project - Step 1](http://apidocs.io/illustration/php?step=openSettings&workspaceFolder=Gonebusy-PHP)
-
-Select ```PHP``` from within ```Languages & Frameworks```
-
-![Run Test Project - Step 2](http://apidocs.io/illustration/php?step=setInterpreter0&workspaceFolder=Gonebusy-PHP)
-
-Browse for Interpreters near the ```Interpreter``` option and choose your interpreter.
-
-![Run Test Project - Step 3](http://apidocs.io/illustration/php?step=setInterpreter1&workspaceFolder=Gonebusy-PHP)
-
-Once the interpreter is selected, click ```OK```
-
-![Run Test Project - Step 4](http://apidocs.io/illustration/php?step=setInterpreter2&workspaceFolder=Gonebusy-PHP)
-
-To run your project, right click on your PHP file inside your Test project and click on ```Run```
-
-![Run Test Project - Step 5](http://apidocs.io/illustration/php?step=runProject&workspaceFolder=Gonebusy-PHP)
+```sh
+cd test
+php testSDK.php
+```
 
 ## How to Test
 
 Unit tests in this SDK can be run using PHPUnit.
 
 1. First install the dependencies using composer including the `require-dev` dependencies.
-2. Run `vendor\bin\phpunit --verbose` from commandline to execute tests. If you have
+1. Run `vendor/bin/phpunit --verbose` from command line to execute tests. If you have
    installed PHPUnit globally, run tests using `phpunit --verbose` instead.
 
-You can change the PHPUnit test configuration in the `phpunit.xml` file.
+## Initialization/Authentication
 
-## Initialization
-
-### Authentication and
 In order to setup authentication and initialization of the API client, you need the following information.
 
 | Parameter | Description |
 |-----------|-------------|
 | authorization | Set Authorization to "Token _your API key_" |
-
-
 
 API client can be initialized as following.
 
@@ -129,8 +88,10 @@ API client can be initialized as following.
 // Configuration parameters and credentials
 $authorization = "Token <your API key>"; // Set Authorization to "Token <your API key>"
 
-$client = new GonebusyClient($authorization);
+$client = new GonebusyLib\GonebusyClient($authorization);
 ```
+
+
 
 ## Class Reference
 

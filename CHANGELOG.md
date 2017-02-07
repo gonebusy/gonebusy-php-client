@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.0.6] - 2017-02-12 ##
+### Added
+- Unit tests for all API endpoints
+
 ## [0.0.5] - 2017-01-19 ##
 ### Removed
 - Unnecessary /user/pros endpoint
@@ -16,4 +20,3 @@ All notable changes to this project will be documented in this file.
 
 ## [0.0.2] - 2016-10-14 ##
 - Initial public version
-
