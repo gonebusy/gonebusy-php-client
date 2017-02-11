@@ -15,7 +15,7 @@ To resolve these dependencies, we use the Composer package manager which require
 Visit [https://getcomposer.org/download/](https://getcomposer.org/download/) to download the installer file for Composer and run it in your system.
 Open command prompt and type ```composer --version```. This should display the current version of the Composer installed if the installation was successful.
 
-* From this folder, un the command ```composer install```. This should install all the required dependencies and create the ```vendor``` directory in your project directory.
+* From this folder, run the command `composer install. This should install all of the required dependencies and create the `vendor directory in your project directory.
 
 ![Building SDK - Step 1](http://apidocs.io/illustration/php?step=installDependencies&workspaceFolder=Gonebusy-PHP)
 
@@ -41,7 +41,7 @@ The following section explains how to use the Gonebusy library in a new project.
 
 Open an IDE for PHP.
 
-Open this fodler as a PHP project.
+Open this folder as a PHP project.
 
 ### 2. Add a new Test Project
 
@@ -71,7 +71,7 @@ php testSDK.php
 Unit tests in this SDK can be run using PHPUnit.
 
 1. First install the dependencies using composer including the `require-dev` dependencies.
-1. Run `vendor\bin\phpunit --verbose` from command line to execute tests. If you have
+1. Run `vendor/bin/phpunit --verbose` from command line to execute tests. If you have
    installed PHPUnit globally, run tests using `phpunit --verbose` instead.
 
 ## Initialization/Authentication
