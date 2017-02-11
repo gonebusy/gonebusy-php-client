@@ -64,8 +64,7 @@ After this you can add code to initialize the client library and acquire the ins
 ### 3. Run the Test Project
 
 ```sh
-cd test
-php testSDK.php
+php test/testSDK.php
 ```
 
 ## How to Test
