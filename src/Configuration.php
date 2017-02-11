@@ -8,14 +8,14 @@ namespace GonebusyLib;
 
 /**
  * All configuration including auth info and base URI for the API access
- * are configured in this class. 
+ * are configured in this class.
  */
 class Configuration {
     /**
      * The base Uri for API calls
      * @var string
      */
-    public static $BASEURI = 'http://beta.gonebusy.com/api/v1';
+    public static $BASEURI = 'http://sandbox.gonebusy.com/api/v1'; // XXX temporary
 
     /**
      * Set Authorization to "Token <your API key>"

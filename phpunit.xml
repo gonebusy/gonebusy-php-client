@@ -1,8 +1,8 @@
 
-<phpunit bootstrap="tests/bootstrap.php">
+<phpunit bootstrap="test/bootstrap.php">
   <testsuites>
     <testsuite name="Controllers">
-       <directory>tests</directory>
+       <directory>test</directory>
     </testsuite>
   </testsuites>
 </phpunit>
