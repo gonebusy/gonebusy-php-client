@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/gonebusy/gonebusy-php-client.svg?branch=master)](https://travis-ci.org/gonebusy/gonebusy-php-client)
-
 # PHP SDK for the GoneBusy REST API
 
 ## Sandbox

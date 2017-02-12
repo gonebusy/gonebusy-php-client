@@ -29,10 +29,10 @@ class UsersTest extends TestCase
     public function setUp() {
         // TODO Use mock objects instead
         // (which will use and inercept SDK HTTP requests, returning fixture files)
-        $this->authorization = "Token ac98ed08b5b0a9e7c43a233aeba841ce"; //
-        $this->client = new GonebusyClient($authorization);
-
-        $this->users = $this->client->getUsers();
+        //$this->authorization = "Token ac98ed08b5b0a9e7c43a233aeba841ce"; //
+        $this->authorization    = "Token 2ae673263145c48185f945880f185b2a";
+        $this->client                    = new GonebusyClient( $this->authorization );
+        $this->users                    = $this->client->getUsers();
     }
 
     // public function tearDown() {
@@ -48,22 +48,18 @@ class UsersTest extends TestCase
         $collect['page'] = 1;
         $collect['perPage'] = 10;
         $collect['authorization'] = $this->authorization;
-        $result = $this->users->getUsers($collect);
+        $request = $this->users->getUsers($collect);
 
-        $this->assertEquals(200, $result['code'] );
-
-        //$decodedResponse = $request->getBody()->getContents();
-        $data = json_decode( json_encode( $result ), true );
-
-        //
+        // Just checks the response array has 'users' key
+        $data = json_decode(json_encode($request), true);
         $this->assertArrayHasKey('users', $data);
 
         // TODO mocking... fixtures!
-        // $keys = array('id', 'name' ,'short_name' ,'long_name' ,'description' ,'parent_category_id' ,'is_active' ,'subcategories');
-        $keys = array('account_manager_id','address','business_name','disabled','email','external_url','first_name','id','last_name','permalink','phone','resource_id','role','timezone');
-        foreach ($data['users'] as $ck) {
-            foreach ($keys as $k) {
-                    $this->assertArrayHasKey($k, $ck);
+        // Checks all the user fields are there
+        $keys = array('account_manager_id', 'address', 'business_name', 'disabled', 'email', 'external_url', 'first_name', 'id', 'last_name', 'permalink', 'phone', 'resource_id', 'role', 'timezone');
+        foreach($data[ 'users' ] as $ck) {
+            foreach($keys as $k) {
+                $this->assertArrayHasKey($k, $ck);
             }
         }
 
@@ -71,30 +67,50 @@ class UsersTest extends TestCase
 
     public function testUpdateUserById() {
 
-        // $collect['authorization'] = $this->authorization;
-        // $collect['id'] = '1';
-        // $updateUserByIdBody = new GonebusyLib\Models\UpdateUserByIdBody();
-        // $collect['updateUserByIdBody'] = $updateUserByIdBody;
-        // // Gets a 400
-        // $result = $this->users->updateUserById($collect);
+        $collect['authorization'] = $this->authorization;
+        $collect['id'] = '5062958417'; // ID existente
+        $updateUserByIdBody = new GonebusyLib\Models\UpdateUserByIdBody();
+        $collect['updateUserByIdBody'] = $updateUserByIdBody;
 
+        // Should get a 400
+        $response = json_decode(json_encode($this->users->updateUserById($collect)), true);
+
+        $this->assertArrayHasKey('user', $response);
+
+        $this->assertEquals($collect['id'], $response['user']['account_manager_id']);
+
+        // $keys = array( 'account_manager_id', 'address', 'business_name', 'disabled', 'email', 'external_url', 'first_name', 'id', 'last_name', 'permalink', 'phone', 'resource_id', 'role', 'timezone' );
+        // foreach ( $keys as $k )
+        // {
+        //   $this->assertArrayHasKey( $k, $response[ 'user' ] );
+        // }
     }
 
     public function testGetUserById() {
 
-        // $collect['authorization'] = $this->authorization;
-        // $collect['id'] = '5062958417';
-        // $result = $this->users->getUserById($collect);
-        // var_dump($result);
+        $collect['authorization' ] = $this->authorization;
+        $collect['id' ] = '5062958417'; // ID existente
+        $response = json_decode(json_encode($this->users->getUserById($collect)), true);
+
+        $this->assertArrayHasKey('user', $response);
+
+        $this->assertEquals($collect[ 'id' ], $response['user']['account_manager_id']);
+
+        // $keys = array( 'account_manager_id', 'address', 'business_name', 'disabled', 'email', 'external_url', 'first_name', 'id', 'last_name', 'permalink', 'phone', 'resource_id', 'role', 'timezone' );
+        // foreach ( $keys as $k )
+        // {
+        //   $this->assertArrayHasKey( $k, $response[ 'user' ] );
+        // }
     }
 
     public function testCreateUser() {
 
-        // $collect['authorization'] = $this->authorization;
-        // $createUserBody = new GonebusyLib\Models\CreateUserBody();
-        // $collect['createUserBody'] = $createUserBody;
-        // $result = $this->users->createUser($collect);
-        // var_dump($result);
+        $this->expectException(GonebusyLib\Exceptions\EntitiesErrorException::class);
+
+        $collect['authorization'] = $this->authorization;
+        $createUserBody = new GonebusyLib\Models\CreateUserBody();
+        $collect['createUserBody'] = $createUserBody;
+        $response = json_decode(json_encode($this->users->createUser($collect)), true);
     }
 
 }

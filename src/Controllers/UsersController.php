@@ -28,7 +28,7 @@ class UsersController extends BaseController {
      * @var UsersController The reference to *Singleton* instance of this class
      */
     private static $instance;
-    
+
     /**
      * Returns the *Singleton* instance of this class.
      * @return UsersController The *Singleton* instance.
@@ -38,7 +38,7 @@ class UsersController extends BaseController {
         if (null === static::$instance) {
             static::$instance = new static();
         }
-        
+
         return static::$instance;
     }
 
@@ -46,17 +46,17 @@ class UsersController extends BaseController {
      * Update a User by id, with params.
      * @param  array  $options    Array with all options for search
      * @param  string                 $options['authorization']              Required parameter: A valid API key, in the format 'Token API_KEY'
-     * @param  string                 $options['id']                         Required parameter: Example: 
+     * @param  string                 $options['id']                         Required parameter: Example:
      * @param  Models\UpdateUserByIdBody $options['updateUserByIdBody']         Required parameter: the content of the request
      * @return mixed response from the API call
      * @throws APIException Thrown if API call fails
      */
     public function updateUserById (
-                $options) 
+                $options)
     {
         //the base uri for api requests
         $_queryBuilder = Configuration::$BASEURI;
-        
+
         //prepare query string for API call
         $_queryBuilder = $_queryBuilder.'/users/{id}';
 
@@ -83,7 +83,7 @@ class UsersController extends BaseController {
         //call on-before Http callback
         $_httpRequest = new HttpRequest(HttpMethod::PUT, $_headers, $_queryUrl);
         if($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);            
+            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
         //and invoke the API call request to fetch the response
@@ -93,8 +93,8 @@ class UsersController extends BaseController {
         if($this->getHttpCallBack() != null) {
             $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
             $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
-            
-            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);            
+
+            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
         }
 
         //Error handling using HTTP status codes
@@ -130,21 +130,21 @@ class UsersController extends BaseController {
 
         return $mapper->map($response->body, new Models\UpdateUserByIdResponse());
     }
-        
+
     /**
      * Return a User by id.
      * @param  array  $options    Array with all options for search
      * @param  string     $options['authorization']     Required parameter: A valid API key, in the format 'Token API_KEY'
-     * @param  string     $options['id']                Required parameter: Example: 
+     * @param  string     $options['id']                Required parameter: Example:
      * @return mixed response from the API call
      * @throws APIException Thrown if API call fails
      */
     public function getUserById (
-                $options) 
+                $options)
     {
         //the base uri for api requests
         $_queryBuilder = Configuration::$BASEURI;
-        
+
         //prepare query string for API call
         $_queryBuilder = $_queryBuilder.'/users/{id}';
 
@@ -170,7 +170,7 @@ class UsersController extends BaseController {
         //call on-before Http callback
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
         if($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);            
+            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
         //and invoke the API call request to fetch the response
@@ -180,8 +180,8 @@ class UsersController extends BaseController {
         if($this->getHttpCallBack() != null) {
             $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
             $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
-            
-            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);            
+
+            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
         }
 
         //Error handling using HTTP status codes
@@ -213,7 +213,7 @@ class UsersController extends BaseController {
 
         return $mapper->map($response->body, new Models\GetUserByIdResponse());
     }
-        
+
     /**
      * Create a User
      * @param  array  $options    Array with all options for search
@@ -222,12 +222,11 @@ class UsersController extends BaseController {
      * @return mixed response from the API call
      * @throws APIException Thrown if API call fails
      */
-    public function createUser (
-                $options) 
+    public function createUser ($options)
     {
         //the base uri for api requests
         $_queryBuilder = Configuration::$BASEURI;
-        
+
         //prepare query string for API call
         $_queryBuilder = $_queryBuilder.'/users/new';
 
@@ -249,18 +248,18 @@ class UsersController extends BaseController {
         //call on-before Http callback
         $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl);
         if($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);            
+            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
         //and invoke the API call request to fetch the response
         $response = Request::post($_queryUrl, $_headers, Request\Body::Json($this->val($options, 'create_user_body')));
 
-        //call on-after Http callback
-        if($this->getHttpCallBack() != null) {
+        //call on-after Http callback // TODO figure out why these need to be outside the if in php5
             $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
             $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
-            
-            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);            
+        if($this->getHttpCallBack() != null) {
+
+            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
         }
 
         //Error handling using HTTP status codes
@@ -292,7 +291,7 @@ class UsersController extends BaseController {
 
         return $mapper->map($response->body, new Models\CreateUserResponse());
     }
-        
+
     /**
      * Return all Users that your account has access to.  Includes your own User as well as any Users for which you are the Account Manager.
      * @param  array  $options    Array with all options for search
@@ -303,11 +302,11 @@ class UsersController extends BaseController {
      * @throws APIException Thrown if API call fails
      */
     public function getUsers (
-                $options) 
+                $options)
     {
         //the base uri for api requests
         $_queryBuilder = Configuration::$BASEURI;
-        
+
         //prepare query string for API call
         $_queryBuilder = $_queryBuilder.'/users';
 
@@ -334,7 +333,7 @@ class UsersController extends BaseController {
         //call on-before Http callback
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
         if($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);            
+            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
         //and invoke the API call request to fetch the response
@@ -344,8 +343,8 @@ class UsersController extends BaseController {
         if($this->getHttpCallBack() != null) {
             $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
             $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
-            
-            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);            
+
+            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
         }
 
         //Error handling using HTTP status codes
@@ -373,7 +372,7 @@ class UsersController extends BaseController {
 
         return $mapper->map($response->body, new Models\GetUsersResponse());
     }
-        
+
 
 
     /**
