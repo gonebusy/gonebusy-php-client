@@ -15,7 +15,7 @@ class Configuration {
      * The base Uri for API calls
      * @var string
      */
-    public static $BASEURI = 'http://beta.gonebusy.com/api/v1';
+    public static $BASEURI = 'https://beta.gonebusy.com/api/v1';
 
     /**
      * Set Authorization to "Token <your API key>"
