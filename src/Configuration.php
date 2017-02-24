@@ -15,7 +15,7 @@ class Configuration {
      * The base Uri for API calls
      * @var string
      */
-    public static $BASEURI = 'http://sandbox.gonebusy.com/api/v1'; // XXX temporary
+    public static $BASEURI = 'https://sandbox.gonebusy.com/api/v1'; // XXX temporary
 
     /**
      * Set Authorization to "Token <your API key>"
