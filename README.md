@@ -1,10 +1,12 @@
+[![Build Status](https://travis-ci.org/gonebusy/gonebusy-php-client.svg?branch=master)](https://travis-ci.org/gonebusy/gonebusy-php-client)
+
 # PHP SDK for the GoneBusy REST API
 
 ## Sandbox
 
 We have a Sandbox environment to play with!
 
-Just use [sandbox.gonebusy.com](http://sandbox.gonebusy.com) instead of where you see beta.gonebusy.com referenced, including where to create an account to retrieve your API Key.
+Just use [sandbox.gonebusy.com](https://sandbox.gonebusy.com) instead of where you see beta.gonebusy.com referenced, including where to create an account to retrieve your API Key.
 
 The Sandbox environment is completely separate from the Live site - that includes meaning your Sandbox API Key will not work in the Live environment.
 
@@ -90,22 +92,20 @@ $authorization = "Token <your API key>"; // Set Authorization to "Token <your AP
 $client = new GonebusyLib\GonebusyClient($authorization);
 ```
 
-
-
 ## Class Reference
 
 ### <a name="list_of_controllers"></a>List of Controllers
 
 * [BookingsController](#bookings_controller)
-* [UsersController](#users_controller)
-* [ServicesController](#services_controller)
-* [SearchController](#search_controller)
-* [SchedulesController](#schedules_controller)
-* [ResourcesController](#resources_controller)
-* [PricingModelsController](#pricing_models_controller)
 * [CategoriesController](#categories_controller)
+* [PricingModelsController](#pricing_models_controller)
+* [ResourcesController](#resources_controller)
+* [SchedulesController](#schedules_controller)
+* [SearchController](#search_controller)
+* [ServicesController](#services_controller)
+* [UsersController](#users_controller)
 
-### <a name="bookings_controller"></a>![Class: ](http://apidocs.io/img/class.png ".BookingsController") BookingsController
+### <a name="bookings_controller"></a>![Class: ](https://apidocs.io/img/class.png ".BookingsController") BookingsController
 
 #### Get singleton instance
 
@@ -115,57 +115,18 @@ The singleton instance of the ``` BookingsController ``` class can be accessed f
 $bookings = $client->getBookings();
 ```
 
-#### <a name="create_booking"></a>![Method: ](http://apidocs.io/img/method.png ".BookingsController.createBooking") createBooking
-
-> Create a Booking with params
-
-
-```php
-function createBooking($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| createBookingBody |  ``` Required ```  | the content of the request |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$createBookingBody = new CreateBookingBody();
-$collect['createBookingBody'] = $createBookingBody;
-
-
-$result = $bookings->createBooking($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 422 | Unprocessable Entity |
-| 500 | Unexpected error |
-
-
-
-#### <a name="get_bookings"></a>![Method: ](http://apidocs.io/img/method.png ".BookingsController.getBookings") getBookings
+#### <a name="get_bookings"></a>![Method: ](https://apidocs.io/img/method.png ".BookingsController.getBookings") getBookings
 
 > Return list of Bookings.
 
 
 ```php
-function getBookings($options)
+function getBookings(
+        $authorization,
+        $page = 1,
+        $perPage = 10,
+        $states = null,
+        $userId = null)
 ```
 
 #### Parameters
@@ -184,22 +145,12 @@ function getBookings($options)
 
 ```php
 $authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
 $page = 1;
-$collect['page'] = $page;
-
 $perPage = 10;
-$collect['perPage'] = $perPage;
-
 $states = 'states';
-$collect['states'] = $states;
+$userId = 131;
 
-$userId = 172;
-$collect['userId'] = $userId;
-
-
-$result = $bookings->getBookings($collect);
+$result = $bookings->getBookings($authorization, $page, $perPage, $states, $userId);
 
 ```
 
@@ -210,17 +161,19 @@ $result = $bookings->getBookings($collect);
 | 401 | Unauthorized/Missing Token |
 | 403 | Forbidden |
 | 404 | Not Found |
-| 500 | Unexpected error |
+| 0 | Unexpected error |
 
 
 
-#### <a name="cancel_booking_by_id"></a>![Method: ](http://apidocs.io/img/method.png ".BookingsController.cancelBookingById") cancelBookingById
+#### <a name="create_booking"></a>![Method: ](https://apidocs.io/img/method.png ".BookingsController.createBooking") createBooking
 
-> Cancel a Booking by id
+> Create a Booking with params
 
 
 ```php
-function cancelBookingById($options)
+function createBooking(
+        $authorization,
+        $createBookingBody = null)
 ```
 
 #### Parameters
@@ -228,7 +181,7 @@ function cancelBookingById($options)
 | Parameter | Tags | Description |
 |-----------|------|-------------|
 | authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| id |  ``` Required ```  | TODO: Add a parameter description |
+| createBookingBody |  ``` Optional ```  | the content of the request |
 
 
 
@@ -236,13 +189,9 @@ function cancelBookingById($options)
 
 ```php
 $authorization = 'Authorization';
-$collect['authorization'] = $authorization;
+$createBookingBody = new CreateBookingBody();
 
-$id = 'id';
-$collect['id'] = $id;
-
-
-$result = $bookings->cancelBookingById($collect);
+$result = $bookings->createBooking($authorization, $createBookingBody);
 
 ```
 
@@ -253,63 +202,20 @@ $result = $bookings->cancelBookingById($collect);
 | 400 | Bad Request |
 | 401 | Unauthorized/Missing Token |
 | 403 | Forbidden |
-| 404 | Not Found |
-| 500 | Unexpected error |
-
-
-
-#### <a name="update_booking_by_id"></a>![Method: ](http://apidocs.io/img/method.png ".BookingsController.updateBookingById") updateBookingById
-
-> Update a Booking by id
-
-
-```php
-function updateBookingById($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| id |  ``` Required ```  | TODO: Add a parameter description |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$id = 'id';
-$collect['id'] = $id;
-
-
-$result = $bookings->updateBookingById($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 404 | Not Found |
 | 422 | Unprocessable Entity |
-| 500 | Unexpected error |
+| 0 | Unexpected error |
 
 
 
-#### <a name="get_booking_by_id"></a>![Method: ](http://apidocs.io/img/method.png ".BookingsController.getBookingById") getBookingById
+#### <a name="get_booking_by_id"></a>![Method: ](https://apidocs.io/img/method.png ".BookingsController.getBookingById") getBookingById
 
 > Return a Booking by id.
 
 
 ```php
-function getBookingById($options)
+function getBookingById(
+        $authorization,
+        $id)
 ```
 
 #### Parameters
@@ -325,13 +231,9 @@ function getBookingById($options)
 
 ```php
 $authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
 $id = 'id';
-$collect['id'] = $id;
 
-
-$result = $bookings->getBookingById($collect);
+$result = $bookings->getBookingById($authorization, $id);
 
 ```
 
@@ -343,29 +245,205 @@ $result = $bookings->getBookingById($collect);
 | 401 | Unauthorized/Missing Token |
 | 403 | Forbidden |
 | 404 | Not Found |
-| 500 | Unexpected error |
+| 0 | Unexpected error |
+
+
+
+#### <a name="update_booking_by_id"></a>![Method: ](https://apidocs.io/img/method.png ".BookingsController.updateBookingById") updateBookingById
+
+> Update a Booking by id
+
+
+```php
+function updateBookingById(
+        $authorization,
+        $id)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| id |  ``` Required ```  | TODO: Add a parameter description |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$id = 'id';
+
+$result = $bookings->updateBookingById($authorization, $id);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 422 | Unprocessable Entity |
+| 0 | Unexpected error |
+
+
+
+#### <a name="cancel_booking_by_id"></a>![Method: ](https://apidocs.io/img/method.png ".BookingsController.cancelBookingById") cancelBookingById
+
+> Cancel a Booking by id
+
+
+```php
+function cancelBookingById(
+        $authorization,
+        $id)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| id |  ``` Required ```  | TODO: Add a parameter description |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$id = 'id';
+
+$result = $bookings->cancelBookingById($authorization, $id);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 0 | Unexpected error |
 
 
 
 [Back to List of Controllers](#list_of_controllers)
 
-### <a name="users_controller"></a>![Class: ](http://apidocs.io/img/class.png ".UsersController") UsersController
+### <a name="categories_controller"></a>![Class: ](https://apidocs.io/img/class.png ".CategoriesController") CategoriesController
 
 #### Get singleton instance
 
-The singleton instance of the ``` UsersController ``` class can be accessed from the API Client.
+The singleton instance of the ``` CategoriesController ``` class can be accessed from the API Client.
 
 ```php
-$users = $client->getUsers();
+$categories = $client->getCategories();
 ```
 
-#### <a name="update_user_by_id"></a>![Method: ](http://apidocs.io/img/method.png ".UsersController.updateUserById") updateUserById
+#### <a name="get_categories"></a>![Method: ](https://apidocs.io/img/method.png ".CategoriesController.getCategories") getCategories
 
-> Update a User by id, with params.
+> Return list of Categories.
 
 
 ```php
-function updateUserById($options)
+function getCategories(
+        $authorization,
+        $page = 1,
+        $perPage = 10,
+        $userId = null)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| page |  ``` Optional ```  ``` DefaultValue ```  | Page offset to fetch. |
+| perPage |  ``` Optional ```  ``` DefaultValue ```  | Number of results to return per page. |
+| userId |  ``` Optional ```  | Retrieve Categories of all services provided by this User Id.  You must be authorized to manage this User Id. |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$page = 1;
+$perPage = 10;
+$userId = 131;
+
+$result = $categories->getCategories($authorization, $page, $perPage, $userId);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 0 | Unexpected error |
+
+
+
+#### <a name="create_category"></a>![Method: ](https://apidocs.io/img/method.png ".CategoriesController.createCategory") createCategory
+
+> Create a Category
+
+
+```php
+function createCategory(
+        $authorization,
+        $createCategoryBody = null)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| createCategoryBody |  ``` Optional ```  | the content of the request |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$createCategoryBody = new CreateCategoryBody();
+
+$result = $categories->createCategory($authorization, $createCategoryBody);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 422 | Unprocessable Entity |
+| 0 | Unexpected error |
+
+
+
+#### <a name="get_category_by_id"></a>![Method: ](https://apidocs.io/img/method.png ".CategoriesController.getCategoryById") getCategoryById
+
+> Return a Category by id.
+
+
+```php
+function getCategoryById(
+        $authorization,
+        $id)
 ```
 
 #### Parameters
@@ -374,7 +452,6 @@ function updateUserById($options)
 |-----------|------|-------------|
 | authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
 | id |  ``` Required ```  | TODO: Add a parameter description |
-| updateUserByIdBody |  ``` Required ```  | the content of the request |
 
 
 
@@ -382,16 +459,197 @@ function updateUserById($options)
 
 ```php
 $authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
 $id = 'id';
-$collect['id'] = $id;
 
-$updateUserByIdBody = new UpdateUserByIdBody();
-$collect['updateUserByIdBody'] = $updateUserByIdBody;
+$result = $categories->getCategoryById($authorization, $id);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 0 | Unexpected error |
 
 
-$result = $users->updateUserById($collect);
+
+[Back to List of Controllers](#list_of_controllers)
+
+### <a name="pricing_models_controller"></a>![Class: ](https://apidocs.io/img/class.png ".PricingModelsController") PricingModelsController
+
+#### Get singleton instance
+
+The singleton instance of the ``` PricingModelsController ``` class can be accessed from the API Client.
+
+```php
+$pricingModels = $client->getPricingModels();
+```
+
+#### <a name="get_pricing_models"></a>![Method: ](https://apidocs.io/img/method.png ".PricingModelsController.getPricingModels") getPricingModels
+
+> Return list of PricingModels.
+
+
+```php
+function getPricingModels(
+        $authorization,
+        $page = 1,
+        $perPage = 10,
+        $userId = null)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| page |  ``` Optional ```  ``` DefaultValue ```  | Page offset to fetch. |
+| perPage |  ``` Optional ```  ``` DefaultValue ```  | Number of results to return per page. |
+| userId |  ``` Optional ```  | Retrieve PricingModels owned only by this User Id.  You must be authorized to manage this User Id. |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$page = 1;
+$perPage = 10;
+$userId = 131;
+
+$result = $pricingModels->getPricingModels($authorization, $page, $perPage, $userId);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 0 | Unexpected error |
+
+
+
+#### <a name="create_pricing_model"></a>![Method: ](https://apidocs.io/img/method.png ".PricingModelsController.createPricingModel") createPricingModel
+
+> Create a PricingModel with params
+
+
+```php
+function createPricingModel(
+        $authorization,
+        $createPricingModelBody = null)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| createPricingModelBody |  ``` Optional ```  | the content of the request |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$createPricingModelBody = new CreatePricingModelBody();
+
+$result = $pricingModels->createPricingModel($authorization, $createPricingModelBody);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 422 | Unprocessable Entity |
+| 0 | Unexpected error |
+
+
+
+#### <a name="get_pricing_model_by_id"></a>![Method: ](https://apidocs.io/img/method.png ".PricingModelsController.getPricingModelById") getPricingModelById
+
+> Return a PricingModel by id.
+
+
+```php
+function getPricingModelById(
+        $authorization,
+        $id)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| id |  ``` Required ```  | TODO: Add a parameter description |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$id = 'id';
+
+$result = $pricingModels->getPricingModelById($authorization, $id);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 0 | Unexpected error |
+
+
+
+#### <a name="update_pricing_model_by_id"></a>![Method: ](https://apidocs.io/img/method.png ".PricingModelsController.updatePricingModelById") updatePricingModelById
+
+> Update a PricingModel by id, with params
+
+
+```php
+function updatePricingModelById(
+        $authorization,
+        $id,
+        $updatePricingModelByIdBody = null)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| id |  ``` Required ```  | TODO: Add a parameter description |
+| updatePricingModelByIdBody |  ``` Optional ```  | the content of the request |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$id = 'id';
+$updatePricingModelByIdBody = new UpdatePricingModelByIdBody();
+
+$result = $pricingModels->updatePricingModelById($authorization, $id, $updatePricingModelByIdBody);
 
 ```
 
@@ -404,17 +662,33 @@ $result = $users->updateUserById($collect);
 | 403 | Forbidden |
 | 404 | Not Found |
 | 422 | Unprocessable Entity |
-| 500 | Unexpected error |
+| 0 | Unexpected error |
 
 
 
-#### <a name="get_user_by_id"></a>![Method: ](http://apidocs.io/img/method.png ".UsersController.getUserById") getUserById
+[Back to List of Controllers](#list_of_controllers)
 
-> Return a User by id.
+### <a name="resources_controller"></a>![Class: ](https://apidocs.io/img/class.png ".ResourcesController") ResourcesController
+
+#### Get singleton instance
+
+The singleton instance of the ``` ResourcesController ``` class can be accessed from the API Client.
+
+```php
+$resources = $client->getResources();
+```
+
+#### <a name="get_resources"></a>![Method: ](https://apidocs.io/img/method.png ".ResourcesController.getResources") getResources
+
+> Return list of Resources.
 
 
 ```php
-function getUserById($options)
+function getResources(
+        $authorization,
+        $page = 1,
+        $perPage = 10,
+        $userId = null)
 ```
 
 #### Parameters
@@ -422,7 +696,9 @@ function getUserById($options)
 | Parameter | Tags | Description |
 |-----------|------|-------------|
 | authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| id |  ``` Required ```  | TODO: Add a parameter description |
+| page |  ``` Optional ```  ``` DefaultValue ```  | Page offset to fetch. |
+| perPage |  ``` Optional ```  ``` DefaultValue ```  | Number of results to return per page. |
+| userId |  ``` Optional ```  | Retrieve Resources owned only by this User Id.  You must be authorized to manage this User Id. |
 
 
 
@@ -430,13 +706,11 @@ function getUserById($options)
 
 ```php
 $authorization = 'Authorization';
-$collect['authorization'] = $authorization;
+$page = 1;
+$perPage = 10;
+$userId = 89;
 
-$id = 'id';
-$collect['id'] = $id;
-
-
-$result = $users->getUserById($collect);
+$result = $resources->getResources($authorization, $page, $perPage, $userId);
 
 ```
 
@@ -444,21 +718,22 @@ $result = $users->getUserById($collect);
 
 | Error Code | Error Description |
 |------------|-------------------|
-| 400 | Bad Request |
 | 401 | Unauthorized/Missing Token |
 | 403 | Forbidden |
 | 404 | Not Found |
-| 500 | Unexpected error |
+| 0 | Unexpected error |
 
 
 
-#### <a name="create_user"></a>![Method: ](http://apidocs.io/img/method.png ".UsersController.createUser") createUser
+#### <a name="create_resource"></a>![Method: ](https://apidocs.io/img/method.png ".ResourcesController.createResource") createResource
 
-> Create a User
+> Create a Resource with params
 
 
 ```php
-function createUser($options)
+function createResource(
+        $authorization,
+        $createResourceBody = null)
 ```
 
 #### Parameters
@@ -466,7 +741,7 @@ function createUser($options)
 | Parameter | Tags | Description |
 |-----------|------|-------------|
 | authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| createUserBody |  ``` Required ```  | the content of the request |
+| createResourceBody |  ``` Optional ```  | the content of the request |
 
 
 
@@ -474,13 +749,9 @@ function createUser($options)
 
 ```php
 $authorization = 'Authorization';
-$collect['authorization'] = $authorization;
+$createResourceBody = new CreateResourceBody();
 
-$createUserBody = new CreateUserBody();
-$collect['createUserBody'] = $createUserBody;
-
-
-$result = $users->createUser($collect);
+$result = $resources->createResource($authorization, $createResourceBody);
 
 ```
 
@@ -492,17 +763,20 @@ $result = $users->createUser($collect);
 | 401 | Unauthorized/Missing Token |
 | 403 | Forbidden |
 | 422 | Unprocessable Entity |
-| 500 | Unexpected error |
+| 0 | Unexpected error |
 
 
 
-#### <a name="get_users"></a>![Method: ](http://apidocs.io/img/method.png ".UsersController.getUsers") getUsers
+#### <a name="get_resource_things"></a>![Method: ](https://apidocs.io/img/method.png ".ResourcesController.getResourceThings") getResourceThings
 
-> Return all Users that your account has access to.  Includes your own User as well as any Users for which you are the Account Manager.
+> Return all Resource Things.
 
 
 ```php
-function getUsers($options)
+function getResourceThings(
+        $authorization,
+        $page = 1,
+        $perPage = 10)
 ```
 
 #### Parameters
@@ -519,16 +793,10 @@ function getUsers($options)
 
 ```php
 $authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
 $page = 1;
-$collect['page'] = $page;
-
 $perPage = 10;
-$collect['perPage'] = $perPage;
 
-
-$result = $users->getUsers($collect);
+$result = $resources->getResourceThings($authorization, $page, $perPage);
 
 ```
 
@@ -539,13 +807,523 @@ $result = $users->getUsers($collect);
 | 400 | Bad Request |
 | 401 | Unauthorized/Missing Token |
 | 403 | Forbidden |
-| 500 | Unexpected error |
+| 0 | Unexpected error |
+
+
+
+#### <a name="get_resource_by_id"></a>![Method: ](https://apidocs.io/img/method.png ".ResourcesController.getResourceById") getResourceById
+
+> Return a Resource by id.
+
+
+```php
+function getResourceById(
+        $authorization,
+        $id)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| id |  ``` Required ```  | TODO: Add a parameter description |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$id = 'id';
+
+$result = $resources->getResourceById($authorization, $id);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 0 | Unexpected error |
+
+
+
+#### <a name="update_resource_by_id"></a>![Method: ](https://apidocs.io/img/method.png ".ResourcesController.updateResourceById") updateResourceById
+
+> Update a Resource by id, with params
+
+
+```php
+function updateResourceById(
+        $authorization,
+        $id,
+        $updateResourceByIdBody = null)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| id |  ``` Required ```  | TODO: Add a parameter description |
+| updateResourceByIdBody |  ``` Optional ```  | the content of the request |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$id = 'id';
+$updateResourceByIdBody = new UpdateResourceByIdBody();
+
+$result = $resources->updateResourceById($authorization, $id, $updateResourceByIdBody);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 422 | Unprocessable Entity |
+| 0 | Unexpected error |
+
+
+
+#### <a name="delete_resource_by_id"></a>![Method: ](https://apidocs.io/img/method.png ".ResourcesController.deleteResourceById") deleteResourceById
+
+> Delete a Resource by id
+
+
+```php
+function deleteResourceById(
+        $authorization,
+        $id)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| id |  ``` Required ```  | TODO: Add a parameter description |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$id = 'id';
+
+$result = $resources->deleteResourceById($authorization, $id);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 0 | Unexpected error |
 
 
 
 [Back to List of Controllers](#list_of_controllers)
 
-### <a name="services_controller"></a>![Class: ](http://apidocs.io/img/class.png ".ServicesController") ServicesController
+### <a name="schedules_controller"></a>![Class: ](https://apidocs.io/img/class.png ".SchedulesController") SchedulesController
+
+#### Get singleton instance
+
+The singleton instance of the ``` SchedulesController ``` class can be accessed from the API Client.
+
+```php
+$schedules = $client->getSchedules();
+```
+
+#### <a name="get_schedules"></a>![Method: ](https://apidocs.io/img/method.png ".SchedulesController.getSchedules") getSchedules
+
+> Return all Schedules that your account has access to.  Includes Schedules for your own User as well as any Users for which you are the Account Manager.
+
+
+```php
+function getSchedules(
+        $authorization,
+        $page = 1,
+        $perPage = 10,
+        $userId = null)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| page |  ``` Optional ```  ``` DefaultValue ```  | Page offset to fetch. |
+| perPage |  ``` Optional ```  ``` DefaultValue ```  | Number of results to return per page. |
+| userId |  ``` Optional ```  | Retrieve Schedules owned only by this User Id.  You must be authorized to manage this User Id. |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$page = 1;
+$perPage = 10;
+$userId = 89;
+
+$result = $schedules->getSchedules($authorization, $page, $perPage, $userId);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 0 | Unexpected error |
+
+
+
+#### <a name="create_schedule"></a>![Method: ](https://apidocs.io/img/method.png ".SchedulesController.createSchedule") createSchedule
+
+> Create a Schedule with params.
+
+
+```php
+function createSchedule(
+        $authorization,
+        $createScheduleBody = null)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| createScheduleBody |  ``` Optional ```  | the content of the request |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$createScheduleBody = new CreateScheduleBody();
+
+$result = $schedules->createSchedule($authorization, $createScheduleBody);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 422 | Unprocessable Entity |
+| 0 | Unexpected error |
+
+
+
+#### <a name="get_schedule_by_id"></a>![Method: ](https://apidocs.io/img/method.png ".SchedulesController.getScheduleById") getScheduleById
+
+> Return a Schedule by id.
+
+
+```php
+function getScheduleById(
+        $authorization,
+        $id)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| id |  ``` Required ```  | TODO: Add a parameter description |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$id = 'id';
+
+$result = $schedules->getScheduleById($authorization, $id);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 410 | Gone |
+| 0 | Unexpected error |
+
+
+
+#### <a name="delete_schedule_by_id"></a>![Method: ](https://apidocs.io/img/method.png ".SchedulesController.deleteScheduleById") deleteScheduleById
+
+> Delete a Schedule
+
+
+```php
+function deleteScheduleById(
+        $authorization,
+        $id)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| id |  ``` Required ```  | TODO: Add a parameter description |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$id = 'id';
+
+$result = $schedules->deleteScheduleById($authorization, $id);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 0 | Unexpected error |
+
+
+
+#### <a name="create_schedule_time_window"></a>![Method: ](https://apidocs.io/img/method.png ".SchedulesController.createScheduleTimeWindow") createScheduleTimeWindow
+
+> Add a TimeWindow to a Schedule.
+
+
+```php
+function createScheduleTimeWindow(
+        $authorization,
+        $id,
+        $createScheduleTimeWindowBody = null)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| id |  ``` Required ```  | TODO: Add a parameter description |
+| createScheduleTimeWindowBody |  ``` Optional ```  | the content of the request |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$id = 'id';
+$createScheduleTimeWindowBody = new CreateScheduleTimeWindowBody();
+
+$result = $schedules->createScheduleTimeWindow($authorization, $id, $createScheduleTimeWindowBody);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 422 | Unprocessable Entity |
+| 0 | Unexpected error |
+
+
+
+#### <a name="update_schedule_time_window_by_id"></a>![Method: ](https://apidocs.io/img/method.png ".SchedulesController.updateScheduleTimeWindowById") updateScheduleTimeWindowById
+
+> Update a TimeWindow for a Schedule.
+
+
+```php
+function updateScheduleTimeWindowById(
+        $authorization,
+        $id,
+        $timeWindowId,
+        $updateScheduleTimeWindowByIdBody = null)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| id |  ``` Required ```  | TODO: Add a parameter description |
+| timeWindowId |  ``` Required ```  | TODO: Add a parameter description |
+| updateScheduleTimeWindowByIdBody |  ``` Optional ```  | the content of the request |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$id = 'id';
+$timeWindowId = 'time_window_id';
+$updateScheduleTimeWindowByIdBody = new UpdateScheduleTimeWindowByIdBody();
+
+$result = $schedules->updateScheduleTimeWindowById($authorization, $id, $timeWindowId, $updateScheduleTimeWindowByIdBody);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 422 | Unprocessable Entity |
+| 0 | Unexpected error |
+
+
+
+#### <a name="delete_schedule_time_window_by_id"></a>![Method: ](https://apidocs.io/img/method.png ".SchedulesController.deleteScheduleTimeWindowById") deleteScheduleTimeWindowById
+
+> Delete a TimeWindow from a Schedule
+
+
+```php
+function deleteScheduleTimeWindowById(
+        $authorization,
+        $id,
+        $timeWindowId)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| id |  ``` Required ```  | TODO: Add a parameter description |
+| timeWindowId |  ``` Required ```  | TODO: Add a parameter description |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$id = 'id';
+$timeWindowId = 'time_window_id';
+
+$result = $schedules->deleteScheduleTimeWindowById($authorization, $id, $timeWindowId);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 0 | Unexpected error |
+
+
+
+[Back to List of Controllers](#list_of_controllers)
+
+### <a name="search_controller"></a>![Class: ](https://apidocs.io/img/class.png ".SearchController") SearchController
+
+#### Get singleton instance
+
+The singleton instance of the ``` SearchController ``` class can be accessed from the API Client.
+
+```php
+$search = $client->getSearch();
+```
+
+#### <a name="search_query"></a>![Method: ](https://apidocs.io/img/method.png ".SearchController.searchQuery") searchQuery
+
+> Search for Providers and Provided Services.
+
+
+```php
+function searchQuery(
+        $authorization,
+        $query)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| query |  ``` Required ```  | TODO: Add a parameter description |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$query = 'query';
+
+$result = $search->searchQuery($authorization, $query);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 0 | Unexpected error |
+
+
+
+[Back to List of Controllers](#list_of_controllers)
+
+### <a name="services_controller"></a>![Class: ](https://apidocs.io/img/class.png ".ServicesController") ServicesController
 
 #### Get singleton instance
 
@@ -555,195 +1333,17 @@ The singleton instance of the ``` ServicesController ``` class can be accessed f
 $services = $client->getServices();
 ```
 
-#### <a name="delete_service_by_id"></a>![Method: ](http://apidocs.io/img/method.png ".ServicesController.deleteServiceById") deleteServiceById
-
-> Delete a Service by id
-
-
-```php
-function deleteServiceById($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| id |  ``` Required ```  | TODO: Add a parameter description |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$id = 'id';
-$collect['id'] = $id;
-
-
-$result = $services->deleteServiceById($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 500 | Unexpected error |
-
-
-
-#### <a name="update_service_by_id"></a>![Method: ](http://apidocs.io/img/method.png ".ServicesController.updateServiceById") updateServiceById
-
-> Update a Service with params.
-
-
-```php
-function updateServiceById($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| id |  ``` Required ```  | TODO: Add a parameter description |
-| updateServiceByIdBody |  ``` Required ```  | the content of the request |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$id = 'id';
-$collect['id'] = $id;
-
-$updateServiceByIdBody = new UpdateServiceByIdBody();
-$collect['updateServiceByIdBody'] = $updateServiceByIdBody;
-
-
-$result = $services->updateServiceById($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 422 | Unprocessable Entity |
-| 500 | Unexpected error |
-
-
-
-#### <a name="get_service_by_id"></a>![Method: ](http://apidocs.io/img/method.png ".ServicesController.getServiceById") getServiceById
-
-> Return a Service by id.
-
-
-```php
-function getServiceById($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| id |  ``` Required ```  | TODO: Add a parameter description |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$id = 'id';
-$collect['id'] = $id;
-
-
-$result = $services->getServiceById($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 500 | Unexpected error |
-
-
-
-#### <a name="create_service"></a>![Method: ](http://apidocs.io/img/method.png ".ServicesController.createService") createService
-
-> Create a Service with params.
-
-
-```php
-function createService($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| createServiceBody |  ``` Required ```  | the content of the request |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$createServiceBody = new CreateServiceBody();
-$collect['createServiceBody'] = $createServiceBody;
-
-
-$result = $services->createService($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 422 | Unprocessable Entity |
-| 500 | Unexpected error |
-
-
-
-#### <a name="get_services"></a>![Method: ](http://apidocs.io/img/method.png ".ServicesController.getServices") getServices
+#### <a name="get_services"></a>![Method: ](https://apidocs.io/img/method.png ".ServicesController.getServices") getServices
 
 > Return list of Services.
 
 
 ```php
-function getServices($options)
+function getServices(
+        $authorization,
+        $page = 1,
+        $perPage = 10,
+        $userId = null)
 ```
 
 #### Parameters
@@ -761,19 +1361,11 @@ function getServices($options)
 
 ```php
 $authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
 $page = 1;
-$collect['page'] = $page;
-
 $perPage = 10;
-$collect['perPage'] = $perPage;
+$userId = 89;
 
-$userId = 172;
-$collect['userId'] = $userId;
-
-
-$result = $services->getServices($collect);
+$result = $services->getServices($authorization, $page, $perPage, $userId);
 
 ```
 
@@ -784,17 +1376,65 @@ $result = $services->getServices($collect);
 | 401 | Unauthorized/Missing Token |
 | 403 | Forbidden |
 | 404 | Not Found |
-| 500 | Unexpected error |
+| 0 | Unexpected error |
 
 
 
-#### <a name="get_service_available_slots_by_id"></a>![Method: ](http://apidocs.io/img/method.png ".ServicesController.getServiceAvailableSlotsById") getServiceAvailableSlotsById
+#### <a name="create_service"></a>![Method: ](https://apidocs.io/img/method.png ".ServicesController.createService") createService
+
+> Create a Service with params.
+
+
+```php
+function createService(
+        $authorization,
+        $createServiceBody = null)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| createServiceBody |  ``` Optional ```  | the content of the request |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$createServiceBody = new CreateServiceBody();
+
+$result = $services->createService($authorization, $createServiceBody);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 422 | Unprocessable Entity |
+| 0 | Unexpected error |
+
+
+
+#### <a name="get_service_available_slots_by_id"></a>![Method: ](https://apidocs.io/img/method.png ".ServicesController.getServiceAvailableSlotsById") getServiceAvailableSlotsById
 
 > Return available times for a Service.
 
 
 ```php
-function getServiceAvailableSlotsById($options)
+function getServiceAvailableSlotsById(
+        $authorization,
+        $id,
+        $date = null,
+        $endDate = null,
+        $startDate = null)
 ```
 
 #### Parameters
@@ -813,22 +1453,12 @@ function getServiceAvailableSlotsById($options)
 
 ```php
 $authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
 $id = 'id';
-$collect['id'] = $id;
-
 $date = date("D M d, Y G:i");
-$collect['date'] = $date;
-
 $endDate = date("D M d, Y G:i");
-$collect['endDate'] = $endDate;
-
 $startDate = date("D M d, Y G:i");
-$collect['startDate'] = $startDate;
 
-
-$result = $services->getServiceAvailableSlotsById($collect);
+$result = $services->getServiceAvailableSlotsById($authorization, $id, $date, $endDate, $startDate);
 
 ```
 
@@ -840,568 +1470,162 @@ $result = $services->getServiceAvailableSlotsById($collect);
 | 401 | Unauthorized/Missing Token |
 | 403 | Forbidden |
 | 404 | Not Found |
-| 500 | Unexpected error |
+| 0 | Unexpected error |
+
+
+
+#### <a name="get_service_by_id"></a>![Method: ](https://apidocs.io/img/method.png ".ServicesController.getServiceById") getServiceById
+
+> Return a Service by id.
+
+
+```php
+function getServiceById(
+        $authorization,
+        $id)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| id |  ``` Required ```  | TODO: Add a parameter description |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$id = 'id';
+
+$result = $services->getServiceById($authorization, $id);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 0 | Unexpected error |
+
+
+
+#### <a name="update_service_by_id"></a>![Method: ](https://apidocs.io/img/method.png ".ServicesController.updateServiceById") updateServiceById
+
+> Update a Service with params.
+
+
+```php
+function updateServiceById(
+        $authorization,
+        $id,
+        $updateServiceByIdBody = null)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| id |  ``` Required ```  | TODO: Add a parameter description |
+| updateServiceByIdBody |  ``` Optional ```  | the content of the request |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$id = 'id';
+$updateServiceByIdBody = new UpdateServiceByIdBody();
+
+$result = $services->updateServiceById($authorization, $id, $updateServiceByIdBody);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 422 | Unprocessable Entity |
+| 0 | Unexpected error |
+
+
+
+#### <a name="delete_service_by_id"></a>![Method: ](https://apidocs.io/img/method.png ".ServicesController.deleteServiceById") deleteServiceById
+
+> Delete a Service by id
+
+
+```php
+function deleteServiceById(
+        $authorization,
+        $id)
+```
+
+#### Parameters
+
+| Parameter | Tags | Description |
+|-----------|------|-------------|
+| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
+| id |  ``` Required ```  | TODO: Add a parameter description |
+
+
+
+#### Example Usage
+
+```php
+$authorization = 'Authorization';
+$id = 'id';
+
+$result = $services->deleteServiceById($authorization, $id);
+
+```
+
+#### Errors
+
+| Error Code | Error Description |
+|------------|-------------------|
+| 400 | Bad Request |
+| 401 | Unauthorized/Missing Token |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 0 | Unexpected error |
 
 
 
 [Back to List of Controllers](#list_of_controllers)
 
-### <a name="search_controller"></a>![Class: ](http://apidocs.io/img/class.png ".SearchController") SearchController
+### <a name="users_controller"></a>![Class: ](https://apidocs.io/img/class.png ".UsersController") UsersController
 
 #### Get singleton instance
 
-The singleton instance of the ``` SearchController ``` class can be accessed from the API Client.
+The singleton instance of the ``` UsersController ``` class can be accessed from the API Client.
 
 ```php
-$search = $client->getSearch();
+$users = $client->getUsers();
 ```
 
-#### <a name="search_query"></a>![Method: ](http://apidocs.io/img/method.png ".SearchController.searchQuery") searchQuery
+#### <a name="get_users"></a>![Method: ](https://apidocs.io/img/method.png ".UsersController.getUsers") getUsers
 
-> Search for Providers and Provided Services.
-
-
-```php
-function searchQuery($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| query |  ``` Required ```  | TODO: Add a parameter description |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$query = 'query';
-$collect['query'] = $query;
-
-
-$result = $search->searchQuery($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 500 | Unexpected error |
-
-
-
-[Back to List of Controllers](#list_of_controllers)
-
-### <a name="schedules_controller"></a>![Class: ](http://apidocs.io/img/class.png ".SchedulesController") SchedulesController
-
-#### Get singleton instance
-
-The singleton instance of the ``` SchedulesController ``` class can be accessed from the API Client.
-
-```php
-$schedules = $client->getSchedules();
-```
-
-#### <a name="delete_schedule_time_window_by_id"></a>![Method: ](http://apidocs.io/img/method.png ".SchedulesController.deleteScheduleTimeWindowById") deleteScheduleTimeWindowById
-
-> Delete a TimeWindow from a Schedule
+> Return all Users that your account has access to.  Includes your own User as well as any Users for which you are the Account Manager.
 
 
 ```php
-function deleteScheduleTimeWindowById($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| id |  ``` Required ```  | TODO: Add a parameter description |
-| timeWindowId |  ``` Required ```  | TODO: Add a parameter description |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$id = 'id';
-$collect['id'] = $id;
-
-$timeWindowId = 'time_window_id';
-$collect['timeWindowId'] = $timeWindowId;
-
-
-$result = $schedules->deleteScheduleTimeWindowById($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 500 | Unexpected error |
-
-
-
-#### <a name="create_schedule_time_window"></a>![Method: ](http://apidocs.io/img/method.png ".SchedulesController.createScheduleTimeWindow") createScheduleTimeWindow
-
-> Add a TimeWindow to a Schedule.
-
-
-```php
-function createScheduleTimeWindow($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| createScheduleTimeWindowBody |  ``` Required ```  | the content of the request |
-| id |  ``` Required ```  | TODO: Add a parameter description |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$createScheduleTimeWindowBody = new CreateScheduleTimeWindowBody();
-$collect['createScheduleTimeWindowBody'] = $createScheduleTimeWindowBody;
-
-$id = 'id';
-$collect['id'] = $id;
-
-
-$result = $schedules->createScheduleTimeWindow($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 422 | Unprocessable Entity |
-| 500 | Unexpected error |
-
-
-
-#### <a name="delete_schedule_by_id"></a>![Method: ](http://apidocs.io/img/method.png ".SchedulesController.deleteScheduleById") deleteScheduleById
-
-> Delete a Schedule
-
-
-```php
-function deleteScheduleById($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| id |  ``` Required ```  | TODO: Add a parameter description |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$id = 'id';
-$collect['id'] = $id;
-
-
-$result = $schedules->deleteScheduleById($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 500 | Unexpected error |
-
-
-
-#### <a name="get_schedule_by_id"></a>![Method: ](http://apidocs.io/img/method.png ".SchedulesController.getScheduleById") getScheduleById
-
-> Return a Schedule by id.
-
-
-```php
-function getScheduleById($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| id |  ``` Required ```  | TODO: Add a parameter description |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$id = 'id';
-$collect['id'] = $id;
-
-
-$result = $schedules->getScheduleById($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 410 | Gone |
-| 500 | Unexpected error |
-
-
-
-#### <a name="create_schedule"></a>![Method: ](http://apidocs.io/img/method.png ".SchedulesController.createSchedule") createSchedule
-
-> Create a Schedule with params.
-
-
-```php
-function createSchedule($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| createScheduleBody |  ``` Required ```  | the content of the request |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$createScheduleBody = new CreateScheduleBody();
-$collect['createScheduleBody'] = $createScheduleBody;
-
-
-$result = $schedules->createSchedule($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 422 | Unprocessable Entity |
-| 500 | Unexpected error |
-
-
-
-#### <a name="update_schedule_time_window_by_id"></a>![Method: ](http://apidocs.io/img/method.png ".SchedulesController.updateScheduleTimeWindowById") updateScheduleTimeWindowById
-
-> Update a TimeWindow for a Schedule.
-
-
-```php
-function updateScheduleTimeWindowById($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| id |  ``` Required ```  | TODO: Add a parameter description |
-| timeWindowId |  ``` Required ```  | TODO: Add a parameter description |
-| updateScheduleTimeWindowByIdBody |  ``` Required ```  | the content of the request |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$id = 'id';
-$collect['id'] = $id;
-
-$timeWindowId = 'time_window_id';
-$collect['timeWindowId'] = $timeWindowId;
-
-$updateScheduleTimeWindowByIdBody = new UpdateScheduleTimeWindowByIdBody();
-$collect['updateScheduleTimeWindowByIdBody'] = $updateScheduleTimeWindowByIdBody;
-
-
-$result = $schedules->updateScheduleTimeWindowById($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 422 | Unprocessable Entity |
-| 500 | Unexpected error |
-
-
-
-#### <a name="get_schedules"></a>![Method: ](http://apidocs.io/img/method.png ".SchedulesController.getSchedules") getSchedules
-
-> Return all Schedules that your account has access to.  Includes Schedules for your own User as well as any Users for which you are the Account Manager.
-
-
-```php
-function getSchedules($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| page |  ``` Optional ```  ``` DefaultValue ```  | Page offset to fetch. |
-| perPage |  ``` Optional ```  ``` DefaultValue ```  | Number of results to return per page. |
-| userId |  ``` Optional ```  | Retrieve Schedules owned only by this User Id.  You must be authorized to manage this User Id. |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$page = 1;
-$collect['page'] = $page;
-
-$perPage = 10;
-$collect['perPage'] = $perPage;
-
-$userId = 130;
-$collect['userId'] = $userId;
-
-
-$result = $schedules->getSchedules($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 500 | Unexpected error |
-
-
-
-[Back to List of Controllers](#list_of_controllers)
-
-### <a name="resources_controller"></a>![Class: ](http://apidocs.io/img/class.png ".ResourcesController") ResourcesController
-
-#### Get singleton instance
-
-The singleton instance of the ``` ResourcesController ``` class can be accessed from the API Client.
-
-```php
-$resources = $client->getResources();
-```
-
-#### <a name="delete_resource_by_id"></a>![Method: ](http://apidocs.io/img/method.png ".ResourcesController.deleteResourceById") deleteResourceById
-
-> Delete a Resource by id
-
-
-```php
-function deleteResourceById($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| id |  ``` Required ```  | TODO: Add a parameter description |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$id = 'id';
-$collect['id'] = $id;
-
-
-$result = $resources->deleteResourceById($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 500 | Unexpected error |
-
-
-
-#### <a name="update_resource_by_id"></a>![Method: ](http://apidocs.io/img/method.png ".ResourcesController.updateResourceById") updateResourceById
-
-> Update a Resource by id, with params
-
-
-```php
-function updateResourceById($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| id |  ``` Required ```  | TODO: Add a parameter description |
-| updateResourceByIdBody |  ``` Required ```  | the content of the request |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$id = 'id';
-$collect['id'] = $id;
-
-$updateResourceByIdBody = new UpdateResourceByIdBody();
-$collect['updateResourceByIdBody'] = $updateResourceByIdBody;
-
-
-$result = $resources->updateResourceById($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 422 | Unprocessable Entity |
-| 500 | Unexpected error |
-
-
-
-#### <a name="get_resource_by_id"></a>![Method: ](http://apidocs.io/img/method.png ".ResourcesController.getResourceById") getResourceById
-
-> Return a Resource by id.
-
-
-```php
-function getResourceById($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| id |  ``` Required ```  | TODO: Add a parameter description |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$id = 'id';
-$collect['id'] = $id;
-
-
-$result = $resources->getResourceById($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 500 | Unexpected error |
-
-
-
-#### <a name="get_resource_things"></a>![Method: ](http://apidocs.io/img/method.png ".ResourcesController.getResourceThings") getResourceThings
-
-> Return all Resource Things.
-
-
-```php
-function getResourceThings($options)
+function getUsers(
+        $authorization,
+        $page = 1,
+        $perPage = 10)
 ```
 
 #### Parameters
@@ -1418,16 +1642,10 @@ function getResourceThings($options)
 
 ```php
 $authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
 $page = 1;
-$collect['page'] = $page;
-
 $perPage = 10;
-$collect['perPage'] = $perPage;
 
-
-$result = $resources->getResourceThings($collect);
+$result = $users->getUsers($authorization, $page, $perPage);
 
 ```
 
@@ -1438,17 +1656,19 @@ $result = $resources->getResourceThings($collect);
 | 400 | Bad Request |
 | 401 | Unauthorized/Missing Token |
 | 403 | Forbidden |
-| 500 | Unexpected error |
+| 0 | Unexpected error |
 
 
 
-#### <a name="create_resource"></a>![Method: ](http://apidocs.io/img/method.png ".ResourcesController.createResource") createResource
+#### <a name="create_user"></a>![Method: ](https://apidocs.io/img/method.png ".UsersController.createUser") createUser
 
-> Create a Resource with params
+> Create a User
 
 
 ```php
-function createResource($options)
+function createUser(
+        $authorization,
+        $createUserBody = null)
 ```
 
 #### Parameters
@@ -1456,7 +1676,7 @@ function createResource($options)
 | Parameter | Tags | Description |
 |-----------|------|-------------|
 | authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| createResourceBody |  ``` Required ```  | the content of the request |
+| createUserBody |  ``` Optional ```  | the content of the request |
 
 
 
@@ -1464,13 +1684,9 @@ function createResource($options)
 
 ```php
 $authorization = 'Authorization';
-$collect['authorization'] = $authorization;
+$createUserBody = new CreateUserBody();
 
-$createResourceBody = new CreateResourceBody();
-$collect['createResourceBody'] = $createResourceBody;
-
-
-$result = $resources->createResource($collect);
+$result = $users->createUser($authorization, $createUserBody);
 
 ```
 
@@ -1482,129 +1698,19 @@ $result = $resources->createResource($collect);
 | 401 | Unauthorized/Missing Token |
 | 403 | Forbidden |
 | 422 | Unprocessable Entity |
-| 500 | Unexpected error |
+| 0 | Unexpected error |
 
 
 
-#### <a name="get_resources"></a>![Method: ](http://apidocs.io/img/method.png ".ResourcesController.getResources") getResources
+#### <a name="get_user_by_id"></a>![Method: ](https://apidocs.io/img/method.png ".UsersController.getUserById") getUserById
 
-> Return list of Resources.
-
-
-```php
-function getResources($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| page |  ``` Optional ```  ``` DefaultValue ```  | Page offset to fetch. |
-| perPage |  ``` Optional ```  ``` DefaultValue ```  | Number of results to return per page. |
-| userId |  ``` Optional ```  | Retrieve Resources owned only by this User Id.  You must be authorized to manage this User Id. |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$page = 1;
-$collect['page'] = $page;
-
-$perPage = 10;
-$collect['perPage'] = $perPage;
-
-$userId = 130;
-$collect['userId'] = $userId;
-
-
-$result = $resources->getResources($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 500 | Unexpected error |
-
-
-
-[Back to List of Controllers](#list_of_controllers)
-
-### <a name="pricing_models_controller"></a>![Class: ](http://apidocs.io/img/class.png ".PricingModelsController") PricingModelsController
-
-#### Get singleton instance
-
-The singleton instance of the ``` PricingModelsController ``` class can be accessed from the API Client.
-
-```php
-$pricingModels = $client->getPricingModels();
-```
-
-#### <a name="update_pricing_model_by_id"></a>![Method: ](http://apidocs.io/img/method.png ".PricingModelsController.updatePricingModelById") updatePricingModelById
-
-> Update a PricingModel by id, with params
+> Return a User by id.
 
 
 ```php
-function updatePricingModelById($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| id |  ``` Required ```  | TODO: Add a parameter description |
-| updatePricingModelByIdBody |  ``` Required ```  | the content of the request |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$id = 'id';
-$collect['id'] = $id;
-
-$updatePricingModelByIdBody = new UpdatePricingModelByIdBody();
-$collect['updatePricingModelByIdBody'] = $updatePricingModelByIdBody;
-
-
-$result = $pricingModels->updatePricingModelById($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 422 | Unprocessable Entity |
-| 500 | Unexpected error |
-
-
-
-#### <a name="get_pricing_model_by_id"></a>![Method: ](http://apidocs.io/img/method.png ".PricingModelsController.getPricingModelById") getPricingModelById
-
-> Return a PricingModel by id.
-
-
-```php
-function getPricingModelById($options)
+function getUserById(
+        $authorization,
+        $id)
 ```
 
 #### Parameters
@@ -1620,13 +1726,9 @@ function getPricingModelById($options)
 
 ```php
 $authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
 $id = 'id';
-$collect['id'] = $id;
 
-
-$result = $pricingModels->getPricingModelById($collect);
+$result = $users->getUserById($authorization, $id);
 
 ```
 
@@ -1638,124 +1740,20 @@ $result = $pricingModels->getPricingModelById($collect);
 | 401 | Unauthorized/Missing Token |
 | 403 | Forbidden |
 | 404 | Not Found |
-| 500 | Unexpected error |
+| 0 | Unexpected error |
 
 
 
-#### <a name="create_pricing_model"></a>![Method: ](http://apidocs.io/img/method.png ".PricingModelsController.createPricingModel") createPricingModel
+#### <a name="update_user_by_id"></a>![Method: ](https://apidocs.io/img/method.png ".UsersController.updateUserById") updateUserById
 
-> Create a PricingModel with params
-
-
-```php
-function createPricingModel($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| createPricingModelBody |  ``` Required ```  | the content of the request |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$createPricingModelBody = new CreatePricingModelBody();
-$collect['createPricingModelBody'] = $createPricingModelBody;
-
-
-$result = $pricingModels->createPricingModel($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 422 | Unprocessable Entity |
-| 500 | Unexpected error |
-
-
-
-#### <a name="get_pricing_models"></a>![Method: ](http://apidocs.io/img/method.png ".PricingModelsController.getPricingModels") getPricingModels
-
-> Return list of PricingModels.
+> Update a User by id, with params.
 
 
 ```php
-function getPricingModels($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| page |  ``` Optional ```  ``` DefaultValue ```  | Page offset to fetch. |
-| perPage |  ``` Optional ```  ``` DefaultValue ```  | Number of results to return per page. |
-| userId |  ``` Optional ```  | Retrieve PricingModels owned only by this User Id.  You must be authorized to manage this User Id. |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$page = 1;
-$collect['page'] = $page;
-
-$perPage = 10;
-$collect['perPage'] = $perPage;
-
-$userId = 130;
-$collect['userId'] = $userId;
-
-
-$result = $pricingModels->getPricingModels($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 500 | Unexpected error |
-
-
-
-[Back to List of Controllers](#list_of_controllers)
-
-### <a name="categories_controller"></a>![Class: ](http://apidocs.io/img/class.png ".CategoriesController") CategoriesController
-
-#### Get singleton instance
-
-The singleton instance of the ``` CategoriesController ``` class can be accessed from the API Client.
-
-```php
-$categories = $client->getCategories();
-```
-
-#### <a name="get_category_by_id"></a>![Method: ](http://apidocs.io/img/method.png ".CategoriesController.getCategoryById") getCategoryById
-
-> Return a Category by id.
-
-
-```php
-function getCategoryById($options)
+function updateUserById(
+        $authorization,
+        $id,
+        $updateUserByIdBody = null)
 ```
 
 #### Parameters
@@ -1764,6 +1762,7 @@ function getCategoryById($options)
 |-----------|------|-------------|
 | authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
 | id |  ``` Required ```  | TODO: Add a parameter description |
+| updateUserByIdBody |  ``` Optional ```  | the content of the request |
 
 
 
@@ -1771,13 +1770,10 @@ function getCategoryById($options)
 
 ```php
 $authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
 $id = 'id';
-$collect['id'] = $id;
+$updateUserByIdBody = new UpdateUserByIdBody();
 
-
-$result = $categories->getCategoryById($collect);
+$result = $users->updateUserById($authorization, $id, $updateUserByIdBody);
 
 ```
 
@@ -1789,102 +1785,8 @@ $result = $categories->getCategoryById($collect);
 | 401 | Unauthorized/Missing Token |
 | 403 | Forbidden |
 | 404 | Not Found |
-| 500 | Unexpected error |
-
-
-
-#### <a name="create_category"></a>![Method: ](http://apidocs.io/img/method.png ".CategoriesController.createCategory") createCategory
-
-> Create a Category
-
-
-```php
-function createCategory($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| createCategoryBody |  ``` Required ```  | the content of the request |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$createCategoryBody = new CreateCategoryBody();
-$collect['createCategoryBody'] = $createCategoryBody;
-
-
-$result = $categories->createCategory($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
 | 422 | Unprocessable Entity |
-| 500 | Unexpected error |
-
-
-
-#### <a name="get_categories"></a>![Method: ](http://apidocs.io/img/method.png ".CategoriesController.getCategories") getCategories
-
-> Return list of Categories.
-
-
-```php
-function getCategories($options)
-```
-
-#### Parameters
-
-| Parameter | Tags | Description |
-|-----------|------|-------------|
-| authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
-| page |  ``` Optional ```  ``` DefaultValue ```  | Page offset to fetch. |
-| perPage |  ``` Optional ```  ``` DefaultValue ```  | Number of results to return per page. |
-| userId |  ``` Optional ```  | Retrieve Categories of all services provided by this User Id.  You must be authorized to manage this User Id. |
-
-
-
-#### Example Usage
-
-```php
-$authorization = 'Authorization';
-$collect['authorization'] = $authorization;
-
-$page = 1;
-$collect['page'] = $page;
-
-$perPage = 10;
-$collect['perPage'] = $perPage;
-
-$userId = 222;
-$collect['userId'] = $userId;
-
-
-$result = $categories->getCategories($collect);
-
-```
-
-#### Errors
-
-| Error Code | Error Description |
-|------------|-------------------|
-| 400 | Bad Request |
-| 401 | Unauthorized/Missing Token |
-| 403 | Forbidden |
-| 500 | Unexpected error |
+| 0 | Unexpected error |
 
 
 
