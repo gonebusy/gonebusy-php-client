@@ -68,12 +68,18 @@ php my-project/trySDK.php
 ```
 
 ## How to Test
+We use [Prism API Server](https://github.com/stoplightio/prism) to mock a local API server. Please [install Prism](https://github.com/stoplightio/prism#installation):
+
+* Run `prism run -m -s ./gb_swagger.users.json` in a separate terminal/tab or the background.  
+  This tells Prism to start a proxy server and mock the responses with random data
+  > TODO Figure out better config for prism and update above instructions
 
 Unit tests in this SDK can be run using PHPUnit. The test cases are located in the test/Controllers/ dir.
 
-1. First install the dependencies using composer including the `require-dev` dependencies (you may have already done this with `composer install` or `composer update`).
-1. Run `vendor/bin/phpunit --verbose` from command line to execute the test suite.
-   > If you have installed PHPUnit globally, just use `phpunit --verbose` instead.
+1. Make sure you've installed the dependencies using composer including the `require-dev` dependencies (you may have already done this with `composer install` or `composer update`).
+1. Run `vendor/bin/phpunit --verbose test/Controllers/UsersTest.php` from command line to execute the test suite.
+   > TODO Update for all tests, not just users.  
+   > NOTE For some reason prism's response to /users is empty some times so the first test may fail.  
 
 ## Initialization/Authentication
 

@@ -27,6 +27,7 @@ class Configuration
      * @todo Replace the $authorization with an appropriate value
      */
     public static $authorization = 'Token <your API key>';
+
     /**
      * Get the base uri for a given server in the current environment
      * @param  string $server Server name
@@ -44,8 +45,9 @@ class Configuration
     /**
      * A map of all baseurls used in different environments and servers
      * @var array
+     * @todo This should be private (See /tests/bootstrap.php)
      */
-    private static $environmentsMap = array(
+    public static $environmentsMap = array(
         Environments::PRODUCTION => array(
             Servers::DEFAULT_ => 'https://beta.gonebusy.com/api/v1',
         ),
