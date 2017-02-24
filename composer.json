@@ -3,7 +3,7 @@
     "type": "library",
     "description": "This is a PHP client for communicating with the full GoneBusy API",
     "keywords": ["GoneBusy API","API","SDK"],
-    "homepage": "http://www.gonebusy.com",
+    "homepage": "https://www.gonebusy.com",
     "license": "MIT",
     "authors": [
         {
