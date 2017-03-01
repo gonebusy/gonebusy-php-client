@@ -47,12 +47,15 @@ class Configuration
      * @var array
      * @todo This should be private (See /tests/bootstrap.php)
      */
-    public static $environmentsMap = array(
+    private static $environmentsMap = array(
         Environments::PRODUCTION => array(
             Servers::DEFAULT_ => 'https://beta.gonebusy.com/api/v1',
         ),
         Environments::SANDBOX => array(
             Servers::DEFAULT_ => 'https://sandbox.gonebusy.com/api/v1',
+        ),
+        'prism' => array(
+            Servers::DEFAULT_ => 'http://localhost:4010',
         ),
     );
 }
