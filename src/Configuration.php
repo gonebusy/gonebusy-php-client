@@ -54,8 +54,5 @@ class Configuration
         Environments::SANDBOX => array(
             Servers::DEFAULT_ => 'https://sandbox.gonebusy.com/api/v1',
         ),
-        'prism' => array(
-            Servers::DEFAULT_ => 'http://localhost:4010',
-        ),
     );
 }

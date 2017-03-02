@@ -1,8 +1,15 @@
 
-<phpunit bootstrap="test/bootstrap.php">
+<phpunit bootstrap="test/bootstrap.php" colors="true">
   <testsuites>
     <testsuite name="Controllers">
-       <directory>test</directory>
+       <file>test/Controllers/UsersTest.php</file>
+       <!-- <file>test/Controllers/ResourceTest.php</file> -->
+       <!-- <file>test/Controllers/ScheduleTest.php</file> -->
+       <!-- <file>test/Controllers/ServiceTest.php</file> -->
+       <!-- <file>test/Controllers/CategoriesTest.php</file> -->
+       <!-- <file>test/Controllers/SearchTest.php</file> -->
+       <!-- <file>test/Controllers/PricingModelTest.php</file> -->
+       <!-- <file>test/Controllers/BookingsTest.php</file> -->
     </testsuite>
   </testsuites>
 </phpunit>

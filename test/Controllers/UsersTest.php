@@ -16,7 +16,7 @@ class UsersTest extends TestCase
     private $authorization;
 
     /**
-     * To conatin the GonebusyLib\GonebusyClient
+     * To contain the GonebusyLib\GonebusyClient
      */
     protected $client;
 
@@ -30,74 +30,57 @@ class UsersTest extends TestCase
      * Create the GoneBusy SDK client for each test.
      */
     public function setUp() {
-        // TODO Use mock objects instead
-        // (which will use and intercept SDK HTTP requests, returning fixture files)
         $this->authorization = "Token ac98ed08b5b0a9e7c43a233aeba841ce"; // <testing@gonebusy.com>
-        $this->client = new GonebusyClient($authorization);
+        $this->client = new GonebusyClient($this->authorization);
 
         $this->users = $this->client->getUsers();
     }
 
-    // public function tearDown() {
-    //
-    // }
-
-
     /**
-     * Test GonebusyLib\Controllers\UsersController::getUsers()
-     * @todo guarantee successful listing every time (via fixture given to prism)
+     * Test POST /users/new
+     * GonebusyLib\Controllers\UsersController::createUser()
      */
-    public function testGetUsers() {
+    public function testCreateUser() {
+        $rand = rand();
+        $createUserBody = new CreateUserBody(
+            "e-{$rand}@mail-{$rand}.com",
+            "business_name",
+            "www.externalurl.com", # external_url
+            "first_name",
+            "last_name",
+            "permalink-{$rand}",
+            "timezone"
+        );
+        // print_r($createUserBody);
 
-        $response = $this->users->getUsers(
+        $response = $this->users->createUser(
             $this->authorization,
-            $page = 1,
-            $perPage = 10);
+            $createUserBody);
         // print_r($response);
 
-        // Just checks the response array has 'users' key
-        $data = json_decode(json_encode($response), true);
-        $this->assertArrayHasKey('users', $data);
+        $this->assertObjectHasAttribute('user', $response);
 
-        // Checks all the user fields are there // TODO compare to a fixture file
-        $keys = array('account_manager_id', 'address', 'business_name', 'disabled', 'email', 'external_url', 'first_name', 'id', 'last_name', 'permalink', 'phone', 'resource_id', 'role', 'timezone');
-        foreach($data['users'] as $ck) {
-            foreach($keys as $k) {
-                $this->assertArrayHasKey($k, $ck);
-            }
-        }
+        $responseBody = new CreateUserBody(
+            $response->user->email,
+            $response->user->businessName,
+            $response->user->externalUrl,
+            $response->user->firstName,
+            $response->user->lastName,
+            $response->user->permalink,
+            $response->user->timezone
+        );
+        // print_r($responseBody);
 
+        $this->assertEquals($createUserBody, $responseBody);
+
+        // Can't delete created user ATM.
     }
 
     /**
-     * Test GonebusyLib\Controllers\UsersController::updateUserById()
-     * @todo change to successful update response (via fixture given to prism)
-     */
-    public function testCantUpdateUserById() {
-
-        // UsersController.php:354 throws error due to inexistent user id
-        $this->expectException(InvalidArgumentException::class);
-
-        $id = 'id';
-        $updateUserByIdBody = new UpdateUserByIdBody();
-        // TODO: Below doesn't work with current SDK version (on PHP5.6):
-        $response = $this->users->updateUserById(
-                $this->authorization,
-                $id,
-                $updateUserByIdBody);
-        print_r($response);
-
-        // $this->assertObjectHasAttribute('user', $response);
-        // $this->assertEquals($id, $response->user->accountManagerId);
-    }
-
-    /**
-     * Test GonebusyLib\Controllers\UsersController::getUserById()
-     * @todo implement successful get response (via fixture given to prism)
+     * Test GET /users/{id}
+     * GonebusyLib\Controllers\UsersController::getUserById()
      */
     public function testGetUserById() {
-
-        // $collect['authorization' ] = $this->authorization;
         // $id = 'id';
         // $response = $this->users->getUserById(
         //     $this->authorization,
@@ -109,29 +92,64 @@ class UsersTest extends TestCase
     }
 
     /**
-     * Test GonebusyLib\Controllers\UsersController::createUser()
-     * @todo change to successful update response (via fixture given to prism)
+     * Test PUT /users/{id}
+     * GonebusyLib\Controllers\UsersController::updateUserById()
      */
-    public function testCantCreateUserExcept() {
+    public function testUpdateUserById() {
+        // // $this->expectException(EntitiesErrorException::class);
+        //
+        // $id = 'id';
+        // $updateUserByIdBody = new UpdateUserByIdBody();
+        // $response = $this->users->updateUserById(
+        //         $this->authorization,
+        //         $id,
+        //         $updateUserByIdBody);
+        // print_r($response);
 
-        // UsersController.php:183 throws error since prism can't create users...
-        $this->expectException(InvalidArgumentException::class);
-
-        $createUserBody = new CreateUserBody(
-            'jorge@orpinel.com',
-            'Orpinel',
-            'http://jorge.orpinel.com/',
-            'Jorge',
-            'Orpinel',
-            'jorgeorpinel',
-            'GMT-05:00'
-        );
-        $response = $this->users->createUser(
-            $this->authorization,
-            $createUserBody);
-        print_r($response);
-
-        // $this->assert... // XXX What would we look for?
+        // $this->assertObjectHasAttribute('user', $response);
+        // $this->assertEquals($id, $response->user->accountManagerId);
     }
+
+    /**
+     * Test GET /users
+     * GonebusyLib\Controllers\UsersController::getUsers()
+     */
+    public function testGetUsers() {
+
+        $response = $this->users->getUsers(
+            $this->authorization,
+            $page = 1,
+            $perPage = 3);
+        // print_r($response);
+
+        $this->assertObjectHasAttribute('users', $response);
+
+        // $testingUserBody = new CreateUserBody(
+        //     "8552697701",
+        //     "testing@gonebusy.com",
+        //     "8552697701",
+        //     "6815786092",
+        //     "pro"
+        // );
+        // print_r($testingUserBody);
+        //
+        // $responseBody = new CreateUserBody(
+        //     $response->users[0]->accountManagerId,
+        //     $response->users[0]->email,
+        //     $response->users[0]->id,
+        //     $response->users[0]->resourceId,
+        //     $response->users[0]->role
+        // );
+        // print_r($responseBody);
+        //
+        // $this->assertEquals($testingUserBody, $responseBody);
+    }
+
+    // /**
+    //  * Tear down tests.
+    //  */
+    // public function tearDown() {
+    //
+    // }
 
 }

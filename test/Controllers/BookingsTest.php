@@ -6,7 +6,7 @@ class BookingsTest extends TestCase
 {
     private $authorization;
     /**
-     * To conatin the GonebusyLib\GonebusyClient
+     * To contain the GonebusyLib\GonebusyClient
      */
     protected $client;
 
