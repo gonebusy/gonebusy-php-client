@@ -45,7 +45,6 @@ class Configuration
     /**
      * A map of all baseurls used in different environments and servers
      * @var array
-     * @todo This should be private (See /tests/bootstrap.php)
      */
     private static $environmentsMap = array(
         Environments::PRODUCTION => array(
