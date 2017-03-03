@@ -27,6 +27,7 @@ class Configuration
      * @todo Replace the $authorization with an appropriate value
      */
     public static $authorization = 'Token <your API key>';
+
     /**
      * Get the base uri for a given server in the current environment
      * @param  string $server Server name

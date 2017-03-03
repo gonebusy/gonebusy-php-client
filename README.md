@@ -39,17 +39,17 @@ CURL used to include a list of accepted CAs, but no longer bundles ANY CA certs.
 
 The following section explains how to use the Gonebusy library in a new project.
 
-### 1. Open Project in an IDE
+### 1. Open project in an IDE
 
 Open an IDE for PHP.
 
 Open this folder as a PHP project.
 
-### 2. Add a new Test Project
+### 2. Add a new project folder
 
-Create a new directory. Name the directory as "test".
+Create a new directory. Name the directory as "my-project".
 
-Add a PHP file to this project. Name it "testSDK.php".
+Add a PHP file to this project. For exampe name it "trySDK.php".
 
 Depending on your project setup, you might need to include composer's autoloader in your PHP code to enable auto loading of classes"
 
@@ -57,24 +57,21 @@ Depending on your project setup, you might need to include composer's autoloader
 require_once "../vendor/autoload.php";
 ```
 
-> Note: the `../` path assumes you'll run testSDK.php directly from test/ .
+> Note: the `../` path assumes you'll run trySDK.php directly from my-project/ .
 
 After this you can add code to initialize the client library and acquire the instance of a Controller class. Sample code to initialize the client library and using controller methods is given in the subsequent sections.
 
-### 3. Run the Test Project
+### 3. Run your project
 
 ```sh
-cd test
-php testSDK.php
+php my-project/trySDK.php
 ```
 
 ## How to Test
+Unit tests in this SDK can be run using PHPUnit. The test cases are located in the test/Controllers/ dir.
 
-Unit tests in this SDK can be run using PHPUnit.
-
-1. First install the dependencies using composer including the `require-dev` dependencies.
-1. Run `vendor/bin/phpunit --verbose` from command line to execute tests. If you have
-   installed PHPUnit globally, run tests using `phpunit --verbose` instead.
+1. Make sure you've installed the dependencies using composer including the `require-dev` dependencies (you may have already done this with `composer install` or `composer update`).
+1. Run `vendor/bin/phpunit --verbose` from command line to execute the test suite.
 
 ## Initialization/Authentication
 
