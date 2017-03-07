@@ -50,6 +50,10 @@ class SchedulesController extends BaseController
      * @param string  $authorization A valid API key, in the format 'Token API_KEY'
      * @param integer $page          (optional) Page offset to fetch.
      * @param integer $perPage       (optional) Number of results to return per page.
+     * @param integer $resourceId    (optional) Retrieve Schedules only for this Resource.  You, or provided :user_id,
+     *                               must be authorized to manage this Resource.
+     * @param integer $serviceId     (optional) Retrieve Schedules only for this Service.  You, or provided :user_id,
+     *                               must be authorized to manage this Service.
      * @param integer $userId        (optional) Retrieve Schedules owned only by this User Id.  You must be authorized
      *                               to manage this User Id.
      * @return mixed response from the API call
@@ -59,6 +63,8 @@ class SchedulesController extends BaseController
         $authorization,
         $page = 1,
         $perPage = 10,
+        $resourceId = null,
+        $serviceId = null,
         $userId = null
     ) {
 
@@ -72,6 +78,8 @@ class SchedulesController extends BaseController
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
             'page'          => (null != $page) ? $page : 1,
             'per_page'      => (null != $perPage) ? $perPage : 10,
+            'resource_id'   => $resourceId,
+            'service_id'    => $serviceId,
             'user_id'       => $userId,
         ));
 
