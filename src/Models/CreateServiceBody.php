@@ -42,6 +42,13 @@ class CreateServiceBody implements JsonSerializable
     public $categories;
 
     /**
+     * Max duration of the Service in minutes
+     * @maps max_duration
+     * @var integer $maxDuration public property
+     */
+    public $maxDuration;
+
+    /**
      * Optional Price Model Id
      * @maps price_model_id
      * @var integer $priceModelId public property
@@ -104,6 +111,7 @@ class CreateServiceBody implements JsonSerializable
         $json['duration']       = $this->duration;
         $json['name']           = $this->name;
         $json['categories']     = $this->categories;
+        $json['max_duration']   = $this->maxDuration;
         $json['price_model_id'] = $this->priceModelId;
         $json['resources']      = $this->resources;
         $json['short_name']     = $this->shortName;

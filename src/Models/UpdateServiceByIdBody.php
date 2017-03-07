@@ -33,6 +33,13 @@ class UpdateServiceByIdBody implements JsonSerializable
     public $duration;
 
     /**
+     * Max duration of the Service in minutes
+     * @maps max_duration
+     * @var integer $maxDuration public property
+     */
+    public $maxDuration;
+
+    /**
      * Service Name
      * @var string $name public property
      */
@@ -91,6 +98,7 @@ class UpdateServiceByIdBody implements JsonSerializable
         $json['categories']     = $this->categories;
         $json['description']    = $this->description;
         $json['duration']       = $this->duration;
+        $json['max_duration']   = $this->maxDuration;
         $json['name']           = $this->name;
         $json['price_model_id'] = $this->priceModelId;
         $json['resources']      = $this->resources;
