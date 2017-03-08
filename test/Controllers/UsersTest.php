@@ -36,13 +36,14 @@ class UsersTest extends TestCase
         $this->users = $this->client->getUsers();
     }
 
+
     /**
-     * Test POST /users/new
-     * GonebusyLib\Controllers\UsersController::createUser()
+     * Generate unique user data.
+     * @return  GonebusyLib\Models\CreateUserBody
      */
-    public function testCreateUser() {
+    private function uniqueUserData() {
         $rand = rand();
-        $createUserBody = new CreateUserBody(
+        return new CreateUserBody(
             "e-{$rand}@mail-{$rand}.com",
             "business_name",
             "www.externalurl.com", # external_url
@@ -51,16 +52,15 @@ class UsersTest extends TestCase
             "permalink-{$rand}",
             "timezone"
         );
-        // print_r($createUserBody);
+    }
 
-        $response = $this->users->createUser(
-            $this->authorization,
-            $createUserBody);
-        // print_r($response);
-
-        $this->assertObjectHasAttribute('user', $response);
-
-        $responseBody = new CreateUserBody(
+    /**
+     * Generate data from user response.
+     * @param  GonebusyLib\Models\EntitiesUserResponse $response
+     * @return  GonebusyLib\Models\CreateUserBody
+     */
+    private function dataFromResponse($response) {
+        return new CreateUserBody(
             $response->user->email,
             $response->user->businessName,
             $response->user->externalUrl,
@@ -69,11 +69,28 @@ class UsersTest extends TestCase
             $response->user->permalink,
             $response->user->timezone
         );
-        // print_r($responseBody);
+    }
 
-        $this->assertEquals($createUserBody, $responseBody);
 
-        // Can't delete created user ATM.
+    /**
+     * Test POST /users/new
+     * GonebusyLib\Controllers\UsersController::createUser()
+     */
+    public function testCreateUser() {
+        $createUserBody = $this->uniqueUserData();
+
+        // Create GonebusyLib\Models\EntitiesUserResponse:
+        $response = $this->users->createUser($this->authorization, $createUserBody);
+        // /* DEBUG */ print_r($response);
+
+        // Was it created?
+        $this->assertObjectHasAttribute('user', $response);
+
+        // Does it have all the original data we sent?
+        $responseBody = $this->dataFromResponse($response);
+        $this->assertEquals($responseBody, $createUserBody);
+
+        // XXX Can't delete created users ATM.
     }
 
     /**
@@ -81,33 +98,51 @@ class UsersTest extends TestCase
      * GonebusyLib\Controllers\UsersController::getUserById()
      */
     public function testGetUserById() {
-        // $id = 'id';
-        // $response = $this->users->getUserById(
-        //     $this->authorization,
-        //     $id);
-        // // print_r($response);
-        //
-        // $this->assertObjectHasAttribute('user', $response);
-        // $this->assertEquals($id, $response->user->accountManagerId);
+        // Create user:
+        $createUserBody = $this->uniqueUserData();
+        $createResponse = $this->users->createUser($this->authorization, $createUserBody);
+
+        // Get user by it's id
+        $response = $this->users->getUserById(
+            $this->authorization,
+            $createResponse->user->id);
+        // /* DEBUG */ print_r($response);
+
+        // Was it fetched?
+        $this->assertObjectHasAttribute('user', $response);
+
+        // Does it have all the original data we sent?
+        $responseBody = $this->dataFromResponse($response);
+        $this->assertEquals($responseBody, $createUserBody);
     }
 
     /**
      * Test PUT /users/{id}
      * GonebusyLib\Controllers\UsersController::updateUserById()
      */
-    public function testUpdateUserById() {
-        // // $this->expectException(EntitiesErrorException::class);
-        //
-        // $id = 'id';
-        // $updateUserByIdBody = new UpdateUserByIdBody();
-        // $response = $this->users->updateUserById(
-        //         $this->authorization,
-        //         $id,
-        //         $updateUserByIdBody);
-        // print_r($response);
+    public function testUpdateUserById() { // $this->expectException(EntitiesErrorException::class);
+        // Create user:
+        $createUserBody = $this->uniqueUserData();
+        $createResponse = $this->users->createUser($this->authorization, $createUserBody);
+        // /* DEBUG */ print_r($createResponse);
 
-        // $this->assertObjectHasAttribute('user', $response);
-        // $this->assertEquals($id, $response->user->accountManagerId);
+        $anotherUserBody = $this->uniqueUserData();
+
+        // Update user by it's id
+        $response = $this->users->updateUserById(
+            $this->authorization,
+            $createResponse->user->id,
+            $anotherUserBody);
+        // /* DEBUG */ print_r($response);
+
+        // Was it fetched?
+        $this->assertObjectHasAttribute('user', $response);
+
+        // Does it have all the new data we sent?
+        $responseBody = $this->dataFromResponse($response);
+        $this->assertEquals($responseBody, $anotherUserBody);
+
+        // XXX Do we need to getUserById again and/or check the ids?
     }
 
     /**
@@ -115,34 +150,20 @@ class UsersTest extends TestCase
      * GonebusyLib\Controllers\UsersController::getUsers()
      */
     public function testGetUsers() {
-
+        $perPage = 3; // XXX Are this enough?
         $response = $this->users->getUsers(
             $this->authorization,
             $page = 1,
-            $perPage = 3);
-        // print_r($response);
+            $perPage);
+        // /* DEBUG */ print_r($response);
 
+        // Did it return an arrayof 3 users?
         $this->assertObjectHasAttribute('users', $response);
-
-        // $testingUserBody = new CreateUserBody(
-        //     "8552697701",
-        //     "testing@gonebusy.com",
-        //     "8552697701",
-        //     "6815786092",
-        //     "pro"
-        // );
-        // print_r($testingUserBody);
-        //
-        // $responseBody = new CreateUserBody(
-        //     $response->users[0]->accountManagerId,
-        //     $response->users[0]->email,
-        //     $response->users[0]->id,
-        //     $response->users[0]->resourceId,
-        //     $response->users[0]->role
-        // );
-        // print_r($responseBody);
-        //
-        // $this->assertEquals($testingUserBody, $responseBody);
+        $this->assertCount($perPage, $response->users);
+        foreach($response->users as $user) {
+            $this->assertInstanceOf('GonebusyLib\Models\EntitiesUserResponse', $user);
+            // XXX Test structure?
+        }
     }
 
     // /**
