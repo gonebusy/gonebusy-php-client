@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use GonebusyLib\Configuration;
 use GonebusyLib\GonebusyClient;
 use GonebusyLib\Models\CreateUserBody;
+// use GonebusyLib\Models\UpdateUserByIdBody; # Not needed since CreateUserBody serves same purpose
 // use GonebusyLib\Controllers\UsersController; # Not needed since we can use GonebusyClient::getUsers()
 
 class UsersTest extends TestCase
@@ -120,6 +121,7 @@ class UsersTest extends TestCase
         $createResponse = $this->users->createUser(Configuration::$authorization, $createUserBody);
 
         $anotherUserBody = $this->uniqueUserData();
+        # XXX ^ Uses CreateUserBody doubling as UpdateUserByIdBody.
 
         // Update user by it's id
         $response = $this->users->updateUserById(
@@ -146,8 +148,12 @@ class UsersTest extends TestCase
             $page = 1,
             $perPage);
 
+        // Were they fetched?
+        // $this->assertObjectHasAttribute('users', $response);
+        // XXX Is this better? If so apply to all tests:
+        $this->assertInstanceOf('GonebusyLib\Models\GetUsersResponse', $response);
+
         // Did it return an arrayof 3 users?
-        $this->assertObjectHasAttribute('users', $response);
         $this->assertCount($perPage, $response->users);
         foreach($response->users as $user) {
             $this->assertInstanceOf('GonebusyLib\Models\EntitiesUserResponse', $user);
