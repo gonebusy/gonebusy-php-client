@@ -14,8 +14,6 @@ use GonebusyLib\Models\UpdateUserByIdBody;
 
 class UsersTest extends TestCase
 {
-    private $authorization;
-
     /**
      * To contain the GonebusyLib\GonebusyClient
      */
@@ -28,11 +26,11 @@ class UsersTest extends TestCase
 
 
     /**
-     * Create the GoneBusy SDK client for each test.
+     * Create the GonebusyClient and UsersController for each test.
      */
     public function setUp() {
         $this->client = new GonebusyClient();
-        # Uses Configuration::$authorization by default: (See bootstrap.php)
+        // Uses Configuration::$authorization by default: (See bootstrap.php)
         $this->users = $this->client->getUsers();
     }
 
@@ -49,7 +47,7 @@ class UsersTest extends TestCase
                 return new CreateUserBody(
                     "e-{$rand}@mail-{$rand}.com",
                     "business_name",
-                    "www.externalurl.com", # external_url
+                    "www.externalurl.com", // external_url
                     "first_name",
                     "last_name",
                     "permalink-{$rand}",
@@ -59,7 +57,7 @@ class UsersTest extends TestCase
                 return new UpdateUserByIdBody(
                     "business_name",
                     "e-{$rand}@mail-{$rand}.com",
-                    "www.externalurl.com", # external_url
+                    "www.externalurl.com", // external_url
                     "first_name",
                     "last_name",
                     "permalink-{$rand}",
