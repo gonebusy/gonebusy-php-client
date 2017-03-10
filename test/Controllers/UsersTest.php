@@ -8,8 +8,9 @@ use PHPUnit\Framework\TestCase;
 use GonebusyLib\Configuration;
 use GonebusyLib\GonebusyClient;
 use GonebusyLib\Models\CreateUserBody;
-// use GonebusyLib\Models\UpdateUserByIdBody; # Not needed since CreateUserBody serves same purpose
-// use GonebusyLib\Controllers\UsersController; # Not needed since we can use GonebusyClient::getUsers()
+use GonebusyLib\Models\UpdateUserByIdBody;
+// use GonebusyLib\Controllers\UsersController;
+// ^ Not needed since we can use GonebusyClient::getUsers()
 
 class UsersTest extends TestCase
 {
@@ -38,36 +39,64 @@ class UsersTest extends TestCase
 
     /**
      * Generate unique user data.
-     * @return  GonebusyLib\Models\CreateUserBody
+     * @param  string $type Should be 'create' or 'update'.
+     * @return  CreateUserBody or UpdateUserByIdBody object with unique data to send to API
      */
-    private function uniqueUserData() {
-        $rand = rand();
-        return new CreateUserBody(
-            "e-{$rand}@mail-{$rand}.com",
-            "business_name",
-            "www.externalurl.com", # external_url
-            "first_name",
-            "last_name",
-            "permalink-{$rand}",
-            "timezone"
-        );
+    private function uniqueUserData($type) {
+        $rand = rand(); // There's a minuscule chance this will already exist on the API.
+        switch($type) {
+            case 'create':
+                return new CreateUserBody(
+                    "e-{$rand}@mail-{$rand}.com",
+                    "business_name",
+                    "www.externalurl.com", # external_url
+                    "first_name",
+                    "last_name",
+                    "permalink-{$rand}",
+                    "timezone"
+                );
+            case 'update':
+                return new UpdateUserByIdBody(
+                    "business_name",
+                    "e-{$rand}@mail-{$rand}.com",
+                    "www.externalurl.com", # external_url
+                    "first_name",
+                    "last_name",
+                    "permalink-{$rand}",
+                    "timezone"
+                );
+        }
     }
 
     /**
      * Generate data from user response.
      * @param  GonebusyLib\Models\EntitiesUserResponse $response
-     * @return  GonebusyLib\Models\CreateUserBody
+     * @param  string $type Should be 'create' or 'update'.
+     * @return  CreateUserBody or UpdateUserByIdBody object with data from $response
      */
-    private function dataFromResponse($response) {
-        return new CreateUserBody(
-            $response->user->email,
-            $response->user->businessName,
-            $response->user->externalUrl,
-            $response->user->firstName,
-            $response->user->lastName,
-            $response->user->permalink,
-            $response->user->timezone
-        );
+    private function dataFromResponse($response, $type) {
+        switch($type) {
+            case 'create':
+                return new CreateUserBody(
+                    $response->user->email,
+                    $response->user->businessName,
+                    $response->user->externalUrl,
+                    $response->user->firstName,
+                    $response->user->lastName,
+                    $response->user->permalink,
+                    $response->user->timezone
+                );
+            case 'update':
+                return new UpdateUserByIdBody(
+                    $response->user->businessName,
+                    $response->user->email,
+                    $response->user->externalUrl,
+                    $response->user->firstName,
+                    $response->user->lastName,
+                    $response->user->permalink,
+                    $response->user->timezone
+                );
+        }
     }
 
 
@@ -76,16 +105,16 @@ class UsersTest extends TestCase
      * GonebusyLib\Controllers\UsersController::createUser()
      */
     public function testCreateUser() {
-        $createUserBody = $this->uniqueUserData();
+        $createUserBody = $this->uniqueUserData('create');
 
         // Create GonebusyLib\Models\EntitiesUserResponse:
         $response = $this->users->createUser(Configuration::$authorization, $createUserBody);
 
         // Was it created?
-        $this->assertObjectHasAttribute('user', $response);
+        $this->assertInstanceOf('GonebusyLib\Models\CreateUserResponse', $response);
 
         // Does it have all the original data we sent?
-        $responseBody = $this->dataFromResponse($response);
+        $responseBody = $this->dataFromResponse($response, 'create');
         $this->assertEquals($responseBody, $createUserBody);
 
         // Can't delete test users at the moment.
@@ -97,17 +126,17 @@ class UsersTest extends TestCase
      */
     public function testGetUserById() {
         // Create user:
-        $createUserBody = $this->uniqueUserData();
+        $createUserBody = $this->uniqueUserData('create');
         $createResponse = $this->users->createUser(Configuration::$authorization, $createUserBody);
 
         // Get user by it's id
         $response = $this->users->getUserById(Configuration::$authorization, $createResponse->user->id);
 
         // Was it fetched?
-        $this->assertObjectHasAttribute('user', $response);
+        $this->assertInstanceOf('GonebusyLib\Models\GetUserByIdResponse', $response);
 
         // Does it have all the original data we sent?
-        $responseBody = $this->dataFromResponse($response);
+        $responseBody = $this->dataFromResponse($response, 'create');
         $this->assertEquals($responseBody, $createUserBody);
     }
 
@@ -116,24 +145,23 @@ class UsersTest extends TestCase
      * GonebusyLib\Controllers\UsersController::updateUserById()
      */
     public function testUpdateUserById() {
-        // Create user:
-        $createUserBody = $this->uniqueUserData();
+        // Create a user:
+        $createUserBody = $this->uniqueUserData('create');
         $createResponse = $this->users->createUser(Configuration::$authorization, $createUserBody);
 
-        $anotherUserBody = $this->uniqueUserData();
-        # XXX ^ Uses CreateUserBody doubling as UpdateUserByIdBody.
+        $anotherUserBody = $this->uniqueUserData('update');
 
-        // Update user by it's id
+        // Update the same user:
         $response = $this->users->updateUserById(
             Configuration::$authorization,
             $createResponse->user->id,
             $anotherUserBody);
 
         // Was it fetched?
-        $this->assertObjectHasAttribute('user', $response);
+        $this->assertInstanceOf('GonebusyLib\Models\UpdateUserByIdResponse', $response);
 
         // Does it have all the new data we sent?
-        $responseBody = $this->dataFromResponse($response);
+        $responseBody = $this->dataFromResponse($response, 'update');
         $this->assertEquals($responseBody, $anotherUserBody);
     }
 
@@ -148,13 +176,10 @@ class UsersTest extends TestCase
             $page = 1,
             $perPage);
 
-        // Were they fetched?
-        // $this->assertObjectHasAttribute('users', $response);
-        // XXX Is this better? If so apply to all tests:
         $this->assertInstanceOf('GonebusyLib\Models\GetUsersResponse', $response);
 
         // Did it return an arrayof 3 users?
-        $this->assertCount($perPage, $response->users);
+        $this->assertCount($perPage, $response->users); // Slightly hardcoded to assume $users exists in $response.
         foreach($response->users as $user) {
             $this->assertInstanceOf('GonebusyLib\Models\EntitiesUserResponse', $user);
         }
