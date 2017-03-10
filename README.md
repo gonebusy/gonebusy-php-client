@@ -61,6 +61,17 @@ require_once "../vendor/autoload.php";
 
 After this you can add code to initialize the client library and acquire the instance of a Controller class. Sample code to initialize the client library and using controller methods is given in the subsequent sections.
 
+Summary of GoneBusy objects (more info on the [API Refence](https://gonebusy.github.io/api#/)):  
+A **User** (WHO) is required to perform operations.  
+A **Resource** (WHAT) is needed for all scheduling operations.
+_Each User is assigned a default Resource (himself) automatically._  
+A **Schedule** (WHEN) is then used as the central piece to link Resources to the following objects:  
+A **Service** (HOW) represents the Resource's offer and is linked to its Schedule.
+_A **Search** of users and services can be performed. Services are assigned a **Pricing Model**_;  
+Finally, a **Booking** is placed (at a particular time window) in a Schedule, linking it to a Resource-Service combo.
+_Bookings are assigned a **Category**._
+> Creating them in your code in the order implied above may be necessary.
+
 ### 3. Run your project
 
 ```sh
