@@ -1,14 +1,15 @@
 <?php
-/**
+/*
  * Resources SDK Controller Test Case
  */
+
+namespace GonebusyTest\Controllers;
 
 use PHPUnit\Framework\TestCase;
 
 use GonebusyLib\Configuration;
 use GonebusyLib\GonebusyClient;
 use GonebusyLib\Models\CreateResourceBody;
-use GonebusyLib\Models\GenderEnum;
 use GonebusyLib\Models\UpdateResourceByIdBody;
 // use GonebusyLib\Controllers\ResourceController;
 // ^ Not needed since we can use GonebusyClient::getResources()
@@ -34,30 +35,30 @@ class ResourcesTest extends TestCase
     }
 
     /**
-     * Generate unique resource data.
+     * Returns arbitrary resource data.
      * @param  string $type Should be 'create' or 'update'.
      * @return  CreateResourceBody or UpdateResourceByIdBody object with unique data to send to API
      */
-    private function uniqueResourceData($type) {
+    private function resourceData($type) {
         $rand = rand();
         switch($type) {
             case 'create':
                 return new CreateResourceBody(
                     "name",
-                    "type",
-                    0, // capacity
+                    "Staff", // Hardcoded. Way to get from API or SDK in the future?
+                    NULL, // capacity
                     "description",
-                    GonebusyLib\Models\GenderEnum::F,
-                    1, // thing_type_id // XXX Hardcoded. Way to get from API or SDK?
-                    0 // user_id
+                    NULL, // gender
+                    NULL, // thing_type_id
+                    NULL // user_id detauls to self
                 );
             case 'update':
                 return new UpdateResourceByIdBody(
-                    0, // capacity
+                    NULL, // capacity
                     "description",
-                    "gender",
+                    NULL, // gender
                     "name",
-                    0 // thing_type_id
+                    NULL // thing_type_id
                 );
         }
     }
@@ -78,7 +79,7 @@ class ResourcesTest extends TestCase
                     $response->resource->description,
                     $response->resource->gender,
                     $response->resource->thingTypeId,
-                    $response->resource->ownerId
+                    NULL // $response->resource->ownerId
                 );
             case 'update':
                 return new UpdateResourceByIdBody(
@@ -97,91 +98,96 @@ class ResourcesTest extends TestCase
      * GonebusyLib\Controllers\ResourceController::createResource()
      */
     public function testCreateResource() {
-        $createResourceBody = $this->uniqueResourceData('create');
-        /* DEBUG */ print_r($createResourceBody);
+        $createResourceBody = $this->resourceData('create', $createResponse->user->id);
+        // /* DEBUG */ print_r($createResourceBody);
 
-        //Create GonebusyLib\Models\EntitiesResourceResponse:
+        // Create GonebusyLib\Models\EntitiesResourceResponse:
         $response = $this->resources->createResource(Configuration::$authorization, $createResourceBody);
-        /* DEBUG */ print_r($response);
+        // /* DEBUG */ print_r($response);
 
         // Was it created?
         $this->assertInstanceOf('GonebusyLib\Models\CreateResourceResponse', $response);
 
-        // TODO Does it have all the original data we sent?
-        // $responseBody = $this->dataFromResponse($response);
-        // $this->assertEquals($responseBody, $createResourceBody);
+        // Does it have all the original data we sent?
+        $responseBody = $this->dataFromResponse($response, 'create');
+        // /* DEBUG */ print_r($responseBody);
+        $this->assertEquals($responseBody, $createResourceBody);
 
-        // TODO Delete test resource
-    }
+        // Delete test resource:
+        $delResponse = $this->resources->deleteResourceById(Configuration::$authorization, $response->resource->id);
 
-    /**
-     * TODO Test GET /resources/{id}
-     * GonebusyLib\Controllers\ResourcesController::getResourceById()
-     */
-    public function testGetResourceById() {
-        $result = $this->resources->getResourceById(
-            Configuration::$authorization,
-            5052498976
-        );
-        $data = json_decode(json_encode($result), true);
-        $this->assertArrayHasKey('resource', $data);
-        $keys = array(
-            'capacity',
-            'description',
-            'gender',
-            'id',
-            'name',
-            'owner_id',
-            'resource_type',
-            'thing_type_id'
-        );
-        foreach ($keys as $k) {
-            $this->assertArrayHasKey($k, $data['resource']);
-        }
+        // Delete test user:
+        // Can't delete users at the moment.
     }
 
     // /**
-    //  * TODO Test PUT /resources/{id}}
-    //  * GonebusyLib\Controllers\ResourceController::updateResourceById()
+    //  * TODO Test GET /resources/{id}
+    //  * GonebusyLib\Controllers\ResourcesController::getResourceById()
     //  */
-    // public function testUpdateResourceById() {
-    //     //
+    // public function testGetResourceById() {
+    //     $result = $this->resources->getResourceById(
+    //         Configuration::$authorization,
+    //         5052498976
+    //     );
+    //     $data = json_decode(json_encode($result), true);
+    //     $this->assertArrayHasKey('resource', $data);
+    //     $keys = array(
+    //         'capacity',
+    //         'description',
+    //         'gender',
+    //         'id',
+    //         'name',
+    //         'owner_id',
+    //         'resource_type',
+    //         'thing_type_id'
+    //     );
+    //     foreach ($keys as $k) {
+    //         $this->assertArrayHasKey($k, $data['resource']);
+    //     }
     // }
-
-    /**
-     * TODO Test GET /resources
-     * GonebusyLib\Controllers\ResourcesController::getResources()
-     */
-    public function testGetResources() {
-        $result = $this->resources->getResources( Configuration::$authorization );
-        $data = json_decode(json_encode($result), true);
-        $keys = array(
-            'capacity',
-            'description',
-            'gender',
-            'id',
-            'name',
-            'owner_id',
-            'resource_type',
-            'thing_type_id'
-        );
-        foreach ($data['resources'] as $ck) {
-            foreach ($keys as $k) {
-                    $this->assertArrayHasKey($k, $ck);
-            }
-        }
-    }
-
-    /**
-     * TODO Test GET /resources/things
-     * Test GonebusyLib\Controllers\ResourcesController::getResourceThings()
-     */
-    public function testGetResourceThings() {
-        $result = $this->resources->getResourceThings( Configuration::$authorization );
-        $data = json_decode(json_encode($result), true);
-        $this->assertArrayHasKey('things', $data);
-    }
-
+    //
+    // // /**
+    // //  * TODO Test PUT /resources/{id}}
+    // //  * GonebusyLib\Controllers\ResourceController::updateResourceById()
+    // //  */
+    // // public function testUpdateResourceById() {
+    // //     //
+    // // }
+    //
+    // /**
+    //  * TODO Test GET /resources
+    //  * GonebusyLib\Controllers\ResourcesController::getResources()
+    //  */
+    // public function testGetResources() {
+    //     $result = $this->resources->getResources( Configuration::$authorization );
+    //     $data = json_decode(json_encode($result), true);
+    //     $keys = array(
+    //         'capacity',
+    //         'description',
+    //         'gender',
+    //         'id',
+    //         'name',
+    //         'owner_id',
+    //         'resource_type',
+    //         'thing_type_id'
+    //     );
+    //     foreach ($data['resources'] as $ck) {
+    //         foreach ($keys as $k) {
+    //                 $this->assertArrayHasKey($k, $ck);
+    //         }
+    //     }
+    // }
+    //
+    // /**
+    //  * TODO Test GET /resources/things
+    //  * Test GonebusyLib\Controllers\ResourcesController::getResourceThings()
+    //  */
+    // public function testGetResourceThings() {
+    //     $result = $this->resources->getResourceThings( Configuration::$authorization );
+    //     $data = json_decode(json_encode($result), true);
+    //     $this->assertArrayHasKey('things', $data);
+    // }
+    //
     // /**
     //  * TODO Test PUT /resources/{id}}
     //  * GonebusyLib\Controllers\ResourceController::deleteResourceById()
@@ -189,8 +195,8 @@ class ResourcesTest extends TestCase
     // public function testDeleteResourceById() {
     //     //
     // }
-
-
+    //
+    //
     // /**
     //  * XXX Tear down tests.
     //  */
