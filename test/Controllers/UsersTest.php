@@ -1,7 +1,9 @@
 <?php
-/**
+/*
  * Users SDK Controller Test Case
  */
+
+namespace GonebusyTest\Controllers;
 
 use PHPUnit\Framework\TestCase;
 
@@ -115,7 +117,8 @@ class UsersTest extends TestCase
         $responseBody = $this->dataFromResponse($response, 'create');
         $this->assertEquals($responseBody, $createUserBody);
 
-        // Can't delete test users at the moment.
+        // Delete test user:
+        // Can't delete users at the moment.
     }
 
     /**
