@@ -11,8 +11,7 @@ use GonebusyLib\Configuration;
 use GonebusyLib\GonebusyClient;
 use GonebusyLib\Models\CreateResourceBody;
 use GonebusyLib\Models\UpdateResourceByIdBody;
-// use GonebusyLib\Controllers\ResourceController;
-// ^ Not needed since we can use GonebusyClient::getResources()
+// use GonebusyLib\Controllers\ResourcesController;
 
 class ResourcesTest extends TestCase
 {
@@ -22,7 +21,7 @@ class ResourcesTest extends TestCase
     protected $client;
 
     /**
-     * To contain the GonebusyLib\Controllers\ResourceController
+     * To contain the GonebusyLib\Controllers\ResourcesController
      */
     protected $resources;
 
@@ -33,6 +32,7 @@ class ResourcesTest extends TestCase
         $this->client = new GonebusyClient();
         $this->resources = $this->client->getResources();
     }
+
 
     /**
      * Returns arbitrary resource data.
