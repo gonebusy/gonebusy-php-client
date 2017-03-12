@@ -168,6 +168,7 @@ class UsersTest extends TestCase
 
     /**
      * Test GET /users
+     * Assumes there's at least 3 Users in the API's database.
      * GonebusyLib\Controllers\UsersController::getUsers()
      */
     public function testGetUsers() {
@@ -179,7 +180,7 @@ class UsersTest extends TestCase
 
         $this->assertInstanceOf('GonebusyLib\Models\GetUsersResponse', $response);
 
-        // Did it return an arrayof 3 users?
+        // Did it return an array of 3 users?
         $this->assertCount($perPage, $response->users); // Slightly hardcoded to assume $users exists in $response.
         foreach($response->users as $user) {
             $this->assertInstanceOf('GonebusyLib\Models\EntitiesUserResponse', $user);

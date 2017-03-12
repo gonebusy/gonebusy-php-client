@@ -98,110 +98,133 @@ class ResourcesTest extends TestCase
      * GonebusyLib\Controllers\ResourceController::createResource()
      */
     public function testCreateResource() {
-        $createResourceBody = $this->resourceData('create', $createResponse->user->id);
-        // /* DEBUG */ print_r($createResourceBody);
+        $createResourceBody = $this->resourceData('create');
 
         // Create GonebusyLib\Models\EntitiesResourceResponse:
         $response = $this->resources->createResource(Configuration::$authorization, $createResourceBody);
-        // /* DEBUG */ print_r($response);
 
         // Was it created?
         $this->assertInstanceOf('GonebusyLib\Models\CreateResourceResponse', $response);
 
         // Does it have all the original data we sent?
         $responseBody = $this->dataFromResponse($response, 'create');
-        // /* DEBUG */ print_r($responseBody);
         $this->assertEquals($responseBody, $createResourceBody);
 
         // Delete test resource:
         $delResponse = $this->resources->deleteResourceById(Configuration::$authorization, $response->resource->id);
-
-        // Delete test user:
-        // Can't delete users at the moment.
     }
 
-    // /**
-    //  * TODO Test GET /resources/{id}
-    //  * GonebusyLib\Controllers\ResourcesController::getResourceById()
-    //  */
-    // public function testGetResourceById() {
-    //     $result = $this->resources->getResourceById(
-    //         Configuration::$authorization,
-    //         5052498976
-    //     );
-    //     $data = json_decode(json_encode($result), true);
-    //     $this->assertArrayHasKey('resource', $data);
-    //     $keys = array(
-    //         'capacity',
-    //         'description',
-    //         'gender',
-    //         'id',
-    //         'name',
-    //         'owner_id',
-    //         'resource_type',
-    //         'thing_type_id'
-    //     );
-    //     foreach ($keys as $k) {
-    //         $this->assertArrayHasKey($k, $data['resource']);
-    //     }
-    // }
-    //
-    // // /**
-    // //  * TODO Test PUT /resources/{id}}
-    // //  * GonebusyLib\Controllers\ResourceController::updateResourceById()
-    // //  */
-    // // public function testUpdateResourceById() {
-    // //     //
-    // // }
-    //
-    // /**
-    //  * TODO Test GET /resources
-    //  * GonebusyLib\Controllers\ResourcesController::getResources()
-    //  */
-    // public function testGetResources() {
-    //     $result = $this->resources->getResources( Configuration::$authorization );
-    //     $data = json_decode(json_encode($result), true);
-    //     $keys = array(
-    //         'capacity',
-    //         'description',
-    //         'gender',
-    //         'id',
-    //         'name',
-    //         'owner_id',
-    //         'resource_type',
-    //         'thing_type_id'
-    //     );
-    //     foreach ($data['resources'] as $ck) {
-    //         foreach ($keys as $k) {
-    //                 $this->assertArrayHasKey($k, $ck);
-    //         }
-    //     }
-    // }
-    //
-    // /**
-    //  * TODO Test GET /resources/things
-    //  * Test GonebusyLib\Controllers\ResourcesController::getResourceThings()
-    //  */
-    // public function testGetResourceThings() {
-    //     $result = $this->resources->getResourceThings( Configuration::$authorization );
-    //     $data = json_decode(json_encode($result), true);
-    //     $this->assertArrayHasKey('things', $data);
-    // }
-    //
-    // /**
-    //  * TODO Test PUT /resources/{id}}
-    //  * GonebusyLib\Controllers\ResourceController::deleteResourceById()
-    //  */
-    // public function testDeleteResourceById() {
-    //     //
-    // }
-    //
-    //
-    // /**
-    //  * XXX Tear down tests.
-    //  */
-    // public function tearDown() {
-    //
-    // }
+    /**
+     * Test GET /resources/{id}
+     * GonebusyLib\Controllers\ResourcesController::getResourceById()
+     */
+    public function testGetResourceById() {
+        $createResourceBody = $this->resourceData('create');
+
+        // Create GonebusyLib\Models\EntitiesResourceResponse:
+        $responseResource = $this->resources->createResource(Configuration::$authorization, $createResourceBody);
+
+        $response = $this->resources->getResourceById(
+            Configuration::$authorization,
+            $responseResource->resource->id
+        );
+
+        // Was it created?
+        $this->assertInstanceOf('GonebusyLib\Models\GetResourceByIdResponse', $response);
+
+         // Does it have all the original data we sent?
+        $responseBody = $this->dataFromResponse($response, 'create');
+        $this->assertEquals($responseBody, $createResourceBody);
+
+        // Delete test resource:
+        $delResponse = $this->resources->deleteResourceById(Configuration::$authorization, $responseResource->resource->id);
+    }
+
+    /**
+     * Test PUT /resources/{id}}
+     * GonebusyLib\Controllers\ResourceController::updateResourceById()
+     */
+    public function testUpdateResourceById() {
+        $createResourceBody = $this->resourceData('create');
+        $createResponse = $this->resources->createResource(Configuration::$authorization, $createResourceBody);
+
+        $anotherResourceBody = $this->resourceData('update');
+
+        // Update the same user:
+        $response = $this->resources->updateResourceById(
+            Configuration::$authorization,
+            $createResponse->resource->id,
+            $anotherResourceBody);
+
+        // Was it fetched?
+        $this->assertInstanceOf('GonebusyLib\Models\UpdateResourceByIdResponse', $response);
+
+        // Does it have all the new data we sent?
+        $responseBody = $this->dataFromResponse($response, 'update');
+        $this->assertEquals($responseBody, $anotherResourceBody);
+    }
+
+    /**
+     * Test GET /resources
+     * Assumes there's at least 3 Resources in the API's database.
+     * GonebusyLib\Controllers\ResourcesController::getResources()
+     */
+    public function testGetResources() {
+        $perPage = 3;
+        $response = $this->resources->getResources(
+            Configuration::$authorization,
+            $page = 1,
+            $perPage);
+
+        // Was it fetched?
+        $this->assertInstanceOf('GonebusyLib\Models\GetResourcesResponse', $response);
+
+        // Did it return an array of 3 resources?
+        $this->assertCount($perPage, $response->resources); // Slightly hardcoded to assume $resources exists in $response.
+        foreach($response->resources as $resource) {
+            $this->assertInstanceOf('GonebusyLib\Models\GetResourcesResponse', $response);
+        }
+    }
+
+    /**
+     * Test GET /resources/things
+     * XXX Assumes there's 0 Things in the API's database.
+     * Test GonebusyLib\Controllers\ResourcesController::getResourceThings()
+     */
+    public function testGetResourceThings() {
+        $perPage = 3;
+        $response = $this->resources->getResourceThings(
+            Configuration::$authorization,
+            $page = 1,
+            $perPage);
+
+        // Was it fetched?
+        $this->assertInstanceOf('GonebusyLib\Models\GetResourceThingsResponse', $response);
+
+        // Did it return an array of 0 things?
+        $perPage = 0;
+        $this->assertCount($perPage, $response->things); // Slightly hardcoded to assume $things exists in $response.
+        foreach($response->things as $thing) {
+            $this->assertInstanceOf('GonebusyLib\Models\GetResourceThingsResponse', $response);
+        }
+    }
+
+    /**
+     * Test PUT /resources/{id}}
+     * GonebusyLib\Controllers\ResourceController::deleteResourceById()
+     */
+    public function testDeleteResourceById() {
+        $createResourceBody = $this->resourceData('create');
+        $responseResource = $this->resources->createResource(Configuration::$authorization, $createResourceBody);
+
+        $response = $this->resources->deleteResourceById(Configuration::$authorization, $responseResource->resource->id);
+
+        // Was it fetched?
+        $this->assertInstanceOf('GonebusyLib\Models\DeleteResourceByIdResponse', $response);
+
+        // The record to be deleted is the same as the record that was deleted
+        $responseBody = $this->dataFromResponse($response, 'create');
+        $this->assertEquals($responseBody, $createResourceBody);
+    }
 
 }
