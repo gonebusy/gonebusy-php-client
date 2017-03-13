@@ -141,7 +141,7 @@ class ResourcesTest extends TestCase
     }
 
     /**
-     * Test PUT /resources/{id}}
+     * Test PUT /resources/{id}
      * GonebusyLib\Controllers\ResourcesController::updateResourceById()
      */
     public function testUpdateResourceById() {
@@ -213,7 +213,7 @@ class ResourcesTest extends TestCase
     }
 
     /**
-     * Test PUT /resources/{id}}
+     * Test DELETE /resources/{id}
      * GonebusyLib\Controllers\ResourcesController::deleteResourceById()
      */
     public function testDeleteResourceById() {
