@@ -91,7 +91,7 @@ class ServicesTest extends TestCase
                     $response->service->duration,
                     $response->service->name,
                     NULL, // $response->service->priceModelId,
-                    $response->service->services,
+                    NULL, // $response->service->services,
                     $response->service->shortName
                 );
         }
@@ -146,7 +146,7 @@ class ServicesTest extends TestCase
     }
 
     /**
-     * Test PUT /rervices/{id}}
+     * Test PUT /rervices/{id}
      * GonebusyLib\Controllers\ServicesController::updateServiceById()
      */
     public function testUpdateServiceById() {
@@ -172,25 +172,62 @@ class ServicesTest extends TestCase
         $delResponse = $this->services->deleteServiceById(Configuration::$authorization, $createResponse->service->id);
     }
 
+    /**
+     * Test GET /services
+     * Assumes there's at least 3 Services in the API's database.
+     * GonebusyLib\Controllers\ServicesController::getServices()
+     */
+    public function testGetServices() {
+        $perPage = 3;
+        $response = $this->services->getServices(
+            Configuration::$authorization,
+            $page = 1,
+            $perPage);
+
+        // Was it fetched?
+        $this->assertInstanceOf('GonebusyLib\Models\GetServicesResponse', $response);
+
+        // Did it return an array of 3 services?
+        $this->assertCount($perPage, $response->services);
+        foreach($response->services as $service) {
+            $this->assertInstanceOf('GonebusyLib\Models\GetServicesResponse', $response);
+        }
+    }
+
     // /**
-    //  * @todo
+    //  * @param string $authorization A valid API key, in the format 'Token API_KEY'
+    //  * @param string $id            TODO: type description here
+    //  * @param string $date          (optional) Date to check for availability.  Either this field or a date range
+    //  *                              employing start_date and end_date must be supplied.  If date is provided,
+    //  *                              start_date/end_date are ignored.  Several formats are supported: '2014-10-31',
+    //  *                              'October 31, 2014'.
+    //  * @param string $endDate       (optional) End Date of a range to check for availability.  If supplied, date must
+    //  *                              not be supplied and start_date must be supplied.  Several formats are supported:
+    //  *                              '2014-10-31', 'October 31, 2014'.
+    //  * @param string $startDate     (optional) Start Date of a range to check for availability.  If supplied, date must
+    //  *                              not be supplied and end_date must be supplied.  Several formats are supported:
+    //  *                              '2014-10-31', 'October 31, 2014'.
     //  */
     // public function testGetServiceAvailableSlotsById() {
     //     //
     // }
-    //
-    // /**
-    //  * @todo
-    //  */
-    // public function testGetServices() {
-    //     //
-    // }
-    //
-    // /**
-    //  * @todo
-    //  */
-    // public function testDeleteServiceById() {
-    //     //
-    // }
+
+    /**
+     * Test DELETE /services/{id}
+     * GonebusyLib\Controllers\ServicesController::deleteServiceById()
+     */
+    public function testDeleteServiceById() {
+        $createServiceBody = $this->serviceBody('create');
+        $responseService = $this->services->createService(Configuration::$authorization, $createServiceBody);
+
+        $response = $this->services->deleteServiceById(Configuration::$authorization, $responseService->service->id);
+
+        // Was it fetched?
+        $this->assertInstanceOf('GonebusyLib\Models\DeleteServiceByIdResponse', $response);
+
+        // The record to be deleted is the same as the record that was deleted
+        $responseBody = $this->bodyFromResponse($response, 'create');
+        $this->assertEquals($responseBody, $createServiceBody);
+    }
 
 }
