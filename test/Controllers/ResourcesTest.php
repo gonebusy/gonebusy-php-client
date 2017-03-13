@@ -132,7 +132,7 @@ class ResourcesTest extends TestCase
         // Was it created?
         $this->assertInstanceOf('GonebusyLib\Models\GetResourceByIdResponse', $response);
 
-         // Does it have all the original data we sent?
+        // Does it have all the original data we sent?
         $responseBody = $this->bodyFromResponse($response, 'create');
         $this->assertEquals($responseBody, $createResourceBody);
 
