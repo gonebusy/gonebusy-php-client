@@ -162,6 +162,9 @@ class ResourcesTest extends TestCase
         // Does it have all the new data we sent?
         $responseBody = $this->bodyFromResponse($response, 'update');
         $this->assertEquals($responseBody, $anotherResourceBody);
+
+        // Delete test resource:
+        $delResponse = $this->resources->deleteResourceById(Configuration::$authorization, $createResponse->resource->id);
     }
 
     /**
