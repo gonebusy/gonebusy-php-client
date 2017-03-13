@@ -39,7 +39,7 @@ class ResourcesTest extends TestCase
      * @param  string $type Should be 'create' or 'update'.
      * @return  CreateResourceBody or UpdateResourceByIdBody object with unique data to send to API
      */
-    private function resourceData($type) {
+    private function resourceBody($type) {
         $rand = rand();
         switch($type) {
             case 'create':
@@ -55,9 +55,9 @@ class ResourcesTest extends TestCase
             case 'update':
                 return new UpdateResourceByIdBody(
                     NULL, // capacity
-                    "description",
+                    "another description",
                     NULL, // gender
-                    "name",
+                    "another name",
                     NULL // thing_type_id
                 );
         }
@@ -69,7 +69,7 @@ class ResourcesTest extends TestCase
      * @param  string $type Should be 'create' or 'update'.
      * @return  CreateResourceBody or UpdateResourceByIdBody object with data from $response
      */
-    private function dataFromResponse($response, $type) {
+    private function bodyFromResponse($response, $type) {
         switch($type) {
             case 'create':
                 return new CreateResourceBody(
@@ -98,7 +98,7 @@ class ResourcesTest extends TestCase
      * GonebusyLib\Controllers\ResourcesController::createResource()
      */
     public function testCreateResource() {
-        $createResourceBody = $this->resourceData('create');
+        $createResourceBody = $this->resourceBody('create');
 
         // Create GonebusyLib\Models\EntitiesResourceResponse:
         $response = $this->resources->createResource(Configuration::$authorization, $createResourceBody);
@@ -107,7 +107,7 @@ class ResourcesTest extends TestCase
         $this->assertInstanceOf('GonebusyLib\Models\CreateResourceResponse', $response);
 
         // Does it have all the original data we sent?
-        $responseBody = $this->dataFromResponse($response, 'create');
+        $responseBody = $this->bodyFromResponse($response, 'create');
         $this->assertEquals($responseBody, $createResourceBody);
 
         // Delete test resource:
@@ -119,7 +119,7 @@ class ResourcesTest extends TestCase
      * GonebusyLib\Controllers\ResourcesController::getResourceById()
      */
     public function testGetResourceById() {
-        $createResourceBody = $this->resourceData('create');
+        $createResourceBody = $this->resourceBody('create');
 
         // Create GonebusyLib\Models\EntitiesResourceResponse:
         $responseResource = $this->resources->createResource(Configuration::$authorization, $createResourceBody);
@@ -133,7 +133,7 @@ class ResourcesTest extends TestCase
         $this->assertInstanceOf('GonebusyLib\Models\GetResourceByIdResponse', $response);
 
          // Does it have all the original data we sent?
-        $responseBody = $this->dataFromResponse($response, 'create');
+        $responseBody = $this->bodyFromResponse($response, 'create');
         $this->assertEquals($responseBody, $createResourceBody);
 
         // Delete test resource:
@@ -145,10 +145,10 @@ class ResourcesTest extends TestCase
      * GonebusyLib\Controllers\ResourcesController::updateResourceById()
      */
     public function testUpdateResourceById() {
-        $createResourceBody = $this->resourceData('create');
+        $createResourceBody = $this->resourceBody('create');
         $createResponse = $this->resources->createResource(Configuration::$authorization, $createResourceBody);
 
-        $anotherResourceBody = $this->resourceData('update');
+        $anotherResourceBody = $this->resourceBody('update');
 
         // Update the same user:
         $response = $this->resources->updateResourceById(
@@ -160,7 +160,7 @@ class ResourcesTest extends TestCase
         $this->assertInstanceOf('GonebusyLib\Models\UpdateResourceByIdResponse', $response);
 
         // Does it have all the new data we sent?
-        $responseBody = $this->dataFromResponse($response, 'update');
+        $responseBody = $this->bodyFromResponse($response, 'update');
         $this->assertEquals($responseBody, $anotherResourceBody);
     }
 
@@ -214,7 +214,7 @@ class ResourcesTest extends TestCase
      * GonebusyLib\Controllers\ResourcesController::deleteResourceById()
      */
     public function testDeleteResourceById() {
-        $createResourceBody = $this->resourceData('create');
+        $createResourceBody = $this->resourceBody('create');
         $responseResource = $this->resources->createResource(Configuration::$authorization, $createResourceBody);
 
         $response = $this->resources->deleteResourceById(Configuration::$authorization, $responseResource->resource->id);
@@ -223,7 +223,7 @@ class ResourcesTest extends TestCase
         $this->assertInstanceOf('GonebusyLib\Models\DeleteResourceByIdResponse', $response);
 
         // The record to be deleted is the same as the record that was deleted
-        $responseBody = $this->dataFromResponse($response, 'create');
+        $responseBody = $this->bodyFromResponse($response, 'create');
         $this->assertEquals($responseBody, $createResourceBody);
     }
 
