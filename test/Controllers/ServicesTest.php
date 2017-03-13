@@ -137,7 +137,7 @@ class ServicesTest extends TestCase
         // Was it created?
         $this->assertInstanceOf('GonebusyLib\Models\GetServiceByIdResponse', $response);
 
-         // Does it have all the original data we sent?
+        // Does it have all the original data we sent?
         $responseBody = $this->bodyFromResponse($response, 'create');
         $this->assertEquals($responseBody, $createServiceBody);
 
@@ -194,23 +194,29 @@ class ServicesTest extends TestCase
         }
     }
 
-    // /**
-    //  * @param string $authorization A valid API key, in the format 'Token API_KEY'
-    //  * @param string $id            TODO: type description here
-    //  * @param string $date          (optional) Date to check for availability.  Either this field or a date range
-    //  *                              employing start_date and end_date must be supplied.  If date is provided,
-    //  *                              start_date/end_date are ignored.  Several formats are supported: '2014-10-31',
-    //  *                              'October 31, 2014'.
-    //  * @param string $endDate       (optional) End Date of a range to check for availability.  If supplied, date must
-    //  *                              not be supplied and start_date must be supplied.  Several formats are supported:
-    //  *                              '2014-10-31', 'October 31, 2014'.
-    //  * @param string $startDate     (optional) Start Date of a range to check for availability.  If supplied, date must
-    //  *                              not be supplied and end_date must be supplied.  Several formats are supported:
-    //  *                              '2014-10-31', 'October 31, 2014'.
-    //  */
-    // public function testGetServiceAvailableSlotsById() {
-    //     //
-    // }
+    /**
+     * Test GET /services/{id}/available_slots
+     * GonebusyLib\Controllers\ServicesController::getServices()
+     */
+    public function testGetServiceAvailableSlotsById() {
+        $createServiceBody = $this->serviceBody('create');
+        $responseService = $this->services->createService(Configuration::$authorization, $createServiceBody);
+
+        $date = date('Y-m-d'); // Now
+        $response = $this->services->getServiceAvailableSlotsById(
+            Configuration::$authorization,
+            $responseService->service->id,
+            $date//,
+            // $endDate,
+            // $startDate
+        );
+
+        // Was it fetched?
+        $this->assertInstanceOf('GonebusyLib\Models\GetServiceAvailableSlotsByIdResponse', $response);
+
+        // Delete test service:
+        $delResponse = $this->services->deleteServiceById(Configuration::$authorization, $responseService->service->id);
+    }
 
     /**
      * Test DELETE /services/{id}
