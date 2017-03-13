@@ -45,7 +45,7 @@ class ResourcesTest extends TestCase
             case 'create':
                 return new CreateResourceBody(
                     "name",
-                    "Staff", // Hardcoded. Way to get from API or SDK in the future?
+                    "Staff",
                     NULL, // capacity
                     "description",
                     NULL, // gender
@@ -95,7 +95,7 @@ class ResourcesTest extends TestCase
 
     /**
      * Test POST /resources/new
-     * GonebusyLib\Controllers\ResourceController::createResource()
+     * GonebusyLib\Controllers\ResourcesController::createResource()
      */
     public function testCreateResource() {
         $createResourceBody = $this->resourceData('create');
@@ -142,7 +142,7 @@ class ResourcesTest extends TestCase
 
     /**
      * Test PUT /resources/{id}}
-     * GonebusyLib\Controllers\ResourceController::updateResourceById()
+     * GonebusyLib\Controllers\ResourcesController::updateResourceById()
      */
     public function testUpdateResourceById() {
         $createResourceBody = $this->resourceData('create');
@@ -180,7 +180,7 @@ class ResourcesTest extends TestCase
         $this->assertInstanceOf('GonebusyLib\Models\GetResourcesResponse', $response);
 
         // Did it return an array of 3 resources?
-        $this->assertCount($perPage, $response->resources); // Slightly hardcoded to assume $resources exists in $response.
+        $this->assertCount($perPage, $response->resources);
         foreach($response->resources as $resource) {
             $this->assertInstanceOf('GonebusyLib\Models\GetResourcesResponse', $response);
         }
@@ -203,7 +203,7 @@ class ResourcesTest extends TestCase
 
         // Did it return an array of 0 things?
         $perPage = 0;
-        $this->assertCount($perPage, $response->things); // Slightly hardcoded to assume $things exists in $response.
+        $this->assertCount($perPage, $response->things);
         foreach($response->things as $thing) {
             $this->assertInstanceOf('GonebusyLib\Models\GetResourceThingsResponse', $response);
         }
@@ -211,7 +211,7 @@ class ResourcesTest extends TestCase
 
     /**
      * Test PUT /resources/{id}}
-     * GonebusyLib\Controllers\ResourceController::deleteResourceById()
+     * GonebusyLib\Controllers\ResourcesController::deleteResourceById()
      */
     public function testDeleteResourceById() {
         $createResourceBody = $this->resourceData('create');
