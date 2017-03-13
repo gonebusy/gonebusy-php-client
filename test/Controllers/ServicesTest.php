@@ -52,16 +52,16 @@ class ServicesTest extends TestCase
                     "short_name",
                     NULL // user_id defaults to self User
                 );
-            // case 'update':
-            //     return new UpdateServiceByIdBody(
-            //         "categories",
-            //         "description",
-            //         NULL, // duration
-            //         "name",
-            //         NULL, // price_model_id
-            //         "resources",
-            //         "short_name"
-            //     );
+            case 'update':
+                return new UpdateServiceByIdBody(
+                    NULL, // categories
+                    "another description",
+                    30, // duration
+                    "another name",
+                    NULL, // price_model_id
+                    NULL, // resources
+                    "another short_name"
+                );
         }
     }
 
@@ -84,14 +84,16 @@ class ServicesTest extends TestCase
                     $response->service->shortName,
                     NULL // $response->service->userId
                 );
-            // case 'update':
-            //     return new UpdateServiceByIdBody(
-            //         $response->service->capacity,
-            //         $response->service->description,
-            //         $response->service->gender,
-            //         $response->service->name,
-            //         $response->service->thingTypeId
-            //     );
+            case 'update':
+                return new UpdateServiceByIdBody(
+                    $response->service->categories,
+                    $response->service->description,
+                    $response->service->duration,
+                    $response->service->name,
+                    $response->service->priceModelId,
+                    $response->service->resources,
+                    $response->service->shortName
+                );
         }
     }
 
@@ -117,17 +119,36 @@ class ServicesTest extends TestCase
         $delResponse = $this->services->deleteServiceById(Configuration::$authorization, $response->service->id);
     }
 
+    /**
+     * Test GET /services/{id}
+     * GonebusyLib\Controllers\ServicesController::getServiceById()
+     */
+    public function testGetServiceById() {
+        $createServiceBody = $this->serviceBody('create');
+
+        // Create GonebusyLib\Models\EntitiesServiceResponse:
+        $responseService = $this->services->createService(Configuration::$authorization, $createServiceBody);
+
+        $response = $this->services->getServiceById(
+            Configuration::$authorization,
+            $responseService->service->id
+        );
+
+        // Was it created?
+        $this->assertInstanceOf('GonebusyLib\Models\GetServiceByIdResponse', $response);
+
+         // Does it have all the original data we sent?
+        $responseBody = $this->bodyFromResponse($response, 'create');
+        $this->assertEquals($responseBody, $createServiceBody);
+
+        // Delete test service:
+        $delResponse = $this->services->deleteServiceById(Configuration::$authorization, $responseService->service->id);
+    }
+
     // /**
     //  * @todo
     //  */
     // public function testUpdateServiceById() {
-    //     //
-    // }
-    //
-    // /**
-    //  * @todo
-    //  */
-    // public function testGetServiceById() {
     //     //
     // }
     //
