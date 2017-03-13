@@ -52,16 +52,16 @@ class ServicesTest extends TestCase
                     "short_name",
                     NULL // user_id defaults to self User
                 );
-            case 'update':
-                return new UpdateServiceByIdBody(
-                    "categories",
-                    "description",
-                    NULL, // duration
-                    "name",
-                    NULL, // price_model_id
-                    "resources",
-                    "short_name"
-                );
+            // case 'update':
+            //     return new UpdateServiceByIdBody(
+            //         "categories",
+            //         "description",
+            //         NULL, // duration
+            //         "name",
+            //         NULL, // price_model_id
+            //         "resources",
+            //         "short_name"
+            //     );
         }
     }
 
@@ -82,16 +82,16 @@ class ServicesTest extends TestCase
                     NULL, // $response->service->priceModelId,
                     NULL, // $response->service->resources,
                     $response->service->shortName,
-                    $response->service->userId
+                    NULL // $response->service->userId
                 );
-            case 'update':
-                return new UpdateServiceByIdBody(
-                    $response->service->capacity,
-                    $response->service->description,
-                    $response->service->gender,
-                    $response->service->name,
-                    $response->service->thingTypeId
-                );
+            // case 'update':
+            //     return new UpdateServiceByIdBody(
+            //         $response->service->capacity,
+            //         $response->service->description,
+            //         $response->service->gender,
+            //         $response->service->name,
+            //         $response->service->thingTypeId
+            //     );
         }
     }
 
@@ -117,39 +117,39 @@ class ServicesTest extends TestCase
         $delResponse = $this->services->deleteServiceById(Configuration::$authorization, $response->service->id);
     }
 
-    /**
-     * @todo
-     */
-    public function testUpdateServiceById() {
-        //
-    }
-
-    /**
-     * @todo
-     */
-    public function testGetServiceById() {
-        //
-    }
-
-    /**
-     * @todo
-     */
-    public function testGetServiceAvailableSlotsById() {
-        //
-    }
-
-    /**
-     * @todo
-     */
-    public function testGetServices() {
-        //
-    }
-
-    /**
-     * @todo
-     */
-    public function testDeleteServiceById() {
-        //
-    }
+    // /**
+    //  * @todo
+    //  */
+    // public function testUpdateServiceById() {
+    //     //
+    // }
+    //
+    // /**
+    //  * @todo
+    //  */
+    // public function testGetServiceById() {
+    //     //
+    // }
+    //
+    // /**
+    //  * @todo
+    //  */
+    // public function testGetServiceAvailableSlotsById() {
+    //     //
+    // }
+    //
+    // /**
+    //  * @todo
+    //  */
+    // public function testGetServices() {
+    //     //
+    // }
+    //
+    // /**
+    //  * @todo
+    //  */
+    // public function testDeleteServiceById() {
+    //     //
+    // }
 
 }
