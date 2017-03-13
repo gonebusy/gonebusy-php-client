@@ -42,7 +42,7 @@ class UsersTest extends TestCase
      * @param  string $type Should be 'create' or 'update'.
      * @return  CreateUserBody or UpdateUserByIdBody object with unique data to send to API
      */
-    private function uniqueUserData($type) {
+    private function uniqueUserBody($type) {
         $rand = rand(); // There's a minuscule chance this will already exist on the API.
         switch($type) {
             case 'create':
@@ -57,13 +57,13 @@ class UsersTest extends TestCase
                 );
             case 'update':
                 return new UpdateUserByIdBody(
-                    "business_name",
+                    "another business_name",
                     "e-{$rand}@mail-{$rand}.com",
                     "www.externalurl.com", // external_url
-                    "first_name",
-                    "last_name",
+                    "another first_name",
+                    "another last_name",
                     "permalink-{$rand}",
-                    "timezone"
+                    "another timezone"
                 );
         }
     }
@@ -74,7 +74,7 @@ class UsersTest extends TestCase
      * @param  string $type Should be 'create' or 'update'.
      * @return  CreateUserBody or UpdateUserByIdBody object with data from $response
      */
-    private function dataFromResponse($response, $type) {
+    private function bodyFromResponse($response, $type) {
         switch($type) {
             case 'create':
                 return new CreateUserBody(
@@ -105,7 +105,7 @@ class UsersTest extends TestCase
      * GonebusyLib\Controllers\UsersController::createUser()
      */
     public function testCreateUser() {
-        $createUserBody = $this->uniqueUserData('create');
+        $createUserBody = $this->uniqueUserBody('create');
 
         // Create GonebusyLib\Models\EntitiesUserResponse:
         $response = $this->users->createUser(Configuration::$authorization, $createUserBody);
@@ -114,7 +114,7 @@ class UsersTest extends TestCase
         $this->assertInstanceOf('GonebusyLib\Models\CreateUserResponse', $response);
 
         // Does it have all the original data we sent?
-        $responseBody = $this->dataFromResponse($response, 'create');
+        $responseBody = $this->bodyFromResponse($response, 'create');
         $this->assertEquals($responseBody, $createUserBody);
 
         // Delete test user:
@@ -127,7 +127,7 @@ class UsersTest extends TestCase
      */
     public function testGetUserById() {
         // Create user:
-        $createUserBody = $this->uniqueUserData('create');
+        $createUserBody = $this->uniqueUserBody('create');
         $createResponse = $this->users->createUser(Configuration::$authorization, $createUserBody);
 
         // Get user by it's id
@@ -137,7 +137,7 @@ class UsersTest extends TestCase
         $this->assertInstanceOf('GonebusyLib\Models\GetUserByIdResponse', $response);
 
         // Does it have all the original data we sent?
-        $responseBody = $this->dataFromResponse($response, 'create');
+        $responseBody = $this->bodyFromResponse($response, 'create');
         $this->assertEquals($responseBody, $createUserBody);
     }
 
@@ -147,10 +147,10 @@ class UsersTest extends TestCase
      */
     public function testUpdateUserById() {
         // Create a user:
-        $createUserBody = $this->uniqueUserData('create');
+        $createUserBody = $this->uniqueUserBody('create');
         $createResponse = $this->users->createUser(Configuration::$authorization, $createUserBody);
 
-        $anotherUserBody = $this->uniqueUserData('update');
+        $anotherUserBody = $this->uniqueUserBody('update');
 
         // Update the same user:
         $response = $this->users->updateUserById(
@@ -162,7 +162,7 @@ class UsersTest extends TestCase
         $this->assertInstanceOf('GonebusyLib\Models\UpdateUserByIdResponse', $response);
 
         // Does it have all the new data we sent?
-        $responseBody = $this->dataFromResponse($response, 'update');
+        $responseBody = $this->bodyFromResponse($response, 'update');
         $this->assertEquals($responseBody, $anotherUserBody);
     }
 
