@@ -1,6 +1,6 @@
 <?php
 /*
- * Resources SDK Controller Test Case
+ * Services SDK Controller Test Case
  */
 
 namespace GonebusyTest\Controllers;
@@ -47,8 +47,8 @@ class ServicesTest extends TestCase
                     15, // duration REQUIRED XXX 0 not accepted but NULL turns into 0
                     "name", // REQUIRED
                     NULL, // categories
-                    NULL, // price_model_id XXX defaults to 28
-                    NULL, // resources defaults to self Resource
+                    NULL, // price_model_id XXX defaults to inexistent id
+                    NULL, // services defaults to self Service
                     "short_name",
                     NULL // user_id defaults to self User
                 );
@@ -58,8 +58,8 @@ class ServicesTest extends TestCase
                     "another description",
                     30, // duration
                     "another name",
-                    NULL, // price_model_id
-                    NULL, // resources
+                    NULL, // price_model_id XXX defaults to inexistent id
+                    NULL, // services
                     "another short_name"
                 );
         }
@@ -80,18 +80,18 @@ class ServicesTest extends TestCase
                     $response->service->name,
                     NULL, // $response->service->categories,
                     NULL, // $response->service->priceModelId,
-                    NULL, // $response->service->resources,
+                    NULL, // $response->service->services,
                     $response->service->shortName,
                     NULL // $response->service->userId
                 );
             case 'update':
                 return new UpdateServiceByIdBody(
-                    $response->service->categories,
+                    NULL, // $response->service->categories,
                     $response->service->description,
                     $response->service->duration,
                     $response->service->name,
-                    $response->service->priceModelId,
-                    $response->service->resources,
+                    NULL, // $response->service->priceModelId,
+                    $response->service->services,
                     $response->service->shortName
                 );
         }
@@ -145,13 +145,33 @@ class ServicesTest extends TestCase
         $delResponse = $this->services->deleteServiceById(Configuration::$authorization, $responseService->service->id);
     }
 
-    // /**
-    //  * @todo
-    //  */
-    // public function testUpdateServiceById() {
-    //     //
-    // }
-    //
+    /**
+     * Test PUT /rervices/{id}}
+     * GonebusyLib\Controllers\ServicesController::updateServiceById()
+     */
+    public function testUpdateServiceById() {
+        $createServiceBody = $this->serviceBody('create');
+        $createResponse = $this->services->createService(Configuration::$authorization, $createServiceBody);
+
+        $anotherServiceBody = $this->serviceBody('update');
+
+        // Update the same user:
+        $response = $this->services->updateServiceById(
+            Configuration::$authorization,
+            $createResponse->service->id,
+            $anotherServiceBody);
+
+        // Was it fetched?
+        $this->assertInstanceOf('GonebusyLib\Models\UpdateServiceByIdResponse', $response);
+
+        // Does it have all the new data we sent?
+        $responseBody = $this->bodyFromResponse($response, 'update');
+        $this->assertEquals($responseBody, $anotherServiceBody);
+
+        // Delete test service:
+        $delResponse = $this->services->deleteServiceById(Configuration::$authorization, $createResponse->service->id);
+    }
+
     // /**
     //  * @todo
     //  */
