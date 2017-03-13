@@ -75,7 +75,7 @@ class PricingModelsTest extends TestCase
                     "USD", // $response->pricingModel->currency, // Hardcoded
                     $response->pricingModel->notes,
                     $response->pricingModel->price,
-                    $response->pricingModel->userId
+                    NULL // $response->pricingModel->userId
                 );
             case 'update':
                 return new UpdatePricingModelByIdBody(
