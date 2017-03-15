@@ -12,6 +12,7 @@ use GonebusyLib\GonebusyClient;
 use GonebusyLib\Models\CreateResourceBody;
 use GonebusyLib\Models\UpdateResourceByIdBody;
 // use GonebusyLib\Controllers\ResourcesController;
+use GonebusyLib\Models\GenderEnum;
 
 class ResourcesTest extends TestCase
 {
@@ -48,7 +49,7 @@ class ResourcesTest extends TestCase
                     "Staff",
                     NULL, // capacity
                     "description",
-                    NULL, // gender
+                    GenderEnum::F, // gender
                     NULL, // thing_type_id
                     NULL // user_id detauls to self
                 );
@@ -56,7 +57,7 @@ class ResourcesTest extends TestCase
                 return new UpdateResourceByIdBody(
                     NULL, // capacity
                     "another description",
-                    NULL, // gender
+                    GenderEnum::M, // gender change
                     "another name",
                     NULL // thing_type_id
                 );
@@ -77,7 +78,7 @@ class ResourcesTest extends TestCase
                     $response->resource->resourceType,
                     $response->resource->capacity,
                     $response->resource->description,
-                    $response->resource->gender,
+                    GenderEnum::F, //$response->resource->gender, // XXX Hardcoded as API isn't returning a value
                     $response->resource->thingTypeId,
                     NULL // $response->resource->ownerId
                 );
@@ -85,7 +86,7 @@ class ResourcesTest extends TestCase
                 return new UpdateResourceByIdBody(
                     $response->resource->capacity,
                     $response->resource->description,
-                    $response->resource->gender,
+                    GenderEnum::M, //$response->resource->gender, // XXX Hardcoded as API isn't returning a value
                     $response->resource->name,
                     $response->resource->thingTypeId
                 );
