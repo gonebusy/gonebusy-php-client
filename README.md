@@ -63,6 +63,11 @@ After this you can add code to initialize the client library and acquire the ins
 
 Summary of GoneBusy objects (more info on the [API Refence](https://gonebusy.github.io/api#/)):  
 A **User** (WHO) is required to perform operations.  
+A **Resource** (WHAT) is needed for all scheduling operations.
+_Each User is assigned a default Resource (himself) automatically._  
+A **Service** (HOW) represents the Resource's offer and is linked to its Schedule.
+_A **Search** of users and services can be performed. Services are assigned a **Pricing Model**_;  
+A **Schedule** (WHEN) is then used as the central piece to link Resources to the following objects:  
 ...
 > Creating them in your code in the order implied above may be necessary.
 
