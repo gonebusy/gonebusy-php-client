@@ -45,14 +45,14 @@ class PricingModelsTest extends TestCase
                 return new CreatePricingModelBody(
                     "name",
                     "Activity", // type
-                    "USD", // currency XXX This isn't having effect.
+                    "USD", // currency
                     "notes",
                     NULL, // price
                     NULL // user_id defaults to self
                 );
             case 'update':
                 return new UpdatePricingModelByIdBody(
-                    "MXN", // another currency XXX This isn't having effect.
+                    "MXN", // another currency
                     "another name",
                     "other notes",
                     NULL // price
@@ -75,7 +75,7 @@ class PricingModelsTest extends TestCase
                     "USD", // $response->pricingModel->currency, // Hardcoded
                     $response->pricingModel->notes,
                     $response->pricingModel->price,
-                    NULL // $response->pricingModel->userId
+                    NULL // $response->pricingModel->ownerId
                 );
             case 'update':
                 return new UpdatePricingModelByIdBody(
