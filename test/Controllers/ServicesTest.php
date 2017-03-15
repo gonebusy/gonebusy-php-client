@@ -45,10 +45,11 @@ class ServicesTest extends TestCase
                 return new CreateServiceBody(
                     "description", // REQUIRED
                     15, // duration REQUIRED XXX 0 not accepted but NULL turns into 0
+                    // XXX No max_duration in SDK
                     "name", // REQUIRED
-                    NULL, // categories
+                    NULL, // categories default to empty list
                     NULL, // price_model_id XXX defaults to inexistent id
-                    NULL, // services defaults to self Service
+                    NULL, // resources defaults to list with self Resource
                     "short_name",
                     NULL // user_id defaults to self User
                 );
@@ -59,7 +60,7 @@ class ServicesTest extends TestCase
                     30, // duration
                     "another name",
                     NULL, // price_model_id XXX defaults to inexistent id
-                    NULL, // services
+                    NULL, // resources
                     "another short_name"
                 );
         }
@@ -80,9 +81,9 @@ class ServicesTest extends TestCase
                     $response->service->name,
                     NULL, // $response->service->categories,
                     NULL, // $response->service->priceModelId,
-                    NULL, // $response->service->services,
+                    NULL, // $response->service->resources,
                     $response->service->shortName,
-                    NULL // $response->service->userId
+                    NULL // $response->service->ownerId
                 );
             case 'update':
                 return new UpdateServiceByIdBody(
@@ -91,7 +92,7 @@ class ServicesTest extends TestCase
                     $response->service->duration,
                     $response->service->name,
                     NULL, // $response->service->priceModelId,
-                    NULL, // $response->service->services,
+                    NULL, // $response->service->resources,
                     $response->service->shortName
                 );
         }
