@@ -3,12 +3,12 @@
     <testsuite name="Controllers">
        <file>test/Controllers/UsersTest.php</file>
        <file>test/Controllers/ResourcesTest.php</file>
-       <!-- <file>test/Controllers/ServicesTest.php</file> -->
-           <!-- <file>test/Controllers/SearchTest.php</file> -->
-           <!-- <file>test/Controllers/PricingModelsTest.php</file> -->
-       <!-- <file>test/Controllers/SchedulesTest.php</file> -->
-       <!-- <file>test/Controllers/BookingsTest.php</file> -->
-           <!-- <file>test/Controllers/CategoriesTest.php</file> -->
+       <file>test/Controllers/ServicesTest.php</file>
+           <file>test/Controllers/SearchTest.php</file>
+           <file>test/Controllers/PricingModelsTest.php</file>
+       <file>test/Controllers/SchedulesTest.php</file>
+       <file>test/Controllers/BookingsTest.php</file>
+           <file>test/Controllers/CategoriesTest.php</file>
     </testsuite>
   </testsuites>
 </phpunit>
