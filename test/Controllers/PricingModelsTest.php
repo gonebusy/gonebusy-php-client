@@ -3,8 +3,6 @@
  * PricingModels SDK Controller Test Case
  */
 
-namespace GonebusyTest\Controllers;
-
 use PHPUnit\Framework\TestCase;
 
 use GonebusyLib\Configuration;
@@ -35,7 +33,7 @@ class PricingModelsTest extends TestCase
 
 
     /**
-     * Generate unique pricing model data.
+     * Generate arbitrary pricing model data.
      * @param  string $type Should be 'create' or 'update'.
      * @return  CreatePricingModelBody or UpdatePricingModelByIdBody object with unique data to send to API
      */

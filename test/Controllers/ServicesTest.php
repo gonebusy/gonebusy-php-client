@@ -3,8 +3,6 @@
  * Services SDK Controller Test Case
  */
 
-namespace GonebusyTest\Controllers;
-
 use PHPUnit\Framework\TestCase;
 
 use GonebusyLib\Configuration;
@@ -24,6 +22,7 @@ class ServicesTest extends TestCase
      */
     protected $services;
 
+
     /**
      * Create the GoneBusy SDK client for each test.
      */
@@ -34,7 +33,7 @@ class ServicesTest extends TestCase
 
 
     /**
-     * Returns arbitrary service data.
+     * Generate arbitrary service data.
      * @param  string $type Should be 'create' or 'update'.
      * @return  CreateServiceBody or UpdateServiceByIdBody object with unique data to send to API
      */
@@ -44,11 +43,10 @@ class ServicesTest extends TestCase
             case 'create':
                 return new CreateServiceBody(
                     "description", // REQUIRED
-                    15, // duration REQUIRED XXX 0 not accepted but NULL turns into 0
-                    // XXX No max_duration in SDK
+                    15, // duration REQUIRED
                     "name", // REQUIRED
                     NULL, // categories default to empty list
-                    NULL, // price_model_id XXX defaults to inexistent id
+                    NULL, // price_model_id
                     NULL, // resources defaults to list with self Resource
                     "short_name",
                     NULL // user_id defaults to self User
@@ -59,7 +57,7 @@ class ServicesTest extends TestCase
                     "another description",
                     30, // duration
                     "another name",
-                    NULL, // price_model_id XXX defaults to inexistent id
+                    NULL, // price_model_id
                     NULL, // resources
                     "another short_name"
                 );
