@@ -33,7 +33,7 @@ class ServicesTest extends TestCase
 
 
     /**
-     * Returns arbitrary service data.
+     * Generate arbitrary service data.
      * @param  string $type Should be 'create' or 'update'.
      * @return  CreateServiceBody or UpdateServiceByIdBody object with unique data to send to API
      */
