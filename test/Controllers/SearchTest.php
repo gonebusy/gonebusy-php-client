@@ -3,8 +3,6 @@
  * Search SDK Controller Test Case
  */
 
-namespace GonebusyTest\Controllers;
-
 use PHPUnit\Framework\TestCase;
 
 use GonebusyLib\Configuration;
