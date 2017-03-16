@@ -33,7 +33,7 @@ class CategoriesTest extends TestCase
 
 
     /**
-     * Generate unique category data.
+     * Generate arbitrary category data.
      * @return  CreateCategoryBody object with unique data to send to API
      */
     private function uniqueCategoryBody() {
