@@ -3,16 +3,14 @@
  * Users SDK Controller Test Case
  */
 
-namespace GonebusyTest\Controllers;
-
 use PHPUnit\Framework\TestCase;
 
 use GonebusyLib\Configuration;
 use GonebusyLib\GonebusyClient;
-use GonebusyLib\Models\CreateUserBody;
-use GonebusyLib\Models\UpdateUserByIdBody;
 // use GonebusyLib\Controllers\UsersController;
 // ^ Not needed since we can use GonebusyClient::getUsers()
+use GonebusyLib\Models\CreateUserBody;
+use GonebusyLib\Models\UpdateUserByIdBody;
 
 class UsersTest extends TestCase
 {
