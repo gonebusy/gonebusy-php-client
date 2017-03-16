@@ -164,6 +164,9 @@ class UsersTest extends TestCase
         // Does it have all the new data we sent?
         $responseBody = $this->bodyFromResponse($response, 'update');
         $this->assertEquals($responseBody, $anotherUserBody);
+
+        // Delete test user:
+        // Can't delete users at the moment.
     }
 
     /**

@@ -67,7 +67,9 @@ A **Resource** (WHAT) is needed for all scheduling operations.
 _Each User is assigned a default Resource (himself) automatically._  
 A **Service** (HOW) represents the Resource's offer and is linked to its Schedule.
 _A **Search** of users and services can be performed. Services are assigned a **Pricing Model**_;  
-...
+A **Schedule** (WHEN) is then used as the central piece to link Resources to the following objects:  
+Finally, a **Booking** is placed (at a particular time window) in a Schedule, linking it to a Resource-Service combo.
+_Bookings are assigned a **Category**._
 > Creating them in your code in the order implied above may be necessary.
 
 ### 3. Run your project
