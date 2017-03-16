@@ -3,15 +3,13 @@
  * Resources SDK Controller Test Case
  */
 
-namespace GonebusyTest\Controllers;
-
 use PHPUnit\Framework\TestCase;
 
 use GonebusyLib\Configuration;
 use GonebusyLib\GonebusyClient;
+// use GonebusyLib\Controllers\ResourcesController;
 use GonebusyLib\Models\CreateResourceBody;
 use GonebusyLib\Models\UpdateResourceByIdBody;
-// use GonebusyLib\Controllers\ResourcesController;
 use GonebusyLib\Models\GenderEnum;
 
 class ResourcesTest extends TestCase
@@ -26,6 +24,7 @@ class ResourcesTest extends TestCase
      */
     protected $resources;
 
+
     /**
      * Create the GonebusyClient and ResourceController for each test.
      */
@@ -36,7 +35,7 @@ class ResourcesTest extends TestCase
 
 
     /**
-     * Returns arbitrary resource data.
+     * Generate arbitrary resource data.
      * @param  string $type Should be 'create' or 'update'.
      * @return  CreateResourceBody or UpdateResourceByIdBody object with unique data to send to API
      */
@@ -78,7 +77,7 @@ class ResourcesTest extends TestCase
                     $response->resource->resourceType,
                     $response->resource->capacity,
                     $response->resource->description,
-                    GenderEnum::F, //$response->resource->gender, // XXX Hardcoded as API isn't returning a value
+                    GenderEnum::F, //$response->resource->gender,
                     $response->resource->thingTypeId,
                     NULL // $response->resource->ownerId
                 );
@@ -86,7 +85,7 @@ class ResourcesTest extends TestCase
                 return new UpdateResourceByIdBody(
                     $response->resource->capacity,
                     $response->resource->description,
-                    GenderEnum::M, //$response->resource->gender, // XXX Hardcoded as API isn't returning a value
+                    GenderEnum::M, //$response->resource->gender,
                     $response->resource->name,
                     $response->resource->thingTypeId
                 );
@@ -192,7 +191,6 @@ class ResourcesTest extends TestCase
 
     /**
      * Test GET /resources/things
-     * XXX Assumes there's 0 Things in the API's database.
      * Test GonebusyLib\Controllers\ResourcesController::getResourceThings()
      */
     public function testGetResourceThings() {
@@ -205,8 +203,7 @@ class ResourcesTest extends TestCase
         // Was it fetched?
         $this->assertInstanceOf('GonebusyLib\Models\GetResourceThingsResponse', $response);
 
-        // Did it return an array of 0 things?
-        $perPage = 0;
+        // Did it return an array of 3 things?
         $this->assertCount($perPage, $response->things);
         foreach($response->things as $thing) {
             $this->assertInstanceOf('GonebusyLib\Models\GetResourceThingsResponse', $response);
