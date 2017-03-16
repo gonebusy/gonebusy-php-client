@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.0.9] - 2017-03-16 ##
+### Fixed
+- [#21](https://github.com/gonebusy/gonebusy-php-client/pull/21) - Add back :max_duration on CreateServiceBody/UpdateServiceByIdBody - [@alexagranov](https://github.com/alexagranov)
+
 ## [0.0.8] - 2017-03-06 ##
 ### Added
 - update GET /schedules for query by resource_id, service_id
