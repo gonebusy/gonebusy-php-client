@@ -3,8 +3,6 @@
  * Search SDK Controller Test Case
  */
 
-namespace GonebusyTest\Controllers;
-
 use PHPUnit\Framework\TestCase;
 
 use GonebusyLib\Configuration;
@@ -38,7 +36,7 @@ class SearchTest extends TestCase
      * GonebusyLib\Controllers\SearchController::searchQuery()
      */
     public function testSearchQuery() {
-        $query = "testing@gonebusy.com"; // XXX Is this working?
+        $query = "testing@gonebusy.com";
         $response = $this->search->searchQuery(
             Configuration::$authorization,
             $query);
