@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.0.10] - 2017-03-18 ##
+### Fixed
+- [#22](https://github.com/gonebusy/gonebusy-php-client/pull/22) - Fix type of :gender to String; Add :primary_cal to ResourceResponse - [@alexagranov](https://github.com/alexagranov)
+
 ## [0.0.9] - 2017-03-16 ##
 ### Fixed
 - [#21](https://github.com/gonebusy/gonebusy-php-client/pull/21) - Add back :max_duration on CreateServiceBody/UpdateServiceByIdBody - [@alexagranov](https://github.com/alexagranov)
