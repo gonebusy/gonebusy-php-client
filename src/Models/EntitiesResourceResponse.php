@@ -28,7 +28,7 @@ class EntitiesResourceResponse implements JsonSerializable
 
     /**
      * gender of Resource, if applicable
-     * @var integer $gender public property
+     * @var string $gender public property
      */
     public $gender;
 
@@ -52,6 +52,13 @@ class EntitiesResourceResponse implements JsonSerializable
     public $ownerId;
 
     /**
+     * if Calendar is primary, if applicable
+     * @maps primary_cal
+     * @var bool $primaryCal public property
+     */
+    public $primaryCal;
+
+    /**
      * type of Resource
      * @maps resource_type
      * @var string $resourceType public property
@@ -69,24 +76,26 @@ class EntitiesResourceResponse implements JsonSerializable
      * Constructor to set initial or default values of member properties
      * @param integer $capacity     Initialization value for $this->capacity
      * @param string  $description  Initialization value for $this->description
-     * @param integer $gender       Initialization value for $this->gender
+     * @param string  $gender       Initialization value for $this->gender
      * @param integer $id           Initialization value for $this->id
      * @param string  $name         Initialization value for $this->name
      * @param integer $ownerId      Initialization value for $this->ownerId
+     * @param bool    $primaryCal   Initialization value for $this->primaryCal
      * @param string  $resourceType Initialization value for $this->resourceType
      * @param integer $thingTypeId  Initialization value for $this->thingTypeId
      */
     public function __construct()
     {
-        if (8 == func_num_args()) {
+        if (9 == func_num_args()) {
             $this->capacity     = func_get_arg(0);
             $this->description  = func_get_arg(1);
             $this->gender       = func_get_arg(2);
             $this->id           = func_get_arg(3);
             $this->name         = func_get_arg(4);
             $this->ownerId      = func_get_arg(5);
-            $this->resourceType = func_get_arg(6);
-            $this->thingTypeId  = func_get_arg(7);
+            $this->primaryCal   = func_get_arg(6);
+            $this->resourceType = func_get_arg(7);
+            $this->thingTypeId  = func_get_arg(8);
         }
     }
 
@@ -103,6 +112,7 @@ class EntitiesResourceResponse implements JsonSerializable
         $json['id']            = $this->id;
         $json['name']          = $this->name;
         $json['owner_id']      = $this->ownerId;
+        $json['primary_cal']   = $this->primaryCal;
         $json['resource_type'] = $this->resourceType;
         $json['thing_type_id'] = $this->thingTypeId;
 
