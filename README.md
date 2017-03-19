@@ -10,6 +10,12 @@ Just use [sandbox.gonebusy.com](https://sandbox.gonebusy.com) instead of where y
 
 The Sandbox environment is completely separate from the Live site - that includes meaning your Sandbox API Key will not work in the Live environment.
 
+## How to Test
+Unit tests in this SDK can be run using PHPUnit. The test cases are located in the test/Controllers/ dir.
+
+1. Make sure you've installed the dependencies using composer including the `require-dev` dependencies (you may have already done this with `composer install` or `composer update`).
+1. Run `vendor/bin/phpunit --verbose` from command line to execute the test suite.
+
 ## How to Build
 
 The generated code has dependencies over external libraries like UniRest. These dependencies are defined in the ```composer.json``` file that comes with the SDK.
@@ -77,12 +83,6 @@ _A **Search** of users and services can be performed._
 ```sh
 php my-project/trySDK.php
 ```
-
-## How to Test
-Unit tests in this SDK can be run using PHPUnit. The test cases are located in the test/Controllers/ dir.
-
-1. Make sure you've installed the dependencies using composer including the `require-dev` dependencies (you may have already done this with `composer install` or `composer update`).
-1. Run `vendor/bin/phpunit --verbose` from command line to execute the test suite.
 
 ## Initialization/Authentication
 
