@@ -127,17 +127,17 @@ class ServicesTest extends TestCase
      * GonebusyLib\Controllers\ServicesController::getServiceById()
      */
     public function testGetServiceById() {
+        // Create a Service:
         $createServiceBody = $this->serviceBody('create');
-
-        // Create GonebusyLib\Models\EntitiesServiceResponse:
         $responseService = $this->services->createService(Configuration::$authorization, $createServiceBody);
 
+        // Fetch same Service we just created:
         $response = $this->services->getServiceById(
             Configuration::$authorization,
             $responseService->service->id
         );
 
-        // Was it created?
+        // Was it fetched?
         $this->assertInstanceOf('GonebusyLib\Models\GetServiceByIdResponse', $response);
 
         // Does it have all the original data we sent?
@@ -156,15 +156,14 @@ class ServicesTest extends TestCase
         $createServiceBody = $this->serviceBody('create');
         $createResponse = $this->services->createService(Configuration::$authorization, $createServiceBody);
 
-        $anotherServiceBody = $this->serviceBody('update');
-
         // Update the same user:
+        $anotherServiceBody = $this->serviceBody('update');
         $response = $this->services->updateServiceById(
             Configuration::$authorization,
             $createResponse->service->id,
             $anotherServiceBody);
 
-        // Was it fetched?
+        // Was it updated?
         $this->assertInstanceOf('GonebusyLib\Models\UpdateServiceByIdResponse', $response);
 
         // Does it have all the new data we sent?
@@ -231,12 +230,12 @@ class ServicesTest extends TestCase
 
         $response = $this->services->deleteServiceById(Configuration::$authorization, $responseService->service->id);
 
-        // Was it fetched?
+        // Was it deleted?
         $this->assertInstanceOf('GonebusyLib\Models\DeleteServiceByIdResponse', $response);
 
-        // The record to be deleted is the same as the record that was deleted
         $responseBody = $this->bodyFromResponse($response, 'create');
         $this->assertEquals($responseBody, $createServiceBody);
+        // The record previously created is the same as the one deleted.
     }
 
 }
