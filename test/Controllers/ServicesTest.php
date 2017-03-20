@@ -44,6 +44,7 @@ class ServicesTest extends TestCase
                 return new CreateServiceBody(
                     "description", // REQUIRED
                     15, // duration REQUIRED
+                    15, // max_duration optional but will default to duration
                     "name", // REQUIRED
                     NULL, // categories default to empty list
                     NULL, // price_model_id
@@ -56,6 +57,7 @@ class ServicesTest extends TestCase
                     NULL, // categories
                     "another description",
                     30, // duration
+                    30, // max_duration
                     "another name",
                     NULL, // price_model_id
                     NULL, // resources
@@ -76,6 +78,7 @@ class ServicesTest extends TestCase
                 return new CreateServiceBody(
                     $response->service->description,
                     $response->service->duration,
+                    $response->service->maxDuration,
                     $response->service->name,
                     NULL, // $response->service->categories,
                     NULL, // $response->service->priceModelId,
@@ -88,6 +91,7 @@ class ServicesTest extends TestCase
                     NULL, // $response->service->categories,
                     $response->service->description,
                     $response->service->duration,
+                    $response->service->maxDuration,
                     $response->service->name,
                     NULL, // $response->service->priceModelId,
                     NULL, // $response->service->resources,
