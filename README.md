@@ -71,9 +71,11 @@ Summary of GoneBusy objects (more info on the [Developer Portal](https://gonebus
 A **User** is required to perform operations.  
 A **Resource** (WHO) performs Services and is needed for all scheduling operations.
 _Each User is assigned a default Resource (her/himself) automatically._  
-A **Service** (WHAT) is performed by Resources according to a Schedule. _Services are assigned a **Pricing Model**_. _Services can be assigned a **Category** as well._
-A **Schedule** (WHEN) defines when a Service is performed by a Resource.  Pieces of a Schedule are called **Time Windows**.
-Finally, a **Booking** is placed (at a particular Time Window) in a Schedule, linking it to a Resource-Service combo.
+A **Service** (WHAT) is performed by Resources according to a Schedule.
+_Services are assigned a **Pricing Model**._
+_Services can be assigned a **Category** as well._  
+A **Schedule** (WHEN) defines when a Service is performed by a Resource.  Pieces of a Schedule are called **Time Windows**.  
+Finally, a **Booking** is placed (at a particular Time Window) in a Schedule, linking it to a Resource-Service combo.  
 _A **Search** of users and services can be performed._  
 
 ### 3. Run your project
