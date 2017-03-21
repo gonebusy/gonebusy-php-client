@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/gonebusy/gonebusy-php-client.svg?branch=master)](https://travis-ci.org/gonebusy/gonebusy-php-client)
+[![PHP version](https://badge.fury.io/ph/gonebusy%2Fgonebusy-php-client.svg)](https://badge.fury.io/ph/gonebusy%2Fgonebusy-php-client)
 
 # PHP SDK for the GoneBusy REST API
 
