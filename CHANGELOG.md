@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.0.11] - 2017-03-21 ##
+### Added
+- [#24](https://github.com/gonebusy/gonebusy-php-client/pull/24) - dd schedules array to ServiceResponse - [@alexagranov](https://github.com/alexagranov)
+
 ## [0.0.10] - 2017-03-18 ##
 ### Fixed
 - [#22](https://github.com/gonebusy/gonebusy-php-client/pull/22) - Fix type of :gender to String; Add :primary_cal to ResourceResponse - [@alexagranov](https://github.com/alexagranov)
