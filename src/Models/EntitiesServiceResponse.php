@@ -79,6 +79,12 @@ class EntitiesServiceResponse implements JsonSerializable
     public $resources;
 
     /**
+     * array of Schedule ids, one for each Resource offering Service
+     * @var array $schedules public property
+     */
+    public $schedules;
+
+    /**
      * abbreviated name for Service
      * @maps short_name
      * @var string $shortName public property
@@ -97,11 +103,12 @@ class EntitiesServiceResponse implements JsonSerializable
      * @param integer $ownerId      Initialization value for $this->ownerId
      * @param integer $priceModelId Initialization value for $this->priceModelId
      * @param array   $resources    Initialization value for $this->resources
+     * @param array   $schedules    Initialization value for $this->schedules
      * @param string  $shortName    Initialization value for $this->shortName
      */
     public function __construct()
     {
-        if (11 == func_num_args()) {
+        if (12 == func_num_args()) {
             $this->categories   = func_get_arg(0);
             $this->description  = func_get_arg(1);
             $this->duration     = func_get_arg(2);
@@ -112,7 +119,8 @@ class EntitiesServiceResponse implements JsonSerializable
             $this->ownerId      = func_get_arg(7);
             $this->priceModelId = func_get_arg(8);
             $this->resources    = func_get_arg(9);
-            $this->shortName    = func_get_arg(10);
+            $this->schedules    = func_get_arg(10);
+            $this->shortName    = func_get_arg(11);
         }
     }
 
@@ -133,6 +141,7 @@ class EntitiesServiceResponse implements JsonSerializable
         $json['owner_id']       = $this->ownerId;
         $json['price_model_id'] = $this->priceModelId;
         $json['resources']      = $this->resources;
+        $json['schedules']      = $this->schedules;
         $json['short_name']     = $this->shortName;
 
         return $json;
