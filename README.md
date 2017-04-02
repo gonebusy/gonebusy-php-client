@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/gonebusy/gonebusy-php-client.svg?branch=master)](https://travis-ci.org/gonebusy/gonebusy-php-client)
+[![PHP version](https://badge.fury.io/ph/gonebusy%2Fgonebusy-php-client.svg)](https://badge.fury.io/ph/gonebusy%2Fgonebusy-php-client)
 
 # PHP SDK for the GoneBusy REST API
 
@@ -9,6 +10,12 @@ We have a Sandbox environment to play with!
 Just use [sandbox.gonebusy.com](https://sandbox.gonebusy.com) instead of where you see beta.gonebusy.com referenced, including where to create an account to retrieve your API Key.
 
 The Sandbox environment is completely separate from the Live site - that includes meaning your Sandbox API Key will not work in the Live environment.
+
+## How to Test
+Unit tests in this SDK can be run using PHPUnit. The test cases are located in the test/Controllers/ dir.
+
+1. Make sure you've installed the dependencies using composer including the `require-dev` dependencies (you may have already done this with `composer install` or `composer update`).
+1. Run `vendor/bin/phpunit --verbose` from command line to execute the test suite.
 
 ## How to Build
 
@@ -61,28 +68,22 @@ require_once "../vendor/autoload.php";
 
 After this you can add code to initialize the client library and acquire the instance of a Controller class. Sample code to initialize the client library and using controller methods is given in the subsequent sections.
 
-Summary of GoneBusy objects (more info on the [API Refence](https://gonebusy.github.io/api#/)):  
-A **User** (WHO) is required to perform operations.  
-A **Resource** (WHAT) is needed for all scheduling operations.
-_Each User is assigned a default Resource (himself) automatically._  
-A **Service** (HOW) represents the Resource's offer and is linked to its Schedule.
-_A **Search** of users and services can be performed. Services are assigned a **Pricing Model**_;  
-A **Schedule** (WHEN) is then used as the central piece to link Resources to the following objects:  
-Finally, a **Booking** is placed (at a particular time window) in a Schedule, linking it to a Resource-Service combo.
-_Bookings are assigned a **Category**._
-> Creating them in your code in the order implied above may be necessary.
+Summary of GoneBusy objects (more info on the [Developer Portal](https://gonebusy.github.io/api/)):  
+A **User** is required to perform operations.  
+A **Resource** (WHO) performs Services and is needed for all scheduling operations.
+_Each User is assigned a default Resource (her/himself) automatically._  
+A **Service** (WHAT) is performed by Resources according to a Schedule.
+_Services are assigned a **Pricing Model**._
+_Services can be assigned a **Category** as well._  
+A **Schedule** (WHEN) defines when a Service is performed by a Resource.  Pieces of a Schedule are called **Time Windows**.  
+Finally, a **Booking** is placed (at a particular Time Window) in a Schedule, linking it to a Resource-Service combo.  
+_A **Search** of users and services can be performed._  
 
 ### 3. Run your project
 
 ```sh
 php my-project/trySDK.php
 ```
-
-## How to Test
-Unit tests in this SDK can be run using PHPUnit. The test cases are located in the test/Controllers/ dir.
-
-1. Make sure you've installed the dependencies using composer including the `require-dev` dependencies (you may have already done this with `composer install` or `composer update`).
-1. Run `vendor/bin/phpunit --verbose` from command line to execute the test suite.
 
 ## Initialization/Authentication
 

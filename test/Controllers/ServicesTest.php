@@ -33,7 +33,7 @@ class ServicesTest extends TestCase
 
 
     /**
-     * Returns arbitrary service data.
+     * Generate arbitrary service data.
      * @param  string $type Should be 'create' or 'update'.
      * @return  CreateServiceBody or UpdateServiceByIdBody object with unique data to send to API
      */
@@ -44,6 +44,7 @@ class ServicesTest extends TestCase
                 return new CreateServiceBody(
                     "description", // REQUIRED
                     15, // duration REQUIRED
+                    15, // max_duration optional but will default to duration
                     "name", // REQUIRED
                     NULL, // categories default to empty list
                     NULL, // price_model_id
@@ -56,6 +57,7 @@ class ServicesTest extends TestCase
                     NULL, // categories
                     "another description",
                     30, // duration
+                    30, // max_duration
                     "another name",
                     NULL, // price_model_id
                     NULL, // resources
@@ -76,6 +78,7 @@ class ServicesTest extends TestCase
                 return new CreateServiceBody(
                     $response->service->description,
                     $response->service->duration,
+                    $response->service->maxDuration,
                     $response->service->name,
                     NULL, // $response->service->categories,
                     NULL, // $response->service->priceModelId,
@@ -88,6 +91,7 @@ class ServicesTest extends TestCase
                     NULL, // $response->service->categories,
                     $response->service->description,
                     $response->service->duration,
+                    $response->service->maxDuration,
                     $response->service->name,
                     NULL, // $response->service->priceModelId,
                     NULL, // $response->service->resources,
@@ -123,17 +127,17 @@ class ServicesTest extends TestCase
      * GonebusyLib\Controllers\ServicesController::getServiceById()
      */
     public function testGetServiceById() {
+        // Create a Service:
         $createServiceBody = $this->serviceBody('create');
-
-        // Create GonebusyLib\Models\EntitiesServiceResponse:
         $responseService = $this->services->createService(Configuration::$authorization, $createServiceBody);
 
+        // Fetch same Service we just created:
         $response = $this->services->getServiceById(
             Configuration::$authorization,
             $responseService->service->id
         );
 
-        // Was it created?
+        // Was it fetched?
         $this->assertInstanceOf('GonebusyLib\Models\GetServiceByIdResponse', $response);
 
         // Does it have all the original data we sent?
@@ -152,15 +156,14 @@ class ServicesTest extends TestCase
         $createServiceBody = $this->serviceBody('create');
         $createResponse = $this->services->createService(Configuration::$authorization, $createServiceBody);
 
-        $anotherServiceBody = $this->serviceBody('update');
-
         // Update the same user:
+        $anotherServiceBody = $this->serviceBody('update');
         $response = $this->services->updateServiceById(
             Configuration::$authorization,
             $createResponse->service->id,
             $anotherServiceBody);
 
-        // Was it fetched?
+        // Was it updated?
         $this->assertInstanceOf('GonebusyLib\Models\UpdateServiceByIdResponse', $response);
 
         // Does it have all the new data we sent?
@@ -227,12 +230,12 @@ class ServicesTest extends TestCase
 
         $response = $this->services->deleteServiceById(Configuration::$authorization, $responseService->service->id);
 
-        // Was it fetched?
+        // Was it deleted?
         $this->assertInstanceOf('GonebusyLib\Models\DeleteServiceByIdResponse', $response);
 
-        // The record to be deleted is the same as the record that was deleted
         $responseBody = $this->bodyFromResponse($response, 'create');
         $this->assertEquals($responseBody, $createServiceBody);
+        // The record previously created is the same as the one deleted.
     }
 
 }
