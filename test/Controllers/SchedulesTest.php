@@ -123,16 +123,16 @@ class SchedulesTest extends TestCase
             case 'update':
                 return new UpdateScheduleTimeWindowByIdBody(
                     NULL, // date_recurs_by
-                    // strtolower(date('l', strtotime('tomorrow + 1 day'))), // other days
-                    "sunday, monday, tuesday, wednesday, thursday, friday, saturday", // days
-                    // date('Y-m-d', strtotime('tomorrow + 1 day')), // another end_date
-                    date('Y-m-d', strtotime('tomorrow')), // end_date
+                    strtolower(date('l', strtotime('today'))), // other days
+                    // "sunday, monday, tuesday, wednesday, thursday, friday, saturday", // days
+                    date('Y-m-d', strtotime('today')), // another end_date
+                    // date('Y-m-d', strtotime('tomorrow')), // end_date
                     "19:00", // antoher end_time
-                    NULL, // frequency should default to 'every'
+                    'single', // frequency should default to 'every'
                     NULL, // occurrence should default to 'every'
-                    "daily", // recurs_by
+                    "once", // recurs_by
                     // date('Y-m-d', strtotime('tomorrow + 1 day')), // another start_date
-                    date('Y-m-d', strtotime('tomorrow')), // start_date
+                    date('Y-m-d', strtotime('today')), // another start_date
                     "13:00", // anther start_time
                     NULL // total_minutes
                 );
@@ -151,7 +151,10 @@ class SchedulesTest extends TestCase
                 return new CreateScheduleBody(
                     $response->schedule->serviceId,
                     NULL, // $response->schedule->dateRecursBy,
-                    join($response->schedule->timeWindows[0]->days, ', '),
+                    isset($response->schedule->timeWindows[0])?
+                        join($response->schedule->timeWindows[0]->days, ', ')
+                        : NULL
+                    , // days
                     $response->schedule->timeWindows[0]->endDate,
                     $response->schedule->timeWindows[0]->endTime,
                     NULL, // $response->schedule->timeWindows[0]->frequency,
@@ -365,10 +368,11 @@ class SchedulesTest extends TestCase
         // Create ScheduleTimeWindow:
         $createSTWBody = $this->timeWindowBody('create');
         $responseSTW = $this->schedules->createScheduleTimeWindow(Configuration::$authorization, $responseSchedule->schedule->id, $createSTWBody);
+        // echo("\n");
+        // print_r($responseSTW->schedule->timeWindows[1]);
 
 
         // Update the same time window:
-        // echo("\n");
         $anotherSTWBody = $this->timeWindowBody('update');
         // print_r($anotherSTWBody);
         $response = $this->schedules->updateScheduleTimeWindowById(
