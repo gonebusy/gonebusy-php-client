@@ -34,7 +34,7 @@ class SchedulesTest extends TestCase
 
 
     /**
-     * Create the GonebusyClient and ScheduleController for each test.
+     * Create the GonebusyClient and ScheduleController, etc for each test.
      */
     public function setUp() {
         $this->client = new GonebusyClient();
@@ -48,7 +48,7 @@ class SchedulesTest extends TestCase
     /**
      * Generate arbitrary service or resource data.
      * @param  string $action 'Service' or 'Resource'
-     * @return  CreateServiceBody or CreateResourceBody object for sending to API
+     * @return  mixed object for sending to API
      */
     private function createBody($action) {
         switch($action) {
@@ -65,8 +65,8 @@ class SchedulesTest extends TestCase
                 );
             case 'Resource':
                 return new CreateResourceBody(
-                    "name",
-                    "Staff",
+                    "name", // REQUIRED
+                    "Staff", // type REQUIRED
                     NULL, // capacity
                     "description",
                     NULL, // gender
@@ -78,13 +78,13 @@ class SchedulesTest extends TestCase
 
     /**
      * Generate arbitrary schedule data.
-     * @param  int $service_id for new schedule
-     * @param  int $resource_id for new schedule
+     * @param  int $serviceId for new schedule
+     * @param  int $resourceId for new schedule
      * @return  CreateScheduleBody object for sending to API
      */
-    private function scheduleBody($service_id, $resource_id) {
+    private function scheduleBody($serviceId, $resourceId) {
         return new CreateScheduleBody(
-            $service_id, // REQUIRED
+            $serviceId, // REQUIRED
             NULL, // date_recurs_by
             "sunday, monday, tuesday, wednesday, thursday, friday, saturday", // days
             date('Y-m-d', strtotime('tomorrow')), // end_date XXX can be infinite
@@ -92,7 +92,7 @@ class SchedulesTest extends TestCase
             NULL, // frequency defaults to 'every'
             NULL, // occurrence defaults to 'every'
             "daily", // recurs_by
-            $resource_id, // XXX should default to self?
+            $resourceId, // XXX should default to self?
             date('Y-m-d', strtotime('tomorrow')), // start_date
             "12:00", // start_time
             NULL, // total_minutes can be deduced
