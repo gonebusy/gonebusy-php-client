@@ -124,14 +124,11 @@ class SchedulesTest extends TestCase
                 return new UpdateScheduleTimeWindowByIdBody(
                     NULL, // date_recurs_by
                     strtolower(date('l', strtotime('today'))), // other days
-                    // "sunday, monday, tuesday, wednesday, thursday, friday, saturday", // days
                     date('Y-m-d', strtotime('today')), // another end_date
-                    // date('Y-m-d', strtotime('tomorrow')), // end_date
                     "19:00", // antoher end_time
                     'single', // frequency should default to 'every'
                     NULL, // occurrence should default to 'every'
                     "once", // recurs_by
-                    // date('Y-m-d', strtotime('tomorrow + 1 day')), // another start_date
                     date('Y-m-d', strtotime('today')), // another start_date
                     "13:00", // anther start_time
                     NULL // total_minutes
@@ -370,26 +367,26 @@ class SchedulesTest extends TestCase
         $createSTWBody = $this->timeWindowBody('create');
         $responseSTW = $this->schedules->createScheduleTimeWindow(Configuration::$authorization, $responseSchedule->schedule->id, $createSTWBody);
         // echo("\n");
-        // print_r($responseSTW->schedule->timeWindows[1]);
 
 
         // Update the same time window:
         $anotherSTWBody = $this->timeWindowBody('update');
-        // print_r($anotherSTWBody);
         $response = $this->schedules->updateScheduleTimeWindowById(
             Configuration::$authorization,
             $responseSchedule->schedule->id,
             $responseSTW->schedule->timeWindows[1]->id,
             $anotherSTWBody);
-        // print_r($response);
 
         // Was it updated?
         $this->assertInstanceOf('GonebusyLib\Models\UpdateScheduleTimeWindowByIdResponse', $response);
 
         // Does it have all the original data we sent?
         $responseBody = $this->bodyFromResponse($response, 'updateSTW');
-        // print_r($responseBody);
-        $this->assertEquals($responseBody, $anotherSTWBody);
+        $this->assertInstanceOf('GonebusyLib\Models\UpdateScheduleTimeWindowByIdBody', $responseBody);
+        $this->assertEquals($responseBody->startTime, $anotherSTWBody->startTime);
+        $this->assertEquals($responseBody->endTime, $anotherSTWBody->endTime);
+        $this->assertEquals($responseBody->startDate, $anotherSTWBody->startDate);
+        $this->assertEquals($responseBody->endDate, $anotherSTWBody->endDate);
 
 
         // Delete test entities:
