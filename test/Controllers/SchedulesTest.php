@@ -304,9 +304,10 @@ class SchedulesTest extends TestCase
         // Was it deleted?
         $this->assertInstanceOf('GonebusyLib\Models\DeleteScheduleByIdResponse', $response);
 
-        $responseBody = $this->bodyFromResponse($response, 'CreateSchedule');
-        $this->assertEquals($responseBody->serviceId, $createScheduleBody->serviceId);
-        // The record previously created is the same as the one deleted.
+        // Does the deleted record seem to = the one previously created?
+        $this->assertEquals($response->schedule->id, $responseSchedule->schedule->id);
+        $this->assertEquals($response->schedule->resourceId, $responseSchedule->schedule->resourceId);
+        $this->assertEquals($response->schedule->serviceId, $responseSchedule->schedule->serviceId);
 
         // Delete remaining test entities:
         $delResponseResource = $this->resources->deleteResourceById(Configuration::$authorization, $resourceResponse->resource->id);
