@@ -148,7 +148,7 @@ class SchedulesTest extends TestCase
                 return new CreateScheduleBody(
                     $response->schedule->serviceId,
                     NULL, // $response->schedule->dateRecursBy,
-                    isset($response->schedule->timeWindows[0])?
+                    isset($response->schedule->timeWindows[0]) ?
                         join($response->schedule->timeWindows[0]->days, ', ')
                         : NULL
                     , // days
@@ -170,7 +170,10 @@ class SchedulesTest extends TestCase
                     $response->schedule->timeWindows[1]->recursBy,
                     $response->schedule->timeWindows[1]->startDate,
                     $response->schedule->timeWindows[1]->startTime,
-                    $response->schedule->timeWindows[1]->dateRecursBy?$response->schedule->timeWindows[1]->dateRecursBy:NULL,
+                    $response->schedule->timeWindows[1]->dateRecursBy ?
+                        $response->schedule->timeWindows[1]->dateRecursBy
+                        : NULL
+                    ,
                     $response->schedule->timeWindows[1]->endDate,
                     NULL, // $response->schedule->timeWindows[1]->frequency,
                     NULL, // $response->schedule->timeWindows[1]->occurrence,
@@ -178,7 +181,10 @@ class SchedulesTest extends TestCase
                 );
             case 'updateSTW':
                 return new UpdateScheduleTimeWindowByIdBody(
-                    $response->schedule->timeWindows[1]->dateRecursBy?$response->schedule->timeWindows[1]->dateRecursBy:NULL,
+                    $response->schedule->timeWindows[1]->dateRecursBy ?
+                        $response->schedule->timeWindows[1]->dateRecursBy
+                        : NULL
+                    ,
                     join($response->schedule->timeWindows[1]->days, ', '),
                     $response->schedule->timeWindows[1]->endDate,
                     $response->schedule->timeWindows[1]->endTime,
