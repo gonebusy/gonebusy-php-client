@@ -148,7 +148,7 @@ class SchedulesTest extends TestCase
                 return new CreateScheduleBody(
                     $response->schedule->serviceId,
                     NULL, // $response->schedule->dateRecursBy,
-                    isset($response->schedule->timeWindows[0])?
+                    isset($response->schedule->timeWindows[0]) ?
                         join($response->schedule->timeWindows[0]->days, ', ')
                         : NULL
                     , // days
@@ -170,7 +170,10 @@ class SchedulesTest extends TestCase
                     $response->schedule->timeWindows[1]->recursBy,
                     $response->schedule->timeWindows[1]->startDate,
                     $response->schedule->timeWindows[1]->startTime,
-                    $response->schedule->timeWindows[1]->dateRecursBy,
+                    $response->schedule->timeWindows[1]->dateRecursBy ?
+                        $response->schedule->timeWindows[1]->dateRecursBy
+                        : NULL
+                    ,
                     $response->schedule->timeWindows[1]->endDate,
                     NULL, // $response->schedule->timeWindows[1]->frequency,
                     NULL, // $response->schedule->timeWindows[1]->occurrence,
@@ -178,11 +181,14 @@ class SchedulesTest extends TestCase
                 );
             case 'updateSTW':
                 return new UpdateScheduleTimeWindowByIdBody(
-                    $response->schedule->timeWindows[1]->dateRecursBy,
+                    $response->schedule->timeWindows[1]->dateRecursBy ?
+                        $response->schedule->timeWindows[1]->dateRecursBy
+                        : NULL
+                    ,
                     join($response->schedule->timeWindows[1]->days, ', '),
                     $response->schedule->timeWindows[1]->endDate,
                     $response->schedule->timeWindows[1]->endTime,
-                    NULL, // $response->schedule->timeWindows[1]->frequency,
+                    $response->schedule->timeWindows[1]->frequency,
                     NULL, // $response->schedule->timeWindows[1]->occurrence,
                     $response->schedule->timeWindows[1]->recursBy,
                     $response->schedule->timeWindows[1]->startDate,
@@ -366,7 +372,6 @@ class SchedulesTest extends TestCase
         // Create ScheduleTimeWindow:
         $createSTWBody = $this->timeWindowBody('create');
         $responseSTW = $this->schedules->createScheduleTimeWindow(Configuration::$authorization, $responseSchedule->schedule->id, $createSTWBody);
-        // echo("\n");
 
 
         // Update the same time window:
@@ -383,10 +388,7 @@ class SchedulesTest extends TestCase
         // Does it have all the original data we sent?
         $responseBody = $this->bodyFromResponse($response, 'updateSTW');
         $this->assertInstanceOf('GonebusyLib\Models\UpdateScheduleTimeWindowByIdBody', $responseBody);
-        $this->assertEquals($responseBody->startTime, $anotherSTWBody->startTime);
-        $this->assertEquals($responseBody->endTime, $anotherSTWBody->endTime);
-        $this->assertEquals($responseBody->startDate, $anotherSTWBody->startDate);
-        $this->assertEquals($responseBody->endDate, $anotherSTWBody->endDate);
+        $this->assertEquals($anotherSTWBody, $responseBody);
 
 
         // Delete test entities:
