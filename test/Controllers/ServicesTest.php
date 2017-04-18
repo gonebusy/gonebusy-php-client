@@ -35,7 +35,7 @@ class ServicesTest extends TestCase
     /**
      * Generate arbitrary service data.
      * @param  string $type Should be 'create' or 'update'.
-     * @return  CreateServiceBody or UpdateServiceByIdBody object with unique data to send to API
+     * @return  mixed object with unique data to send to API
      */
     private function serviceBody($type) {
         $rand = rand();
@@ -70,7 +70,7 @@ class ServicesTest extends TestCase
      * Generate data from Service response.
      * @param  GonebusyLib\Models\EntitiesServiceResponse $response
      * @param  string $type Should be 'create' or 'update'.
-     * @return  CreateServiceBody or UpdateServiceByIdBody object with data from $response
+     * @return  mixed object with data from $response
      */
     private function bodyFromResponse($response, $type) {
         switch($type) {
