@@ -185,7 +185,7 @@ class ResourcesTest extends TestCase
         // Did it return an array of 3 resources?
         $this->assertCount($perPage, $response->resources);
         foreach($response->resources as $resource) {
-            $this->assertInstanceOf('GonebusyLib\Models\GetResourcesResponse', $response);
+            $this->assertInstanceOf('GonebusyLib\Models\EntitiesResourceResponse', $resource);
         }
     }
 
