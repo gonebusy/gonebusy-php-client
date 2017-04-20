@@ -56,6 +56,7 @@ class SchedulesTest extends TestCase
                 return new CreateServiceBody(
                     "description", // REQUIRED
                     15, // duration REQUIRED
+                    15, // max_duration optional but will default to duration
                     "name", // REQUIRED
                     NULL, // categories
                     NULL, // price_model_id
@@ -209,11 +210,9 @@ class SchedulesTest extends TestCase
      */
     public function testCreateSchedule() {
         // Create Service:
-        $createServiceBody = $this->createBody('Service');
-        $serviceResponse = $this->services->createService(Configuration::$authorization, $createServiceBody);
+        $serviceResponse = $this->services->createService(Configuration::$authorization, $this->createBody('Service'));
         // Create Resource:
-        $createResourceBody = $this->createBody('Resource');
-        $resourceResponse = $this->resources->createResource(Configuration::$authorization, $createResourceBody);
+        $resourceResponse = $this->resources->createResource(Configuration::$authorization, $this->createBody('Resource'));
 
         // Create Schedule:
         $createScheduleBody = $this->scheduleBody(
@@ -285,7 +284,7 @@ class SchedulesTest extends TestCase
         // Did it return an array of 3 schedules?
         $this->assertCount($perPage, $response->schedules);
         foreach($response->schedules as $schedule) {
-            $this->assertInstanceOf('GonebusyLib\Models\GetSchedulesResponse', $response);
+            $this->assertInstanceOf('GonebusyLib\Models\EntitiesScheduleResponse', $schedule);
         }
     }
 
