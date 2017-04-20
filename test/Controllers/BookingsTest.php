@@ -113,24 +113,24 @@ class BookingsTest extends TestCase
      * @param  int $resourceId for new booking
      * @return  mixed object with unique data to send to API
      */
-    private function bookingBody($action, $serviceId=NULL, $resourceId=NULL) {
+    private function bookingBody($action, $sId=NULL, $rId=NULL) {
         switch($action) {
             case 'create':
                 return new CreateBookingBody(
                     date('Y-m-d', strtotime('tomorrow')), // date (within schedule start_date and end_date)
-                    $serviceId, // service_id
+                    $sId, // service_id
                     "13:00", // time (within schedule start_time and end_date)
                     30, // duration (>= service durations)
-                    $resourceId, // resource_id
+                    $rId, // resource_id
                     NULL // user_id defaults to self
                 );
             case 'update':
                 return new CreateBookingBody(
                     date('Y-m-d', strtotime('tomorrow')), // date (within schedule start_date and end_date)
-                    $serviceId, // service_id
+                    $sId, // service_id
                     "13:45", // another time (within schedule start_time and end_date)
                     15, // another duration (>= service durations)
-                    $resourceId, // resource_id
+                    $rId, // resource_id
                     NULL // user_id defaults to self
                 );
         }
@@ -179,7 +179,7 @@ class BookingsTest extends TestCase
 
         // Does it have all the original data we sent?
         $responseBody = $this->bodyFromResponse($response, $serviceResponse->service->id, $resourceResponse->resource->id);
-        $this->assertEquals($responseBody, $createBookingBody);
+        $this->assertEquals($createBookingBody, $responseBody);
 
         // Delete test booking after a few seconds:
         sleep(3); // (until the booking is :awaiting_review)
@@ -196,28 +196,51 @@ class BookingsTest extends TestCase
 
     /**
      * Test PUT /bookings/{id}
-     * GonebusyLib\Controllers\BookingsController::getBookingById()
+     * GonebusyLib\Controllers\BookingsController::updateBookingById()
      */
     public function testUpdateBookingById() {
-        // echo("\n");
-        // $serviceResponse = $this->services->createService(Configuration::$authorization, $this->createBody('Service'));
-        // $resourceResponse = $this->resources->createResource(Configuration::$authorization, $this->createBody('Resource'));
-        // $createScheduleBody = $this->scheduleBody($serviceResponse->service->id, $resourceResponse->resource->id);
-        // $scheduleResponse = $this->schedules->createSchedule(Configuration::$authorization, $createScheduleBody);
-        // // Create Booking:
-        // $response = $this->bookings->createBooking(
-        //     Configuration::$authorization,
-        //     $this->bookingBody('create', $serviceResponse->service->id, $resourceResponse->resource->id)
-        // );
-        // echo("Created a Schedule with this Time Window: "); print_r($scheduleResponse->schedule->timeWindows[0]);
+        // /* DEBUG */ echo("\n");
+        $serviceResponse = $this->services->createService(Configuration::$authorization, $this->createBody('Service'));
+        $resourceResponse = $this->resources->createResource(Configuration::$authorization, $this->createBody('Resource'));
+        $createScheduleBody = $this->scheduleBody($serviceResponse->service->id, $resourceResponse->resource->id);
+        $scheduleResponse = $this->schedules->createSchedule(Configuration::$authorization, $createScheduleBody);
+        // Create Booking:
+        $bookingResponse = $this->bookings->createBooking(
+            Configuration::$authorization,
+            $this->bookingBody('create', $serviceResponse->service->id, $resourceResponse->resource->id)
+        );
+        // /* DEBUG */ echo("Created booking: "); print_r($bookingResponse);
 
-        //  * @param string $authorization A valid API key, in the format 'Token API_KEY'
-        //  * @param string $id            TODO: type description here
-        //  * @return mixed response from the API call
-        //  * @throws APIException Thrown if API call fails
-        // public function updateBookingById(
-        //     $authorization,
-        //     $id
+
+        // Update Booking:
+        $updateBookingBody = $this->bookingBody('update', $serviceResponse->service->id, $resourceResponse->resource->id);
+        // /* DEBUG */ echo("New booking data for updateBookingById(): "); print_r($updateBookingBody);
+        $response = $this->bookings->updateBookingById(
+            Configuration::$authorization,
+            $bookingResponse->booking->id,
+            $updateBookingBody
+        );
+        // /* DEBUG */ echo("Updated booking: "); print_r($response);
+
+        // Was it updated?
+        $this->assertInstanceOf('GonebusyLib\Models\UpdateBookingByIdResponse', $response);
+
+        // Does it have all the new data we sent?
+        $responseBody = $this->bodyFromResponse($response, $serviceResponse->service->id, $resourceResponse->resource->id);
+        // /* DEBUG */ echo("Updated booking data returned: "); print_r($responseBody);
+        $this->assertEquals($updateBookingBody, $responseBody);
+
+        // Delete test booking after a few seconds:
+        sleep(3); // (until the booking is :awaiting_review)
+        $this->bookings->cancelBookingById(Configuration::$authorization, $response->booking->id);
+
+
+        // Delete test schedule:
+        $this->schedules->deleteScheduleById(Configuration::$authorization, $scheduleResponse->schedule->id);
+        // Delete test resource:
+        $this->resources->deleteResourceById(Configuration::$authorization, $resourceResponse->resource->id);
+        // Delete test service:
+        $this->services->deleteServiceById(Configuration::$authorization, $serviceResponse->service->id);
     }
 
     /**
@@ -236,7 +259,7 @@ class BookingsTest extends TestCase
 
     /**
      * Test DELETE /bookings/{id}
-     * GonebusyLib\Controllers\BookingsController::getBookingById()
+     * GonebusyLib\Controllers\BookingsController::cancelBookingById()
      */
     public function testCancelBookingById() {
         //  * @param string $authorization A valid API key, in the format 'Token API_KEY'
