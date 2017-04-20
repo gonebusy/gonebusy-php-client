@@ -192,7 +192,7 @@ class ServicesTest extends TestCase
         // Did it return an array of 3 services?
         $this->assertCount($perPage, $response->services);
         foreach($response->services as $service) {
-            $this->assertInstanceOf('GonebusyLib\Models\GetServicesResponse', $response);
+            $this->assertInstanceOf('GonebusyLib\Models\EntitiesServiceResponse', $service);
         }
     }
 
