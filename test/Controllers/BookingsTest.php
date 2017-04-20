@@ -182,7 +182,7 @@ class BookingsTest extends TestCase
         $this->assertEquals($createBookingBody, $responseBody);
 
         // Delete test booking after a few seconds:
-        sleep(3); // (until the booking is :awaiting_review)
+        sleep(3); // (when the booking status is :awaiting_review)
         $this->bookings->cancelBookingById(Configuration::$authorization, $response->booking->id);
 
 
@@ -231,7 +231,7 @@ class BookingsTest extends TestCase
         $this->assertEquals($updateBookingBody, $responseBody);
 
         // Delete test booking after a few seconds:
-        sleep(3); // (until the booking is :awaiting_review)
+        sleep(3); // (when the booking status is :awaiting_review)
         $this->bookings->cancelBookingById(Configuration::$authorization, $response->booking->id);
 
 
@@ -248,13 +248,42 @@ class BookingsTest extends TestCase
      * GonebusyLib\Controllers\BookingsController::getBookingById()
      */
     public function testGetBookingById() {
-        //  * @param string $authorization A valid API key, in the format 'Token API_KEY'
-        //  * @param string $id            TODO: type description here
-        //  * @return mixed response from the API call
-        //  * @throws APIException Thrown if API call fails
-        // public function getBookingById(
-        //     $authorization,
-        //     $id
+        $serviceResponse = $this->services->createService(Configuration::$authorization, $this->createBody('Service'));
+        $resourceResponse = $this->resources->createResource(Configuration::$authorization, $this->createBody('Resource'));
+        $createScheduleBody = $this->scheduleBody($serviceResponse->service->id, $resourceResponse->resource->id);
+        $scheduleResponse = $this->schedules->createSchedule(Configuration::$authorization, $createScheduleBody);
+        // Create Booking:
+        $createBookingBody = $this->bookingBody('create', $serviceResponse->service->id, $resourceResponse->resource->id);
+        $bookingResponse = $this->bookings->createBooking(
+            Configuration::$authorization,
+            $createBookingBody
+        );
+
+
+        // Get back the Booking:
+        $response = $bookingResponse = $this->bookings->getBookingById(
+            Configuration::$authorization,
+            $bookingResponse->booking->id
+        );
+
+        // Was it fetched?
+        $this->assertInstanceOf('GonebusyLib\Models\GetBookingByIdResponse', $response);
+
+        // Does it have all the original data we sent?
+        $responseBody = $this->bodyFromResponse($response, $serviceResponse->service->id, $resourceResponse->resource->id);
+        $this->assertEquals($createBookingBody, $responseBody);
+
+        // Delete test booking after a few seconds:
+        sleep(3); // (when the booking status is :awaiting_review)
+        $this->bookings->cancelBookingById(Configuration::$authorization, $response->booking->id);
+
+
+        // Delete test schedule:
+        $this->schedules->deleteScheduleById(Configuration::$authorization, $scheduleResponse->schedule->id);
+        // Delete test resource:
+        $this->resources->deleteResourceById(Configuration::$authorization, $resourceResponse->resource->id);
+        // Delete test service:
+        $this->services->deleteServiceById(Configuration::$authorization, $serviceResponse->service->id);
     }
 
     /**
@@ -262,13 +291,37 @@ class BookingsTest extends TestCase
      * GonebusyLib\Controllers\BookingsController::cancelBookingById()
      */
     public function testCancelBookingById() {
-        //  * @param string $authorization A valid API key, in the format 'Token API_KEY'
-        //  * @param string $id            TODO: type description here
-        //  * @return mixed response from the API call
-        //  * @throws APIException Thrown if API call fails
-        // public function cancelBookingById(
-        //     $authorization,
-        //     $id
+        $serviceResponse = $this->services->createService(Configuration::$authorization, $this->createBody('Service'));
+        $resourceResponse = $this->resources->createResource(Configuration::$authorization, $this->createBody('Resource'));
+        $createScheduleBody = $this->scheduleBody($serviceResponse->service->id, $resourceResponse->resource->id);
+        $scheduleResponse = $this->schedules->createSchedule(Configuration::$authorization, $createScheduleBody);
+        // Create Booking:
+        $createBookingBody = $this->bookingBody('create', $serviceResponse->service->id, $resourceResponse->resource->id);
+        $bookingResponse = $this->bookings->createBooking(
+            Configuration::$authorization,
+            $createBookingBody
+        );
+
+
+        // Delete the booking after a few seconds:
+        sleep(3); // (when the booking status is :awaiting_review)
+        $response = $this->bookings->cancelBookingById(Configuration::$authorization, $bookingResponse->booking->id);
+
+        // Was it cancelled?
+        $this->assertInstanceOf('GonebusyLib\Models\CancelBookingByIdResponse', $response);
+        $this->assertEquals($response->booking->workflowState, 'canceled');
+
+        // Extra: Does the deleted record seem to = the one previously created?
+        $responseBody = $this->bodyFromResponse($response, $serviceResponse->service->id, $resourceResponse->resource->id);
+        $this->assertEquals($createBookingBody, $responseBody);
+
+
+        // Delete test schedule:
+        $this->schedules->deleteScheduleById(Configuration::$authorization, $scheduleResponse->schedule->id);
+        // Delete test resource:
+        $this->resources->deleteResourceById(Configuration::$authorization, $resourceResponse->resource->id);
+        // Delete test service:
+        $this->services->deleteServiceById(Configuration::$authorization, $serviceResponse->service->id);
     }
 
     /**
