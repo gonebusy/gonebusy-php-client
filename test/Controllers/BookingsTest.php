@@ -160,17 +160,11 @@ class BookingsTest extends TestCase
      * GonebusyLib\Controllers\UsersController::createBooking()
      */
     public function testCreateBooking() {
-        // echo("\n");
-        // Create Service:
-        $createServiceBody = $this->createBody('Service');
-        $serviceResponse = $this->services->createService(Configuration::$authorization, $createServiceBody);
-        // Create Resource:
-        $createResourceBody = $this->createBody('Resource');
-        $resourceResponse = $this->resources->createResource(Configuration::$authorization, $createResourceBody);
+        $serviceResponse = $this->services->createService(Configuration::$authorization, $this->createBody('Service'));
+        $resourceResponse = $this->resources->createResource(Configuration::$authorization, $this->createBody('Resource'));
         // Give open Schedule for seervice/resource combination:
         $createScheduleBody = $this->scheduleBody($serviceResponse->service->id, $resourceResponse->resource->id);
         $scheduleResponse = $this->schedules->createSchedule(Configuration::$authorization, $createScheduleBody);
-        // echo("Created a Schedule with this Time Window: "); print_r($scheduleResponse->schedule->timeWindows[0]);
 
 
         // Create Booking:
@@ -179,7 +173,6 @@ class BookingsTest extends TestCase
             Configuration::$authorization,
             $createBookingBody
         );
-        // echo("Created a Booking: "); print_r($response);
 
         // Was it created?
         $this->assertInstanceOf('GonebusyLib\Models\CreateBookingResponse', $response);
@@ -188,8 +181,9 @@ class BookingsTest extends TestCase
         $responseBody = $this->bodyFromResponse($response, $serviceResponse->service->id, $resourceResponse->resource->id);
         $this->assertEquals($responseBody, $createBookingBody);
 
-        // XXX Delete test booking:
-        // $this->bookings->cancelBookingById(Configuration::$authorization, $response->booking->id);
+        // Delete test booking after a few seconds:
+        sleep(3); // (until the booking is :awaiting_review)
+        $this->bookings->cancelBookingById(Configuration::$authorization, $response->booking->id);
 
 
         // Delete test schedule:
@@ -205,6 +199,18 @@ class BookingsTest extends TestCase
      * GonebusyLib\Controllers\BookingsController::getBookingById()
      */
     public function testUpdateBookingById() {
+        // echo("\n");
+        // $serviceResponse = $this->services->createService(Configuration::$authorization, $this->createBody('Service'));
+        // $resourceResponse = $this->resources->createResource(Configuration::$authorization, $this->createBody('Resource'));
+        // $createScheduleBody = $this->scheduleBody($serviceResponse->service->id, $resourceResponse->resource->id);
+        // $scheduleResponse = $this->schedules->createSchedule(Configuration::$authorization, $createScheduleBody);
+        // // Create Booking:
+        // $response = $this->bookings->createBooking(
+        //     Configuration::$authorization,
+        //     $this->bookingBody('create', $serviceResponse->service->id, $resourceResponse->resource->id)
+        // );
+        // echo("Created a Schedule with this Time Window: "); print_r($scheduleResponse->schedule->timeWindows[0]);
+
         //  * @param string $authorization A valid API key, in the format 'Token API_KEY'
         //  * @param string $id            TODO: type description here
         //  * @return mixed response from the API call
