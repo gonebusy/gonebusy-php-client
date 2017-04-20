@@ -284,7 +284,7 @@ class SchedulesTest extends TestCase
         // Did it return an array of 3 schedules?
         $this->assertCount($perPage, $response->schedules);
         foreach($response->schedules as $schedule) {
-            $this->assertInstanceOf('GonebusyLib\Models\GetSchedulesResponse', $response);
+            $this->assertInstanceOf('GonebusyLib\Models\EntitiesScheduleResponse', $schedule);
         }
     }
 
