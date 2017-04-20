@@ -1,4 +1,4 @@
-booking<?php
+<?php
 /*
  * Bookings SDK Controller Test Case
  */
