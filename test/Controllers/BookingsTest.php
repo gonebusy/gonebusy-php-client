@@ -1,4 +1,4 @@
-<?php
+booking<?php
 /*
  * Bookings SDK Controller Test Case
  */
@@ -329,18 +329,20 @@ class BookingsTest extends TestCase
      * GonebusyLib\Controllers\BookingsController::getBookings()
      */
     public function testGetBookings() {
-        //  * @param string  $authorization A valid API key, in the format 'Token API_KEY'
-        //  * @param integer $page          (optional) Page offset to fetch.
-        //  * @param integer $perPage       (optional) Number of results to return per page.
-        //  * @param string  $states        (optional) Comma-separated list of Booking states to retrieve only Bookings in
-        //  *                               those states.  Leave blank to retrieve all Bookings.
-        //  * @param integer $userId        (optional) Retrieve Bookings owned only by this User Id.  You must be authorized
-        // public function getBookings(
-        //     $authorization,
-        //     $page = 1,
-        //     $perPage = 10,
-        //     $states = null,
-        //     $userId = null
+        $perPage = 3;
+        $response = $this->bookings->getBookings(
+            Configuration::$authorization,
+            $page = 1,
+            $perPage);
+
+        // Was it fetched?
+        $this->assertInstanceOf('GonebusyLib\Models\GetBookingsResponse', $response);
+
+        // Did it return an array of 3 schedules?
+        $this->assertCount($perPage, $response->bookings);
+        foreach($response->bookings as $booking) {
+            $this->assertInstanceOf('GonebusyLib\Models\EntitiesBookingResponse', $booking);
+        }
     }
 
 }
