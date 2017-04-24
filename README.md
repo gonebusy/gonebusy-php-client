@@ -43,7 +43,9 @@ Unit tests in this SDK can be run using PHPUnit. The test cases are located in t
 1. Make sure you've installed the dependencies using composer including the `require-dev` dependencies.
 1. Run `vendor/bin/phpunit` from command line to execute the test suite.
    See https://phpunit.de/manual/current/en/textui.html for info on test output format as well as more command-line options.
-1. Optionally, to check the code standards you may run `vendor/bin/phpcs --standard=PSR1 test`. (No output means no problems.)
+1. Optionally, to check the code standards you may run `vendor/bin/phpcs` (See `phpcs.xml`). (No output means no problems.)
+
+---
 
 ## How to Use
 
