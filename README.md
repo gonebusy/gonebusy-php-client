@@ -11,13 +11,6 @@ Just use [sandbox.gonebusy.com](https://sandbox.gonebusy.com) instead of where y
 
 The Sandbox environment is completely separate from the Live site - that includes meaning your Sandbox API Key will not work in the Live environment.
 
-## How to Test
-Unit tests in this SDK can be run using PHPUnit. The test cases are located in the test/Controllers/ dir.
-
-1. Make sure you've installed the dependencies using composer including the `require-dev` dependencies (you may have already done this with `composer install` or `composer update`).
-1. Run `vendor/bin/phpunit` from command line to execute the test suite.
-   See https://phpunit.de/manual/current/en/textui.html for info on test output format as well as more command-line options.
-
 ## How to Build
 
 The generated code has dependencies over external libraries like UniRest. These dependencies are defined in the ```composer.json``` file that comes with the SDK.
@@ -42,6 +35,15 @@ CURL used to include a list of accepted CAs, but no longer bundles ANY CA certs.
 ; absolute path.
 ;curl.cainfo =
 ```
+
+## How to Test
+
+Unit tests in this SDK can be run using PHPUnit. The test cases are located in the test/Controllers/ dir.
+
+1. Make sure you've installed the dependencies using composer including the `require-dev` dependencies.
+1. Run `vendor/bin/phpunit` from command line to execute the test suite.
+   See https://phpunit.de/manual/current/en/textui.html for info on test output format as well as more command-line options.
+1. Optionally, to check the code standards you may run `vendor/bin/phpcs --standard=PSR1 test`. (No output means no problems.)
 
 ## How to Use
 
