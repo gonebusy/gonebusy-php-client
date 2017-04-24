@@ -15,7 +15,8 @@ The Sandbox environment is completely separate from the Live site - that include
 Unit tests in this SDK can be run using PHPUnit. The test cases are located in the test/Controllers/ dir.
 
 1. Make sure you've installed the dependencies using composer including the `require-dev` dependencies (you may have already done this with `composer install` or `composer update`).
-1. Run `vendor/bin/phpunit --verbose` from command line to execute the test suite.
+1. Run `vendor/bin/phpunit` from command line to execute the test suite.
+   See https://phpunit.de/manual/current/en/textui.html for info on test output format as well as more command-line options.
 
 ## How to Build
 
