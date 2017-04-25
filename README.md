@@ -1,26 +1,81 @@
 [![Build Status](https://travis-ci.org/gonebusy/gonebusy-php-client.svg?branch=master)](https://travis-ci.org/gonebusy/gonebusy-php-client)
 [![PHP version](https://badge.fury.io/ph/gonebusy%2Fgonebusy-php-client.svg)](https://badge.fury.io/ph/gonebusy%2Fgonebusy-php-client)
 
-# PHP SDK for the GoneBusy REST API
+# PHP SDK for the Gonebusy REST API
 
 ## Sandbox
 
 We have a Sandbox environment to play with!
 
-Just use [sandbox.gonebusy.com](https://sandbox.gonebusy.com) instead of where you see beta.gonebusy.com referenced, including where to create an account to retrieve your API Key.
+To point at the Sandbox, just use [sandbox.gonebusy.com](https://sandbox.gonebusy.com) instead of where you see beta.gonebusy.com referenced, including where to create an account to retrieve your API Key.
 
 The Sandbox environment is completely separate from the Live site - that includes meaning your Sandbox API Key will not work in the Live environment.
 
+## How to Use
+
+### Summary of Gonebusy objects
+(more info on the [Developer Portal](https://gonebusy.github.io/api/)):
+
+* A **User** is required to perform operations.  
+* A **Resource** (WHO) performs Services and is needed for all scheduling operations.
+_Each User is assigned a default Resource (her/himself) automatically._  
+* A **Service** (WHAT) is performed by Resources according to a Schedule.
+_Services are assigned a **Pricing Model**._
+_Services can be assigned a **Category** as well._  
+* A **Schedule** (WHEN) defines when a Service is performed by a Resource.  Pieces of a Schedule are called **Time Windows**.  
+* Finally, a **Booking** is placed (at a particular Time Window) in a Schedule, linking it to a Resource-Service combo.
+* A **Search** of users and services can be performed.
+
+### API Key
+
+If testing with Sandbox, [Signup/Logon](https://sandbox.gonebusy.com/login) at https://sandbox.gonebusy.com/login.
+
+If using Production site, [Signup/Logon](https://beta.gonebusy.com/login) at https://beta.gonebusy.com/login.
+
+Once logged in, navigate to the API Key page and request an API key.
+
+### Initialization/Authentication
+
+In order to setup authentication and initialization of the API client, you need the following information.
+
+| Parameter | Description |
+|-----------|-------------|
+| authorization | Set Authorization to "Token _your API key_" |
+
+API client can be initialized as following.
+
+```php
+// Configuration parameters and credentials
+$authorization = "Token <your API key>"; // Set Authorization to "Token <your API key>"
+
+$client = new GonebusyLib\GonebusyClient($authorization);
+```
+
+---
+
 ## How to Build
 
-The generated code has dependencies over external libraries like UniRest. These dependencies are defined in the ```composer.json``` file that comes with the SDK.
-To resolve these dependencies, we use the Composer package manager which requires PHP greater than 5.3.2 installed in your system.
-Visit [https://getcomposer.org/download/](https://getcomposer.org/download/) to download the installer file for Composer and run it in your system.
-Open command prompt and type ```composer --version```. This should display the current version of the Composer installed if the installation was successful.
+### Composer Install
 
-* From this folder, run the command ```composer install```. This should install all of the required dependencies and create the ```vendor``` directory in your project directory.
+```sh
+> composer install
+Loading composer repositories with package information
+Installing dependencies (including require-dev) from lock file
+  - Installing apimatic/jsonmapper (v1.0.2)
+    Loading from cache
 
-![Building SDK - Step 1](http://apidocs.io/illustration/php?step=installDependencies&workspaceFolder=Gonebusy-PHP)
+  [ ... snip ... ]
+
+  - Installing squizlabs/php_codesniffer (2.8.1)
+    Downloading: 100%         
+
+symfony/yaml suggests installing symfony/console (For validating YAML files using the lint command)
+sebastian/global-state suggests installing ext-uopz (*)
+phpunit/php-code-coverage suggests installing ext-xdebug (^2.5.1)
+phpunit/phpunit suggests installing ext-xdebug (*)
+phpunit/phpunit suggests installing phpunit/php-invoker (~1.1)
+Generating autoload files
+```
 
 ### [For Windows Users Only] Configuring CURL Certificate Path in php.ini
 
@@ -46,66 +101,6 @@ Unit tests in this SDK can be run using PHPUnit. The test cases are located in t
 1. Optionally, to check the code standards you may run `vendor/bin/phpcs` (See `phpcs.xml`). (No output means no problems.)
 
 ---
-
-## How to Use
-
-The following section explains how to use the Gonebusy library in a new project.
-
-### 1. Open project in an IDE
-
-Open an IDE for PHP.
-
-Open this folder as a PHP project.
-
-### 2. Add a new project folder
-
-Create a new directory. Name the directory as "my-project".
-
-Add a PHP file to this project. For exampe name it "trySDK.php".
-
-Depending on your project setup, you might need to include composer's autoloader in your PHP code to enable auto loading of classes"
-
-```php
-require_once "../vendor/autoload.php";
-```
-
-> Note: the `../` path assumes you'll run trySDK.php directly from my-project/ .
-
-After this you can add code to initialize the client library and acquire the instance of a Controller class. Sample code to initialize the client library and using controller methods is given in the subsequent sections.
-
-Summary of GoneBusy objects (more info on the [Developer Portal](https://gonebusy.github.io/api/)):  
-A **User** is required to perform operations.  
-A **Resource** (WHO) performs Services and is needed for all scheduling operations.
-_Each User is assigned a default Resource (her/himself) automatically._  
-A **Service** (WHAT) is performed by Resources according to a Schedule.
-_Services are assigned a **Pricing Model**._
-_Services can be assigned a **Category** as well._  
-A **Schedule** (WHEN) defines when a Service is performed by a Resource.  Pieces of a Schedule are called **Time Windows**.  
-Finally, a **Booking** is placed (at a particular Time Window) in a Schedule, linking it to a Resource-Service combo.  
-_A **Search** of users and services can be performed._  
-
-### 3. Run your project
-
-```sh
-php my-project/trySDK.php
-```
-
-## Initialization/Authentication
-
-In order to setup authentication and initialization of the API client, you need the following information.
-
-| Parameter | Description |
-|-----------|-------------|
-| authorization | Set Authorization to "Token _your API key_" |
-
-API client can be initialized as following.
-
-```php
-// Configuration parameters and credentials
-$authorization = "Token <your API key>"; // Set Authorization to "Token <your API key>"
-
-$client = new GonebusyLib\GonebusyClient($authorization);
-```
 
 ## Class Reference
 
