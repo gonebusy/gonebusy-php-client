@@ -63,9 +63,9 @@ class BookingsTest extends TestCase
                 return new CreateServiceBody(
                     "description", // REQUIRED
                     15, // duration REQUIRED
-                    15, // max_duration optional but will default to duration
                     "name", // REQUIRED
                     NULL, // categories
+                    30, // max_duration optional but will default to duration
                     NULL, // price_model_id
                     NULL, // services defaults to self Service
                     "short_name",
@@ -122,7 +122,13 @@ class BookingsTest extends TestCase
                     date('Y-m-d', strtotime('tomorrow')), // date (within schedule start_date and end_date)
                     $sId, // service_id
                     "13:00", // time (within schedule start_time and end_date)
+                    NULL, // date_recurs_by
+                    strtolower(date('l', strtotime('tomorrow'))), // days
                     30, // duration (>= service durations)
+                    NULL, // end_date
+                    NULL, // frequency
+                    NULL, // occurrence
+                    NULL, // recurs_by
                     $rId, // resource_id
                     NULL // user_id defaults to self
                 );
@@ -131,7 +137,13 @@ class BookingsTest extends TestCase
                     date('Y-m-d', strtotime('tomorrow')), // date (within schedule start_date and end_date)
                     $sId, // service_id
                     "13:45", // another time (within schedule start_time and end_date)
+                    NULL, // date_recurs_by
+                    strtolower(date('l', strtotime('tomorrow'))), // days
                     15, // another duration (>= service durations)
+                    NULL, // end_date
+                    NULL, // frequency
+                    NULL, // occurrence
+                    NULL, // recurs_by
                     $rId, // resource_id
                     NULL // user_id defaults to self
                 );
@@ -150,7 +162,13 @@ class BookingsTest extends TestCase
             $response->booking->timeWindow->startDate, // date
             $sId, // service_id
             $response->booking->timeWindow->startTime, // time
+            NULL, // date_recurs_by
+            strtolower(date('l', strtotime($response->booking->timeWindow->startDate))), // days
             $response->booking->timeWindow->totalMinutes, // duration
+            NULL, // end_date
+            NULL, // frequency
+            NULL, // occurrence
+            NULL, // recurs_by
             $rId, // resource_id
             NULL // user_id defaults to self
         );
@@ -302,7 +320,12 @@ class BookingsTest extends TestCase
 
         // Delete the booking after a few seconds:
         sleep(3); // (when the booking status is :awaiting_review)
-        $response = $this->bookings->cancelBookingById(Configuration::$authorization, $bookingResponse->booking->id);
+        $response = $this->bookings->cancelBookingById(
+            Configuration::$authorization,
+            $bookingResponse->booking->id,
+            false,
+            NULL,
+            NULL);
 
         // Was it cancelled?
         $this->assertInstanceOf('GonebusyLib\Models\CancelBookingByIdResponse', $response);

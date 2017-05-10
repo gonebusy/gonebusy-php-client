@@ -58,9 +58,9 @@ class SchedulesTest extends TestCase
                 return new CreateServiceBody(
                     "description", // REQUIRED
                     15, // duration REQUIRED
-                    15, // max_duration optional but will default to duration
                     "name", // REQUIRED
                     NULL, // categories
+                    15, // max_duration optional but will default to duration
                     NULL, // price_model_id
                     NULL, // services defaults to self Service
                     "short_name",
