@@ -26,7 +26,7 @@ class ServicesTest extends TestCase
 
 
     /**
-     * Create the GoneBusy SDK client for each test.
+     * Create the Gonebusy SDK client for each test.
      */
     public function setUp() {
         $this->client = new GonebusyClient();
@@ -46,9 +46,9 @@ class ServicesTest extends TestCase
                 return new CreateServiceBody(
                     "description", // REQUIRED
                     15, // duration REQUIRED
-                    15, // max_duration optional but will default to duration
                     "name", // REQUIRED
                     NULL, // categories default to empty list
+                    15, // max_duration optional but will default to duration
                     NULL, // price_model_id
                     NULL, // resources defaults to list with self Resource
                     "short_name",
@@ -80,9 +80,9 @@ class ServicesTest extends TestCase
                 return new CreateServiceBody(
                     $response->service->description,
                     $response->service->duration,
-                    $response->service->maxDuration,
                     $response->service->name,
                     NULL, // $response->service->categories,
+                    $response->service->maxDuration,
                     NULL, // $response->service->priceModelId,
                     NULL, // $response->service->resources,
                     $response->service->shortName,

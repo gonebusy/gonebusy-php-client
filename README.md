@@ -16,13 +16,13 @@ The Sandbox environment is completely separate from the Live site - that include
 ### Summary of Gonebusy objects
 (more info on the [Developer Portal](https://gonebusy.github.io/api/)):
 
-* A **User** is required to perform operations.  
+* A **User** is required to perform operations.
 * A **Resource** (WHO) performs Services and is needed for all scheduling operations.
-_Each User is assigned a default Resource (her/himself) automatically._  
+_Each User is assigned a default Resource (her/himself) automatically._
 * A **Service** (WHAT) is performed by Resources according to a Schedule.
 _Services are assigned a **Pricing Model**._
-_Services can be assigned a **Category** as well._  
-* A **Schedule** (WHEN) defines when a Service is performed by a Resource.  Pieces of a Schedule are called **Time Windows**.  
+_Services can be assigned a **Category** as well._
+* A **Schedule** (WHEN) defines when a Service is performed by a Resource.  Pieces of a Schedule are called **Time Windows**.
 * Finally, a **Booking** is placed (at a particular Time Window) in a Schedule, linking it to a Resource-Service combo.
 * A **Search** of users and services can be performed.
 
@@ -61,13 +61,13 @@ $client = new GonebusyLib\GonebusyClient($authorization);
 > composer install
 Loading composer repositories with package information
 Installing dependencies (including require-dev) from lock file
-  - Installing apimatic/jsonmapper (v1.0.2)
+  - Installing apimatic/jsonmapper (v1.2.0)
     Loading from cache
 
   [ ... snip ... ]
 
-  - Installing squizlabs/php_codesniffer (2.8.1)
-    Downloading: 100%         
+  - Installing squizlabs/php_codesniffer (2.9.0)
+    Downloading: 100%
 
 symfony/yaml suggests installing symfony/console (For validating YAML files using the lint command)
 sebastian/global-state suggests installing ext-uopz (*)
@@ -267,7 +267,8 @@ $result = $bookings->getBookingById($authorization, $id);
 ```php
 function updateBookingById(
         $authorization,
-        $id)
+        $id,
+        $updateBookingByIdBody = null)
 ```
 
 #### Parameters
@@ -276,6 +277,7 @@ function updateBookingById(
 |-----------|------|-------------|
 | authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
 | id |  ``` Required ```  | TODO: Add a parameter description |
+| updateBookingByIdBody |  ``` Optional ```  | the content of the request |
 
 
 
@@ -284,10 +286,10 @@ function updateBookingById(
 ```php
 $authorization = 'Authorization';
 $id = 'id';
+$updateBookingByIdBody = new UpdateBookingByIdBody();
 
-$result = $bookings->updateBookingById($authorization, $id);
+$result = $bookings->updateBookingById($authorization, $id, $updateBookingByIdBody);
 
-```
 
 #### Errors
 
@@ -310,7 +312,10 @@ $result = $bookings->updateBookingById($authorization, $id);
 ```php
 function cancelBookingById(
         $authorization,
-        $id)
+        $id,
+        $cancelRecurring = null,
+        $date = null,
+        $endDate = null)
 ```
 
 #### Parameters
@@ -319,6 +324,9 @@ function cancelBookingById(
 |-----------|------|-------------|
 | authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
 | id |  ``` Required ```  | TODO: Add a parameter description |
+| cancelRecurring |  ``` Optional ```  | When a recurring booking, one of: ['instance', 'all', 'infinite'] |
+| date |  ``` Optional ```  | If a recurring booking, the date of an instance to cancel.  Several formats are supported: '2014-10-31', 'October 31, 2014' |
+| endDate |  ``` Optional ```  | If recurring, cancel up to :end_date or leave blank for infinite booking.  Several formats are supported: '2014-10-31', 'October 31, 2014'. |
 
 
 
@@ -327,8 +335,11 @@ function cancelBookingById(
 ```php
 $authorization = 'Authorization';
 $id = 'id';
+$cancelRecurring = 'cancel_recurring';
+$date = date("D M d, Y G:i");
+$endDate = date("D M d, Y G:i");
 
-$result = $bookings->cancelBookingById($authorization, $id);
+$result = $bookings->cancelBookingById($authorization, $id, $cancelRecurring, $date, $endDate);
 
 ```
 
