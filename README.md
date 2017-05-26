@@ -147,7 +147,8 @@ function getBookings(
 | page |  ``` Optional ```  ``` DefaultValue ```  | Page offset to fetch. |
 | perPage |  ``` Optional ```  ``` DefaultValue ```  | Number of results to return per page. |
 | states |  ``` Optional ```  | Comma-separated list of Booking states to retrieve only Bookings in those states.  Leave blank to retrieve all Bookings. |
-| userId |  ``` Optional ```  | Retrieve Bookings owned only by this User Id.  You must be authorized to manage this User Id. |
+| userId |  ``` Optional ```  | Retrieve Bookings for Resources/Services owned by this User Id.  You must be authorized to manage this User Id. |
+| bookerId |  ``` Optional ```  | Retrieve Bookings made by Booker Id. |
 
 
 

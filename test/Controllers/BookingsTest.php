@@ -122,6 +122,7 @@ class BookingsTest extends TestCase
                     date('Y-m-d', strtotime('tomorrow')), // date (within schedule start_date and end_date)
                     $sId, // service_id
                     "13:00", // time (within schedule start_time and end_date)
+                    8552697701, // sample user_id
                     NULL, // date_recurs_by
                     strtolower(date('l', strtotime('tomorrow'))), // days
                     30, // duration (>= service durations)
@@ -129,14 +130,14 @@ class BookingsTest extends TestCase
                     NULL, // frequency
                     NULL, // occurrence
                     NULL, // recurs_by
-                    $rId, // resource_id
-                    NULL // user_id defaults to self
+                    $rId // resource_id
                 );
             case 'update':
                 return new CreateBookingBody(
                     date('Y-m-d', strtotime('tomorrow')), // date (within schedule start_date and end_date)
                     $sId, // service_id
                     "13:45", // another time (within schedule start_time and end_date)
+                    8552697701, // sample user_id
                     NULL, // date_recurs_by
                     strtolower(date('l', strtotime('tomorrow'))), // days
                     15, // another duration (>= service durations)
@@ -144,8 +145,7 @@ class BookingsTest extends TestCase
                     NULL, // frequency
                     NULL, // occurrence
                     NULL, // recurs_by
-                    $rId, // resource_id
-                    NULL // user_id defaults to self
+                    $rId // resource_id
                 );
         }
     }
@@ -162,15 +162,15 @@ class BookingsTest extends TestCase
             $response->booking->timeWindow->startDate, // date
             $sId, // service_id
             $response->booking->timeWindow->startTime, // time
-            NULL, // date_recurs_by
+            $response->booking->ownerId, // booking owner is CreateBookingBody userId
+            $response->booking->timeWindow->dateRecursBy, // date_recurs_by
             strtolower(date('l', strtotime($response->booking->timeWindow->startDate))), // days
             $response->booking->timeWindow->totalMinutes, // duration
             NULL, // end_date
             NULL, // frequency
             NULL, // occurrence
             NULL, // recurs_by
-            $rId, // resource_id
-            NULL // user_id defaults to self
+            $rId // resource_id
         );
     }
 
@@ -323,9 +323,10 @@ class BookingsTest extends TestCase
         $response = $this->bookings->cancelBookingById(
             Configuration::$authorization,
             $bookingResponse->booking->id,
-            false,
-            NULL,
-            NULL);
+            NULL, // date to cancel, if recurring
+            NULL, // endDate to cancel, if recurring
+            NULL // which instance(s) to cancel, if recurring
+        );
 
         // Was it cancelled?
         $this->assertInstanceOf('GonebusyLib\Models\CancelBookingByIdResponse', $response);
@@ -352,6 +353,9 @@ class BookingsTest extends TestCase
         $perPage = 3;
         $response = $this->bookings->getBookings(
             Configuration::$authorization,
+            NULL, // userId to filter by, if desired
+            NULL, // booking states to filter by, if desired
+            NULL, // bookerId to filter by, if desired
             $page = 1,
             $perPage);
 
