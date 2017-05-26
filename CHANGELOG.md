@@ -1,6 +1,25 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.1.1] - 2017-05-25 ##
+### Changed
+- [#32](https://github.com/gonebusy/gonebusy-php-client/pull/32) - POST /bookings/new :user_id is now a required parameter.
+
+### Added
+- [#32](https://github.com/gonebusy/gonebusy-php-client/pull/32) - GET /bookings now supports optional :booker_id parameter to filter retrieved bookings to those made on behalf of :booker_id.
+
+## [0.1.0] - 2017-05-09 ##
+### NOTE - This version introduces breaking changes and additions listed below.
+
+### Changed
+- [#31](https://github.com/gonebusy/gonebusy-php-client/pull/31) - CreateBookingBody `:date` attribute is now a DateTime rather than a String. - [@alexagranov](https://github.com/alexagranov)
+- [#31](https://github.com/gonebusy/gonebusy-php-client/pull/31) - TimeWindow attribute `:negation` has been renamed to `:unavailable`. - [@alexagranov](https://github.com/alexagranov)
+
+### Added
+- [#31](https://github.com/gonebusy/gonebusy-php-client/pull/31) - POST /bookings/new now takes parameters supporting the creation of a recurring Booking. - [@alexagranov](https://github.com/alexagranov)
+- [#31](https://github.com/gonebusy/gonebusy-php-client/pull/31) - PUT /bookings/:id now takes parameters supporting the modification of a recurring Booking or instance of such. - [@alexagranov](https://github.com/alexagranov)
+- [#31](https://github.com/gonebusy/gonebusy-php-client/pull/31) - DELETE /bookings/:id now takes parameters supporting the cancellation of a recurring Booking or instance of such. - [@alexagranov](https://github.com/alexagranov)
+
 ## [0.0.11] - 2017-03-21 ##
 ### Added
 - [#24](https://github.com/gonebusy/gonebusy-php-client/pull/24) - dd schedules array to ServiceResponse - [@alexagranov](https://github.com/alexagranov)

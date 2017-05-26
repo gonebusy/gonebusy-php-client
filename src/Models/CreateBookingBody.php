@@ -37,6 +37,14 @@ class CreateBookingBody implements JsonSerializable
     public $time;
 
     /**
+     * Create a booking for this User Id.  You must be authorized to manage this User Id.
+     * @required
+     * @maps user_id
+     * @var integer $userId public property
+     */
+    public $userId;
+
+    /**
      * Required only when :recurs_by is 'monthly' or 'yearly' to differentiate between exact date or 'day in month/year'.  See Recurring Booking examples.
      * @maps date_recurs_by
      * @var string|null $dateRecursBy public property
@@ -89,17 +97,11 @@ class CreateBookingBody implements JsonSerializable
     public $resourceId;
 
     /**
-     * Create a booking for this User Id.  You must be authorized to manage this User Id.
-     * @maps user_id
-     * @var integer|null $userId public property
-     */
-    public $userId;
-
-    /**
      * Constructor to set initial or default values of member properties
      * @param string  $date         Initialization value for $this->date
      * @param integer $serviceId    Initialization value for $this->serviceId
      * @param string  $time         Initialization value for $this->time
+     * @param integer $userId       Initialization value for $this->userId
      * @param string  $dateRecursBy Initialization value for $this->dateRecursBy
      * @param string  $days         Initialization value for $this->days
      * @param integer $duration     Initialization value for $this->duration
@@ -108,7 +110,6 @@ class CreateBookingBody implements JsonSerializable
      * @param string  $occurrence   Initialization value for $this->occurrence
      * @param string  $recursBy     Initialization value for $this->recursBy
      * @param integer $resourceId   Initialization value for $this->resourceId
-     * @param integer $userId       Initialization value for $this->userId
      */
     public function __construct()
     {
@@ -116,15 +117,15 @@ class CreateBookingBody implements JsonSerializable
             $this->date         = func_get_arg(0);
             $this->serviceId    = func_get_arg(1);
             $this->time         = func_get_arg(2);
-            $this->dateRecursBy = func_get_arg(3);
-            $this->days         = func_get_arg(4);
-            $this->duration     = func_get_arg(5);
-            $this->endDate      = func_get_arg(6);
-            $this->frequency    = func_get_arg(7);
-            $this->occurrence   = func_get_arg(8);
-            $this->recursBy     = func_get_arg(9);
-            $this->resourceId   = func_get_arg(10);
-            $this->userId       = func_get_arg(11);
+            $this->userId       = func_get_arg(3);
+            $this->dateRecursBy = func_get_arg(4);
+            $this->days         = func_get_arg(5);
+            $this->duration     = func_get_arg(6);
+            $this->endDate      = func_get_arg(7);
+            $this->frequency    = func_get_arg(8);
+            $this->occurrence   = func_get_arg(9);
+            $this->recursBy     = func_get_arg(10);
+            $this->resourceId   = func_get_arg(11);
         }
     }
 
@@ -138,6 +139,7 @@ class CreateBookingBody implements JsonSerializable
         $json['date']           = $this->date;
         $json['service_id']     = $this->serviceId;
         $json['time']           = $this->time;
+        $json['user_id']        = $this->userId;
         $json['date_recurs_by'] = $this->dateRecursBy;
         $json['days']           = $this->days;
         $json['duration']       = $this->duration;
@@ -146,7 +148,6 @@ class CreateBookingBody implements JsonSerializable
         $json['occurrence']     = $this->occurrence;
         $json['recurs_by']      = $this->recursBy;
         $json['resource_id']    = $this->resourceId;
-        $json['user_id']        = $this->userId;
 
         return $json;
     }
