@@ -28,11 +28,11 @@ class EntitiesBookingResponse implements JsonSerializable
     public $ownerId;
 
     /**
-     * TimeWindow corresponding to Booking
-     * @maps time_window
-     * @var EntitiesTimeWindowResponse|null $timeWindow public property
+     * status of Booking
+     * @maps workflow_state
+     * @var string|null $workflowState public property
      */
-    public $timeWindow;
+    public $workflowState;
 
     /**
      * user requesting Booking may include a message
@@ -42,28 +42,46 @@ class EntitiesBookingResponse implements JsonSerializable
     public $userMessage;
 
     /**
-     * status of Booking
-     * @maps workflow_state
-     * @var string|null $workflowState public property
+     * TimeWindow corresponding to Booking
+     * @maps time_window
+     * @var EntitiesTimeWindowResponse|null $timeWindow public property
      */
-    public $workflowState;
+    public $timeWindow;
+
+    /**
+     * id of Resource performing Booking
+     * @maps resource_id
+     * @var integer|null $resourceId public property
+     */
+    public $resourceId;
+
+    /**
+     * id of Service booked
+     * @maps service_id
+     * @var integer|null $serviceId public property
+     */
+    public $serviceId;
 
     /**
      * Constructor to set initial or default values of member properties
      * @param integer                    $id            Initialization value for $this->id
      * @param integer                    $ownerId       Initialization value for $this->ownerId
-     * @param EntitiesTimeWindowResponse $timeWindow    Initialization value for $this->timeWindow
-     * @param string                     $userMessage   Initialization value for $this->userMessage
      * @param string                     $workflowState Initialization value for $this->workflowState
+     * @param string                     $userMessage   Initialization value for $this->userMessage
+     * @param EntitiesTimeWindowResponse $timeWindow    Initialization value for $this->timeWindow
+     * @param integer                    $resourceId    Initialization value for $this->resourceId
+     * @param integer                    $serviceId     Initialization value for $this->serviceId
      */
     public function __construct()
     {
-        if (5 == func_num_args()) {
+        if (7 == func_num_args()) {
             $this->id            = func_get_arg(0);
             $this->ownerId       = func_get_arg(1);
-            $this->timeWindow    = func_get_arg(2);
+            $this->workflowState = func_get_arg(2);
             $this->userMessage   = func_get_arg(3);
-            $this->workflowState = func_get_arg(4);
+            $this->timeWindow    = func_get_arg(4);
+            $this->resourceId    = func_get_arg(5);
+            $this->serviceId     = func_get_arg(6);
         }
     }
 
@@ -76,9 +94,11 @@ class EntitiesBookingResponse implements JsonSerializable
         $json = array();
         $json['id']             = $this->id;
         $json['owner_id']       = $this->ownerId;
-        $json['time_window']    = $this->timeWindow;
-        $json['user_message']   = $this->userMessage;
         $json['workflow_state'] = $this->workflowState;
+        $json['user_message']   = $this->userMessage;
+        $json['time_window']    = $this->timeWindow;
+        $json['resource_id']    = $this->resourceId;
+        $json['service_id']     = $this->serviceId;
 
         return $json;
     }
