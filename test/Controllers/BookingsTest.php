@@ -119,33 +119,37 @@ class BookingsTest extends TestCase
         switch($action) {
             case 'create':
                 return new CreateBookingBody(
-                    date('Y-m-d', strtotime('tomorrow')), // date (within schedule start_date and end_date)
                     $sId, // service_id
+                    date('Y-m-d', strtotime('tomorrow')), // date (within schedule start_date and end_date)
                     "13:00", // time (within schedule start_time and end_date)
                     8552697701, // sample user_id
-                    NULL, // date_recurs_by
-                    strtolower(date('l', strtotime('tomorrow'))), // days
+                    $rId, // resource_id
                     30, // duration (>= service durations)
                     NULL, // end_date
-                    NULL, // frequency
-                    NULL, // occurrence
                     NULL, // recurs_by
-                    $rId // resource_id
+                    NULL, // frequency
+                    strtolower(date('l', strtotime('tomorrow'))), // days
+                    NULL, // occurrence
+                    NULL, // date_recurs_by
+                    "my booking", // name
+                    "my description" // description
                 );
             case 'update':
                 return new CreateBookingBody(
-                    date('Y-m-d', strtotime('tomorrow')), // date (within schedule start_date and end_date)
                     $sId, // service_id
+                    date('Y-m-d', strtotime('tomorrow')), // date (within schedule start_date and end_date)
                     "13:45", // another time (within schedule start_time and end_date)
                     8552697701, // sample user_id
-                    NULL, // date_recurs_by
-                    strtolower(date('l', strtotime('tomorrow'))), // days
+                    $rId, // resource_id
                     15, // another duration (>= service durations)
                     NULL, // end_date
-                    NULL, // frequency
-                    NULL, // occurrence
                     NULL, // recurs_by
-                    $rId // resource_id
+                    NULL, // frequency
+                    strtolower(date('l', strtotime('tomorrow'))), // days
+                    NULL, // occurrence
+                    NULL, // date_recurs_by
+                    "another name", // name
+                    "another description" // description
                 );
         }
     }
@@ -159,18 +163,20 @@ class BookingsTest extends TestCase
      */
     private function bodyFromResponse($response, $sId, $rId) {
         return new CreateBookingBody(
+            $response->booking->serviceId, // service
             $response->booking->timeWindow->startDate, // date
-            $sId, // service_id
             $response->booking->timeWindow->startTime, // time
             $response->booking->ownerId, // booking owner is CreateBookingBody userId
-            $response->booking->timeWindow->dateRecursBy, // date_recurs_by
-            strtolower(date('l', strtotime($response->booking->timeWindow->startDate))), // days
+            $response->booking->resourceId, // resource
             $response->booking->timeWindow->totalMinutes, // duration
             NULL, // end_date
-            NULL, // frequency
-            NULL, // occurrence
             NULL, // recurs_by
-            $rId // resource_id
+            NULL, // frequency
+            strtolower(date('l', strtotime($response->booking->timeWindow->startDate))), // days
+            NULL, // occurrence
+            NULL, // date_recurs_by
+            $response->booking->name, // name
+            $response->booking->description // description
         );
     }
 

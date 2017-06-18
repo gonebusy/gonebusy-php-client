@@ -21,17 +21,10 @@ class UpdateBookingByIdBody implements JsonSerializable
     public $date;
 
     /**
-     * Required only when :recurs_by is 'monthly' or 'yearly' to differentiate between exact date or 'day in month/year'.  See Recurring Booking examples.
-     * @maps date_recurs_by
-     * @var string|null $dateRecursBy public property
+     * New time of booking.  Several formats are supported: '9am', '09:00', '9:00', '0900'
+     * @var string|null $time public property
      */
-    public $dateRecursBy;
-
-    /**
-     * List of comma-separated days of the week this Booking falls on.  Useful for recurring Bookings.  If provided, at least one must be specified.
-     * @var string|null $days public property
-     */
-    public $days;
+    public $time;
 
     /**
      * New length of time, in minutes, for the desired booking - if Service allows requesting a variable amount of time
@@ -47,10 +40,23 @@ class UpdateBookingByIdBody implements JsonSerializable
     public $endDate;
 
     /**
+     * One of the possible recurrence values.
+     * @maps recurs_by
+     * @var string|null $recursBy public property
+     */
+    public $recursBy;
+
+    /**
      * Optional frequency of recurrence as specified by :recurs_by.  E.g, :single, :every, :every_other, etc.
      * @var string|null $frequency public property
      */
     public $frequency;
+
+    /**
+     * List of comma-separated days of the week this Booking falls on.  Useful for recurring Bookings.  If provided, at least one must be specified.
+     * @var string|null $days public property
+     */
+    public $days;
 
     /**
      * Optional occurrence of frequency. E.g, :first, :2nd, :last, :2nd_to_last, etc.
@@ -59,17 +65,11 @@ class UpdateBookingByIdBody implements JsonSerializable
     public $occurrence;
 
     /**
-     * One of the possible recurrence values.
-     * @maps recurs_by
-     * @var string|null $recursBy public property
+     * Required only when :recurs_by is 'monthly' or 'yearly' to differentiate between exact date or 'day in month/year'.  See Recurring Booking examples.
+     * @maps date_recurs_by
+     * @var string|null $dateRecursBy public property
      */
-    public $recursBy;
-
-    /**
-     * New time of booking.  Several formats are supported: '9am', '09:00', '9:00', '0900'
-     * @var string|null $time public property
-     */
-    public $time;
+    public $dateRecursBy;
 
     /**
      * When a recurring booking, one of: ['instance', 'all', 'infinite']
@@ -79,31 +79,47 @@ class UpdateBookingByIdBody implements JsonSerializable
     public $updateRecurring;
 
     /**
+     * New name for Booking.
+     * @var string|null $name public property
+     */
+    public $name;
+
+    /**
+     * New description for Booking.
+     * @var string|null $description public property
+     */
+    public $description;
+
+    /**
      * Constructor to set initial or default values of member properties
      * @param string  $date            Initialization value for $this->date
-     * @param string  $dateRecursBy    Initialization value for $this->dateRecursBy
-     * @param string  $days            Initialization value for $this->days
+     * @param string  $time            Initialization value for $this->time
      * @param integer $duration        Initialization value for $this->duration
      * @param string  $endDate         Initialization value for $this->endDate
-     * @param string  $frequency       Initialization value for $this->frequency
-     * @param string  $occurrence      Initialization value for $this->occurrence
      * @param string  $recursBy        Initialization value for $this->recursBy
-     * @param string  $time            Initialization value for $this->time
+     * @param string  $frequency       Initialization value for $this->frequency
+     * @param string  $days            Initialization value for $this->days
+     * @param string  $occurrence      Initialization value for $this->occurrence
+     * @param string  $dateRecursBy    Initialization value for $this->dateRecursBy
      * @param string  $updateRecurring Initialization value for $this->updateRecurring
+     * @param string  $name            Initialization value for $this->name
+     * @param string  $description     Initialization value for $this->description
      */
     public function __construct()
     {
-        if (10 == func_num_args()) {
+        if (12 == func_num_args()) {
             $this->date            = func_get_arg(0);
-            $this->dateRecursBy    = func_get_arg(1);
-            $this->days            = func_get_arg(2);
-            $this->duration        = func_get_arg(3);
-            $this->endDate         = func_get_arg(4);
+            $this->time            = func_get_arg(1);
+            $this->duration        = func_get_arg(2);
+            $this->endDate         = func_get_arg(3);
+            $this->recursBy        = func_get_arg(4);
             $this->frequency       = func_get_arg(5);
-            $this->occurrence      = func_get_arg(6);
-            $this->recursBy        = func_get_arg(7);
-            $this->time            = func_get_arg(8);
+            $this->days            = func_get_arg(6);
+            $this->occurrence      = func_get_arg(7);
+            $this->dateRecursBy    = func_get_arg(8);
             $this->updateRecurring = func_get_arg(9);
+            $this->name            = func_get_arg(10);
+            $this->description     = func_get_arg(11);
         }
     }
 
@@ -115,15 +131,17 @@ class UpdateBookingByIdBody implements JsonSerializable
     {
         $json = array();
         $json['date']             = $this->date;
-        $json['date_recurs_by']   = $this->dateRecursBy;
-        $json['days']             = $this->days;
+        $json['time']             = $this->time;
         $json['duration']         = $this->duration;
         $json['end_date']         = $this->endDate;
-        $json['frequency']        = $this->frequency;
-        $json['occurrence']       = $this->occurrence;
         $json['recurs_by']        = $this->recursBy;
-        $json['time']             = $this->time;
+        $json['frequency']        = $this->frequency;
+        $json['days']             = $this->days;
+        $json['occurrence']       = $this->occurrence;
+        $json['date_recurs_by']   = $this->dateRecursBy;
         $json['update_recurring'] = $this->updateRecurring;
+        $json['name']             = $this->name;
+        $json['description']      = $this->description;
 
         return $json;
     }
