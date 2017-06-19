@@ -15,19 +15,19 @@ use JsonSerializable;
 class CreateBookingBody implements JsonSerializable
 {
     /**
-     * Desired date of booking.  Several formats are supported: "2014-10-31", "October 31, 2014"
-     * @required
-     * @var string $date public property
-     */
-    public $date;
-
-    /**
      * ID of Service being booked
      * @required
      * @maps service_id
      * @var integer $serviceId public property
      */
     public $serviceId;
+
+    /**
+     * Desired date of booking.  Several formats are supported: "2014-10-31", "October 31, 2014"
+     * @required
+     * @var string $date public property
+     */
+    public $date;
 
     /**
      * Desired time of booking.  Several formats are supported: '9am', '09:00', '9:00', '0900'
@@ -45,17 +45,11 @@ class CreateBookingBody implements JsonSerializable
     public $userId;
 
     /**
-     * Required only when :recurs_by is 'monthly' or 'yearly' to differentiate between exact date or 'day in month/year'.  See Recurring Booking examples.
-     * @maps date_recurs_by
-     * @var string|null $dateRecursBy public property
+     * ID of a Resource to be booked.  If not provided, the first available Resource will be booked.
+     * @maps resource_id
+     * @var integer|null $resourceId public property
      */
-    public $dateRecursBy;
-
-    /**
-     * List of comma-separated days of the week this Booking falls on.  Useful for recurring Bookings.  If provided, at least one must be specified.
-     * @var string|null $days public property
-     */
-    public $days;
+    public $resourceId;
 
     /**
      * Length of time, in minutes, for the desired booking - if Service allows requesting a variable amount of time
@@ -71,10 +65,23 @@ class CreateBookingBody implements JsonSerializable
     public $endDate;
 
     /**
+     * One of the possible recurrence values.  If not provided, assumed to be :once to indicate a single Booking.
+     * @maps recurs_by
+     * @var string|null $recursBy public property
+     */
+    public $recursBy;
+
+    /**
      * Optional frequency of recurrence as specified by :recurs_by.  E.g, :single, :every, :every_other, etc. If not provided, assumed to be :once
      * @var string|null $frequency public property
      */
     public $frequency;
+
+    /**
+     * List of comma-separated days of the week this Booking falls on.  Useful for recurring Bookings.  If provided, at least one must be specified.
+     * @var string|null $days public property
+     */
+    public $days;
 
     /**
      * Optional occurrence of frequency. E.g, :first, :2nd, :last, :2nd_to_last, etc.  If not provided, assumed to be :every
@@ -83,49 +90,58 @@ class CreateBookingBody implements JsonSerializable
     public $occurrence;
 
     /**
-     * One of the possible recurrence values.  If not provided, assumed to be :once to indicate a single Booking.
-     * @maps recurs_by
-     * @var string|null $recursBy public property
+     * Required only when :recurs_by is 'monthly' or 'yearly' to differentiate between exact date or 'day in month/year'.  See Recurring Booking examples.
+     * @maps date_recurs_by
+     * @var string|null $dateRecursBy public property
      */
-    public $recursBy;
+    public $dateRecursBy;
 
     /**
-     * ID of a Resource to be booked.  If not provided, the first available Resource will be booked.
-     * @maps resource_id
-     * @var integer|null $resourceId public property
+     * Optional name for Booking, otherwise will take name of Service.
+     * @var string|null $name public property
      */
-    public $resourceId;
+    public $name;
+
+    /**
+     * Optional description for Booking.
+     * @var string|null $description public property
+     */
+    public $description;
 
     /**
      * Constructor to set initial or default values of member properties
-     * @param string  $date         Initialization value for $this->date
      * @param integer $serviceId    Initialization value for $this->serviceId
+     * @param string  $date         Initialization value for $this->date
      * @param string  $time         Initialization value for $this->time
      * @param integer $userId       Initialization value for $this->userId
-     * @param string  $dateRecursBy Initialization value for $this->dateRecursBy
-     * @param string  $days         Initialization value for $this->days
+     * @param integer $resourceId   Initialization value for $this->resourceId
      * @param integer $duration     Initialization value for $this->duration
      * @param string  $endDate      Initialization value for $this->endDate
-     * @param string  $frequency    Initialization value for $this->frequency
-     * @param string  $occurrence   Initialization value for $this->occurrence
      * @param string  $recursBy     Initialization value for $this->recursBy
-     * @param integer $resourceId   Initialization value for $this->resourceId
+     * @param string  $frequency    Initialization value for $this->frequency
+     * @param string  $days         Initialization value for $this->days
+     * @param string  $occurrence   Initialization value for $this->occurrence
+     * @param string  $dateRecursBy Initialization value for $this->dateRecursBy
+     * @param string  $name         Initialization value for $this->name
+     * @param string  $description  Initialization value for $this->description
      */
     public function __construct()
     {
-        if (12 == func_num_args()) {
-            $this->date         = func_get_arg(0);
-            $this->serviceId    = func_get_arg(1);
+        if (14 == func_num_args()) {
+            $this->serviceId    = func_get_arg(0);
+            $this->date         = func_get_arg(1);
             $this->time         = func_get_arg(2);
             $this->userId       = func_get_arg(3);
-            $this->dateRecursBy = func_get_arg(4);
-            $this->days         = func_get_arg(5);
-            $this->duration     = func_get_arg(6);
-            $this->endDate      = func_get_arg(7);
+            $this->resourceId   = func_get_arg(4);
+            $this->duration     = func_get_arg(5);
+            $this->endDate      = func_get_arg(6);
+            $this->recursBy     = func_get_arg(7);
             $this->frequency    = func_get_arg(8);
-            $this->occurrence   = func_get_arg(9);
-            $this->recursBy     = func_get_arg(10);
-            $this->resourceId   = func_get_arg(11);
+            $this->days         = func_get_arg(9);
+            $this->occurrence   = func_get_arg(10);
+            $this->dateRecursBy = func_get_arg(11);
+            $this->name         = func_get_arg(12);
+            $this->description  = func_get_arg(13);
         }
     }
 
@@ -136,18 +152,20 @@ class CreateBookingBody implements JsonSerializable
     public function jsonSerialize()
     {
         $json = array();
-        $json['date']           = $this->date;
         $json['service_id']     = $this->serviceId;
+        $json['date']           = $this->date;
         $json['time']           = $this->time;
         $json['user_id']        = $this->userId;
-        $json['date_recurs_by'] = $this->dateRecursBy;
-        $json['days']           = $this->days;
+        $json['resource_id']    = $this->resourceId;
         $json['duration']       = $this->duration;
         $json['end_date']       = $this->endDate;
-        $json['frequency']      = $this->frequency;
-        $json['occurrence']     = $this->occurrence;
         $json['recurs_by']      = $this->recursBy;
-        $json['resource_id']    = $this->resourceId;
+        $json['frequency']      = $this->frequency;
+        $json['days']           = $this->days;
+        $json['occurrence']     = $this->occurrence;
+        $json['date_recurs_by'] = $this->dateRecursBy;
+        $json['name']           = $this->name;
+        $json['description']    = $this->description;
 
         return $json;
     }

@@ -35,11 +35,10 @@ class EntitiesBookingResponse implements JsonSerializable
     public $workflowState;
 
     /**
-     * user requesting Booking may include a message
-     * @maps user_message
-     * @var string|null $userMessage public property
+     * name of Booking, if any
+     * @var string|null $name public property
      */
-    public $userMessage;
+    public $name;
 
     /**
      * TimeWindow corresponding to Booking
@@ -63,25 +62,51 @@ class EntitiesBookingResponse implements JsonSerializable
     public $serviceId;
 
     /**
+     * description for Booking, if any
+     * @var string|null $description public property
+     */
+    public $description;
+
+    /**
+     * external management link for Booking, if any
+     * @maps external_link
+     * @var string|null $externalLink public property
+     */
+    public $externalLink;
+
+    /**
+     * video chat or other link associated with Booking, if any
+     * @maps collaborative_link
+     * @var string|null $collaborativeLink public property
+     */
+    public $collaborativeLink;
+
+    /**
      * Constructor to set initial or default values of member properties
-     * @param integer                    $id            Initialization value for $this->id
-     * @param integer                    $ownerId       Initialization value for $this->ownerId
-     * @param string                     $workflowState Initialization value for $this->workflowState
-     * @param string                     $userMessage   Initialization value for $this->userMessage
-     * @param EntitiesTimeWindowResponse $timeWindow    Initialization value for $this->timeWindow
-     * @param integer                    $resourceId    Initialization value for $this->resourceId
-     * @param integer                    $serviceId     Initialization value for $this->serviceId
+     * @param integer                    $id                Initialization value for $this->id
+     * @param integer                    $ownerId           Initialization value for $this->ownerId
+     * @param string                     $workflowState     Initialization value for $this->workflowState
+     * @param string                     $name              Initialization value for $this->name
+     * @param EntitiesTimeWindowResponse $timeWindow        Initialization value for $this->timeWindow
+     * @param integer                    $resourceId        Initialization value for $this->resourceId
+     * @param integer                    $serviceId         Initialization value for $this->serviceId
+     * @param string                     $description       Initialization value for $this->description
+     * @param string                     $externalLink      Initialization value for $this->externalLink
+     * @param string                     $collaborativeLink Initialization value for $this->collaborativeLink
      */
     public function __construct()
     {
-        if (7 == func_num_args()) {
-            $this->id            = func_get_arg(0);
-            $this->ownerId       = func_get_arg(1);
-            $this->workflowState = func_get_arg(2);
-            $this->userMessage   = func_get_arg(3);
-            $this->timeWindow    = func_get_arg(4);
-            $this->resourceId    = func_get_arg(5);
-            $this->serviceId     = func_get_arg(6);
+        if (10 == func_num_args()) {
+            $this->id                = func_get_arg(0);
+            $this->ownerId           = func_get_arg(1);
+            $this->workflowState     = func_get_arg(2);
+            $this->name              = func_get_arg(3);
+            $this->timeWindow        = func_get_arg(4);
+            $this->resourceId        = func_get_arg(5);
+            $this->serviceId         = func_get_arg(6);
+            $this->description       = func_get_arg(7);
+            $this->externalLink      = func_get_arg(8);
+            $this->collaborativeLink = func_get_arg(9);
         }
     }
 
@@ -92,13 +117,16 @@ class EntitiesBookingResponse implements JsonSerializable
     public function jsonSerialize()
     {
         $json = array();
-        $json['id']             = $this->id;
-        $json['owner_id']       = $this->ownerId;
-        $json['workflow_state'] = $this->workflowState;
-        $json['user_message']   = $this->userMessage;
-        $json['time_window']    = $this->timeWindow;
-        $json['resource_id']    = $this->resourceId;
-        $json['service_id']     = $this->serviceId;
+        $json['id']                 = $this->id;
+        $json['owner_id']           = $this->ownerId;
+        $json['workflow_state']     = $this->workflowState;
+        $json['name']               = $this->name;
+        $json['time_window']        = $this->timeWindow;
+        $json['resource_id']        = $this->resourceId;
+        $json['service_id']         = $this->serviceId;
+        $json['description']        = $this->description;
+        $json['external_link']      = $this->externalLink;
+        $json['collaborative_link'] = $this->collaborativeLink;
 
         return $json;
     }
